@@ -1,0 +1,196 @@
+[
+  {
+    "id": "1",
+    "title": "Zoombie Berry Cade",
+    "date": "2024-03-15",
+    "thumbnail": "/uploads/1763786346325-Render01.png",
+    "blocks": [
+      {
+        "id": "b1",
+        "type": "header",
+        "content": "Zoombie Berry Cade"
+      },
+      {
+        "id": "b2",
+        "type": "text",
+        "content": "This project explores the aesthetics of a dystopian future. Created using Blender and rendered in Cycles."
+      },
+      {
+        "id": "b3",
+        "type": "image",
+        "content": "/uploads/1763786358821-Render01.png"
+      },
+      {
+        "id": "b4",
+        "type": "subtitle",
+        "content": "Process & Details"
+      },
+      {
+        "id": "b5",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "https://placehold.co/400x400/222222/FFFFFF/png?text=Detail+1",
+          "https://placehold.co/400x400/444444/FFFFFF/png?text=Detail+2"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Retro Computer",
+    "date": "2024-02-10",
+    "thumbnail": "https://placehold.co/600x400/000000/FFFFFF/png?text=Retro+PC",
+    "blocks": [
+      {
+        "id": "b1",
+        "type": "header",
+        "content": "Vintage Macintosh 3D"
+      },
+      {
+        "id": "b2",
+        "type": "text",
+        "content": "A tribute to the classic design of the 80s computers."
+      },
+      {
+        "id": "b3",
+        "type": "image",
+        "content": "https://placehold.co/800x600/111111/FFFFFF/png?text=Retro+Computer"
+      }
+    ]
+  },
+  {
+    "id": "1763786411061",
+    "title": "Nuevo proyecto de prueba",
+    "date": "2025-11-06",
+    "thumbnail": "/uploads/1763786449973-1999.png",
+    "blocks": [
+      {
+        "id": "1763786452024",
+        "type": "header",
+        "content": "APOLO MILFO PROYECT"
+      },
+      {
+        "id": "1763786467674",
+        "type": "text",
+        "content": "Estuve trabajando para Milfshakes como animador 3d en una publicidad para su nuevo DROP."
+      },
+      {
+        "id": "1763786501080",
+        "type": "image",
+        "content": "/uploads/1763786508623-0067.png"
+      }
+    ]
+  },
+  {
+    "id": "1763787261278",
+    "title": "New Project",
+    "date": "2025-11-22",
+    "thumbnail": "/uploads/1763787289801-basado.gif",
+    "blocks": [
+      {
+        "id": "1763787263322",
+        "type": "header",
+        "content": "[Milfshakes](https://milfshakes.es/) es una marca",
+        "linkColor": "#ff0000"
+      },
+      {
+        "id": "1763787381051",
+        "type": "video",
+        "content": "https://www.youtube.com/watch?v=y_SJEvguMF8&list=RDy_SJEvguMF8&start_radio=1"
+      },
+      {
+        "id": "1763789116404",
+        "type": "link",
+        "content": "",
+        "linkText": "twitter",
+        "linkUrl": "https://x.com/home",
+        "iconUrl": "https://www.google.com/s2/favicons?domain=https://x.com/home&sz=64",
+        "bgColor": "#000000",
+        "textColor": "#ffffff",
+        "borderColor": "#ffffff"
+      },
+      {
+        "id": "1763789511838",
+        "type": "link",
+        "content": "",
+        "linkText": "Milfshakes",
+        "linkUrl": "https://milfshakes.es/",
+        "iconUrl": "https://www.google.com/s2/favicons?domain=https://milfshakes.es/&sz=64",
+        "bgColor": "#ffffff",
+        "textColor": "#ff2e2e",
+        "borderColor": "#ff3333"
+      }
+    ]
+  },
+  {
+    "id": "1763869828054",
+    "title": "HUI LINDA HERMOSA",
+    "date": "2013-05-07",
+    "thumbnail": "/uploads/1763869868408-06.jpg",
+    "blocks": [
+      {
+        "id": "1763870407707",
+        "type": "subtitle",
+        "content": "🌸🌷🪻🌺 CUMPLE HUI 🌸🌷🪻🌺"
+      },
+      {
+        "id": "1763869874740",
+        "type": "text",
+        "content": "en el cumple de la [Hui](https://www.instagram.com/huiisuasnabar/).\nel 24 de Mayo de 2025",
+        "linkColor": "#7424ff"
+      },
+      {
+        "id": "1763870341123",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1763870344926-06.jpg",
+          "/uploads/1763870347618-08.jpg"
+        ],
+        "itemAlts": [
+          "La hui tomando vino en piña (estaba riquisimo)",
+          "Karaoke !!"
+        ]
+      },
+      {
+        "id": "1763874797751",
+        "type": "link",
+        "content": "",
+        "linkText": "Instagram de la linda hermosa de la HUI",
+        "linkUrl": "https://www.instagram.com/huiisuasnabar",
+        "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/huiisuasnabar&sz=64",
+        "bgColor": "#b190fe",
+        "textColor": "#ffffff",
+        "borderColor": "#ffffff"
+      }
+    ],
+    "backgroundImage": "/uploads/1763924713374-colorful-blooming-flower-and-floral-seamless-pattern-background-free-vector.jpg",
+    "backgroundMode": "repeat",
+    "backgroundOpacity": 82,
+    "backgroundSize": "20%",
+    "backgroundColor": "#f4ecfe",
+    "cardBackgroundColor": "#9934fe",
+    "cardTextColor": "#000000",
+    "category": "Dibujo",
+    "backgroundBlendMode": "overlay"
+  },
+  {
+    "id": "1763924064027",
+    "title": "Test de prueba",
+    "date": "2025-11-23",
+    "thumbnail": "/uploads/1763924077733-Captura-de-pantalla-2025-05-05-191854.png",
+    "blocks": [
+      {
+        "id": "1763924977420",
+        "type": "video",
+        "content": "https://www.youtube.com/watch?v=SJUmZ0DbUUQ"
+      }
+    ],
+    "category": "Animación 2D",
+    "backgroundColor": "#ff0000",
+    "backgroundImage": "/uploads/1763924088314-Gm73vn3bYAAsysm.jpg",
+    "backgroundBlendMode": "multiply",
+    "cardTextColor": "#ffffff"
+  }
+]

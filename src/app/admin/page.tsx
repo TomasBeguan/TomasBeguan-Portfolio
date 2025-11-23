@@ -1,0 +1,551 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { RetroContainer } from "@/components/RetroContainer";
+import { RetroButton } from "@/components/RetroButton";
+import { Block, Post, BlockType } from "@/types";
+import { Plus, Trash, ArrowUp, ArrowDown, Save, LogOut } from "lucide-react";
+import { ImageUploader } from "@/components/Admin/ImageUploader";
+
+export default function AdminPage() {
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [editingPost, setEditingPost] = useState<Post | null>(null);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+
+    useEffect(() => {
+        // Check Auth
+        fetch('/api/auth/check')
+            .then(res => {
+                if (!res.ok) {
+                    router.push('/admin/login');
+                } else {
+                    setLoading(false);
+                    // Load posts
+                    fetch('/api/posts')
+                        .then(res => res.json())
+                        .then(data => setPosts(data));
+                }
+            });
+    }, [router]);
+
+    const handleLogout = async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        router.push('/admin/login');
+    };
+
+    const handleCreatePost = () => {
+        const newPost: Post = {
+            id: Date.now().toString(),
+            title: "New Project",
+            date: new Date().toISOString().split('T')[0],
+            thumbnail: "",
+            blocks: []
+        };
+        setEditingPost(newPost);
+    };
+
+    const handleSavePost = async () => {
+        if (!editingPost) return;
+
+        const res = await fetch('/api/posts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(editingPost)
+        });
+
+        if (res.ok) {
+            alert('Post saved!');
+            // Refresh list
+            fetch('/api/posts').then(res => res.json()).then(data => setPosts(data));
+            setEditingPost(null);
+        } else {
+            alert('Error saving post');
+        }
+    };
+
+    const addBlock = (type: BlockType) => {
+        if (!editingPost) return;
+        const newBlock: Block = {
+            id: Date.now().toString(),
+            type,
+            content: "",
+            items: type === 'grid' ? [] : undefined
+        };
+        setEditingPost({
+            ...editingPost,
+            blocks: [...editingPost.blocks, newBlock]
+        });
+    };
+
+    const updateBlock = (id: string, updates: Partial<Block>) => {
+        if (!editingPost) return;
+        setEditingPost({
+            ...editingPost,
+            blocks: editingPost.blocks.map(b => b.id === id ? { ...b, ...updates } : b)
+        });
+    };
+
+    const removeBlock = (id: string) => {
+        if (!editingPost) return;
+        setEditingPost({
+            ...editingPost,
+            blocks: editingPost.blocks.filter(b => b.id !== id)
+        });
+    };
+
+    const moveBlock = (index: number, direction: 'up' | 'down') => {
+        if (!editingPost) return;
+        const newBlocks = [...editingPost.blocks];
+        if (direction === 'up' && index > 0) {
+            [newBlocks[index], newBlocks[index - 1]] = [newBlocks[index - 1], newBlocks[index]];
+        } else if (direction === 'down' && index < newBlocks.length - 1) {
+            [newBlocks[index], newBlocks[index + 1]] = [newBlocks[index + 1], newBlocks[index]];
+        }
+        setEditingPost({ ...editingPost, blocks: newBlocks });
+    };
+
+    if (loading) return <div className="min-h-screen flex items-center justify-center font-bold">LOADING SYSTEM...</div>;
+
+    if (editingPost) {
+        return (
+            <main className="min-h-screen p-4 flex flex-col items-center">
+                <RetroContainer title={`Editing: ${editingPost.title}`} onBack={() => setEditingPost(null)}>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2 border-b-2 border-black pb-4">
+                            <label className="font-bold">Title</label>
+                            <input
+                                value={editingPost.title}
+                                onChange={e => setEditingPost({ ...editingPost, title: e.target.value })}
+                                className="border-2 border-black p-2 font-mono"
+                            />
+                            <label className="font-bold">Date</label>
+                            <input
+                                type="date"
+                                value={editingPost.date}
+                                onChange={e => setEditingPost({ ...editingPost, date: e.target.value })}
+                                className="border-2 border-black p-2 font-mono"
+                            />
+                            <label className="font-bold">Thumbnail</label>
+                            <ImageUploader
+                                currentValue={editingPost.thumbnail}
+                                onUpload={(url) => setEditingPost({ ...editingPost, thumbnail: url })}
+                            />
+
+                            <div className="border-t-2 border-black pt-4 mt-2">
+                                <label className="font-bold block mb-2">Card Customization</label>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex gap-4">
+                                        <div className="flex flex-col gap-1">
+                                            <label className="text-xs font-bold">Card Background</label>
+                                            <div className="flex gap-2 items-center">
+                                                <input
+                                                    type="color"
+                                                    value={editingPost.cardBackgroundColor || '#f9fafb'}
+                                                    onChange={e => setEditingPost({ ...editingPost, cardBackgroundColor: e.target.value })}
+                                                    className="h-8 w-12 cursor-pointer border border-black"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col gap-1">
+                                            <label className="text-xs font-bold">Card Text</label>
+                                            <div className="flex gap-2 items-center">
+                                                <input
+                                                    type="color"
+                                                    value={editingPost.cardTextColor || '#000000'}
+                                                    onChange={e => setEditingPost({ ...editingPost, cardTextColor: e.target.value })}
+                                                    className="h-8 w-12 cursor-pointer border border-black"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-xs font-bold">Category</label>
+                                        <select
+                                            value={editingPost.category || ''}
+                                            onChange={e => setEditingPost({ ...editingPost, category: e.target.value })}
+                                            className="border border-black p-2 font-mono text-sm"
+                                        >
+                                            <option value="">Select Category...</option>
+                                            <option value="Animación 3D">Animación 3D</option>
+                                            <option value="Animación 2D">Animación 2D</option>
+                                            <option value="Modelado">Modelado</option>
+                                            <option value="Textura">Textura</option>
+                                            <option value="Diseño">Diseño</option>
+                                            <option value="Dibujo">Dibujo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="border-t-2 border-black pt-4 mt-2">
+                                <label className="font-bold block mb-2">Post Background</label>
+                                <div className="flex flex-col gap-4">
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-xs font-bold">Background Color</label>
+                                        <div className="flex gap-2 items-center">
+                                            <input
+                                                type="color"
+                                                value={editingPost.backgroundColor || '#ffffff'}
+                                                onChange={e => setEditingPost({ ...editingPost, backgroundColor: e.target.value })}
+                                                className="h-8 w-12 cursor-pointer border border-black"
+                                            />
+                                            <span className="text-xs font-mono">{editingPost.backgroundColor || '#ffffff'}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-xs font-bold">Background Image</label>
+                                        <ImageUploader
+                                            currentValue={editingPost.backgroundImage || ''}
+                                            onUpload={(url) => setEditingPost({ ...editingPost, backgroundImage: url })}
+                                        />
+                                    </div>
+
+                                    {editingPost.backgroundImage && (
+                                        <>
+                                            <div className="flex flex-col gap-1">
+                                                <label className="text-xs font-bold">Image Opacity ({editingPost.backgroundOpacity || 100}%)</label>
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="100"
+                                                    value={editingPost.backgroundOpacity ?? 100}
+                                                    onChange={e => setEditingPost({ ...editingPost, backgroundOpacity: parseInt(e.target.value) })}
+                                                    className="w-full cursor-pointer accent-black"
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col gap-1">
+                                                <label className="text-xs font-bold">Blend Mode</label>
+                                                <select
+                                                    value={editingPost.backgroundBlendMode || 'normal'}
+                                                    onChange={e => setEditingPost({ ...editingPost, backgroundBlendMode: e.target.value })}
+                                                    className="border border-black p-2 font-mono text-sm"
+                                                >
+                                                    <option value="normal">Normal</option>
+                                                    <option value="multiply">Multiply</option>
+                                                    <option value="screen">Screen</option>
+                                                    <option value="overlay">Overlay</option>
+                                                    <option value="darken">Darken</option>
+                                                    <option value="lighten">Lighten</option>
+                                                    <option value="color-dodge">Color Dodge</option>
+                                                    <option value="color-burn">Color Burn</option>
+                                                    <option value="hard-light">Hard Light</option>
+                                                    <option value="soft-light">Soft Light</option>
+                                                    <option value="difference">Difference</option>
+                                                    <option value="exclusion">Exclusion</option>
+                                                    <option value="hue">Hue</option>
+                                                    <option value="saturation">Saturation</option>
+                                                    <option value="color">Color</option>
+                                                    <option value="luminosity">Luminosity</option>
+                                                </select>
+                                                {/* Mini Preview */}
+                                                <div className="h-12 w-full border border-black mt-1 relative overflow-hidden">
+                                                    <div
+                                                        className="absolute inset-0 z-0"
+                                                        style={{ backgroundColor: editingPost.backgroundColor || '#ffffff' }}
+                                                    />
+                                                    <div
+                                                        className="absolute inset-0 z-1"
+                                                        style={{
+                                                            backgroundImage: `url(${editingPost.backgroundImage})`,
+                                                            backgroundSize: editingPost.backgroundSize || (editingPost.backgroundMode === 'cover' ? 'cover' : editingPost.backgroundMode === 'contain' ? 'contain' : editingPost.backgroundMode === 'stretch' ? '100% 100%' : 'auto'),
+                                                            backgroundRepeat: editingPost.backgroundMode === 'repeat' ? 'repeat' : 'no-repeat',
+                                                            backgroundPosition: 'center',
+                                                            opacity: (editingPost.backgroundOpacity || 100) / 100,
+                                                            mixBlendMode: editingPost.backgroundBlendMode as any || 'normal'
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex flex-col gap-1">
+                                                <label className="text-xs font-bold">Image Size (Dimension)</label>
+                                                <div className="flex gap-2">
+                                                    <input
+                                                        value={editingPost.backgroundSize || ''}
+                                                        onChange={e => setEditingPost({ ...editingPost, backgroundSize: e.target.value })}
+                                                        className="border border-black p-2 font-mono text-sm flex-1"
+                                                        placeholder="e.g. 50%, 300px, cover"
+                                                    />
+                                                    {/* Quick Scale Slider Helper */}
+                                                    <div className="flex flex-col gap-0 w-24">
+                                                        <label className="text-[10px] text-gray-500">Scale Helper</label>
+                                                        <input
+                                                            type="range"
+                                                            min="10"
+                                                            max="200"
+                                                            step="10"
+                                                            defaultValue="100"
+                                                            onChange={e => setEditingPost({ ...editingPost, backgroundSize: `${e.target.value}%` })}
+                                                            className="w-full cursor-pointer accent-gray-500 h-4"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex flex-col gap-1">
+                                                <label className="text-xs font-bold">Image Fill Mode</label>
+                                                <select
+                                                    value={editingPost.backgroundMode || 'cover'}
+                                                    onChange={e => setEditingPost({ ...editingPost, backgroundMode: e.target.value as any })}
+                                                    className="border border-black p-2 font-mono text-sm"
+                                                >
+                                                    <option value="cover">Cover (Crop to Fill)</option>
+                                                    <option value="contain">Contain (Fit)</option>
+                                                    <option value="stretch">Stretch (Fill)</option>
+                                                    <option value="repeat">Repeat (Pattern)</option>
+                                                    <option value="no-repeat">No Repeat</option>
+                                                </select>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-4">
+                            {editingPost.blocks.map((block, index) => (
+                                <div key={block.id} className="border border-gray-400 p-2 bg-gray-50 relative group">
+                                    <div className="absolute right-2 top-2 flex gap-1 opacity-50 group-hover:opacity-100 transition-opacity z-10">
+                                        <button onClick={() => moveBlock(index, 'up')}><ArrowUp size={16} /></button>
+                                        <button onClick={() => moveBlock(index, 'down')}><ArrowDown size={16} /></button>
+                                        <button onClick={() => removeBlock(block.id)} className="text-red-500"><Trash size={16} /></button>
+                                    </div>
+                                    <span className="text-xs font-bold uppercase text-gray-500 mb-2 block">{block.type}</span>
+
+                                    {block.type === 'text' || block.type === 'header' || block.type === 'subtitle' ? (
+                                        <div className="flex flex-col gap-2">
+                                            <textarea
+                                                id={`textarea-${block.id}`}
+                                                value={block.content}
+                                                onChange={e => updateBlock(block.id, { content: e.target.value })}
+                                                className="w-full border border-black p-1 font-mono h-24 text-sm"
+                                            />
+                                            <div className="flex gap-2 flex-wrap items-center">
+                                                <button
+                                                    className="text-xs border border-black px-2 hover:bg-black hover:text-white transition-colors"
+                                                    onClick={() => {
+                                                        const textarea = document.getElementById(`textarea-${block.id}`) as HTMLTextAreaElement;
+                                                        if (textarea) {
+                                                            const start = textarea.selectionStart;
+                                                            const end = textarea.selectionEnd;
+                                                            const text = textarea.value;
+                                                            const selected = text.substring(start, end);
+                                                            const newText = text.substring(0, start) + `[${selected || 'text'}](url)` + text.substring(end);
+                                                            updateBlock(block.id, { content: newText });
+                                                        }
+                                                    }}
+                                                >
+                                                    Link
+                                                </button>
+                                                <div className="flex items-center gap-2">
+                                                    <label className="text-xs font-bold">Link Color</label>
+                                                    <input
+                                                        type="color"
+                                                        value={block.linkColor || '#7c3aed'}
+                                                        onChange={e => updateBlock(block.id, { linkColor: e.target.value })}
+                                                        className="h-6 w-12 cursor-pointer"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : block.type === 'image' ? (
+                                        <div className="flex flex-col gap-2">
+                                            <label className="text-xs font-bold">Image URL</label>
+                                            <ImageUploader
+                                                currentValue={block.content}
+                                                onUpload={(url) => updateBlock(block.id, { content: url })}
+                                            />
+                                            <label className="text-xs font-bold mt-2">Alt Text (Caption)</label>
+                                            <input
+                                                value={block.altText || ''}
+                                                onChange={e => updateBlock(block.id, { altText: e.target.value })}
+                                                className="border border-black p-2 font-mono text-sm"
+                                                placeholder="Description for modal..."
+                                            />
+                                            {block.content && <img src={block.content} alt="Preview" className="max-h-40 object-contain border border-gray-300 mt-2" />}
+                                        </div>
+                                    ) : block.type === 'video' ? (
+                                        <div className="flex flex-col gap-2">
+                                            <label className="text-xs font-bold">Video URL (YouTube/Vimeo)</label>
+                                            <input
+                                                value={block.content}
+                                                onChange={e => updateBlock(block.id, { content: e.target.value })}
+                                                className="border border-black p-2 font-mono text-sm"
+                                                placeholder="https://www.youtube.com/watch?v=..."
+                                            />
+                                        </div>
+                                    ) : block.type === 'grid' ? (
+                                        <div className="flex flex-col gap-2">
+                                            <label className="text-xs font-bold">Grid Images</label>
+                                            <div className="flex flex-col gap-4">
+                                                {block.items?.map((item, i) => (
+                                                    <div key={i} className="flex gap-2 items-start border border-gray-300 p-2 relative group">
+                                                        <div className="h-24 min-w-[3rem] max-w-[12rem] flex-shrink-0 border border-gray-200 bg-gray-50 flex items-center justify-center">
+                                                            <img src={item} alt="" className="h-full w-auto object-contain" />
+                                                        </div>
+                                                        <div className="flex flex-col gap-1 flex-1">
+                                                            <label className="text-xs font-bold">Alt Text</label>
+                                                            <input
+                                                                value={block.itemAlts?.[i] || ''}
+                                                                onChange={e => {
+                                                                    const newAlts = [...(block.itemAlts || [])];
+                                                                    // Ensure array is long enough
+                                                                    while (newAlts.length <= i) newAlts.push('');
+                                                                    newAlts[i] = e.target.value;
+                                                                    updateBlock(block.id, { itemAlts: newAlts });
+                                                                }}
+                                                                className="border border-black p-1 font-mono text-xs w-full"
+                                                                placeholder="Caption..."
+                                                            />
+                                                        </div>
+                                                        <button
+                                                            onClick={() => {
+                                                                const newItems = block.items?.filter((_, idx) => idx !== i);
+                                                                const newAlts = block.itemAlts?.filter((_, idx) => idx !== i);
+                                                                updateBlock(block.id, { items: newItems, itemAlts: newAlts });
+                                                            }}
+                                                            className="text-red-500 hover:bg-red-50 p-1 rounded"
+                                                        >
+                                                            <Trash size={16} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                                <div className="w-full h-24 border-2 border-dashed border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
+                                                    <div className="flex flex-col items-center gap-2">
+                                                        <span className="text-xs text-gray-400 font-bold">ADD IMAGE</span>
+                                                        <ImageUploader
+                                                            currentValue=""
+                                                            onUpload={(url) => {
+                                                                const newItems = [...(block.items || []), url];
+                                                                const newAlts = [...(block.itemAlts || []), ''];
+                                                                updateBlock(block.id, { items: newItems, itemAlts: newAlts });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : block.type === 'link' ? (
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex flex-col gap-1">
+                                                <label className="text-xs font-bold">Button Text</label>
+                                                <input
+                                                    value={block.linkText || ''}
+                                                    onChange={e => updateBlock(block.id, { linkText: e.target.value })}
+                                                    className="border border-black p-2 font-mono text-sm"
+                                                    placeholder="e.g. Visit Website"
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-1">
+                                                <label className="text-xs font-bold">URL</label>
+                                                <input
+                                                    value={block.linkUrl || ''}
+                                                    onChange={e => {
+                                                        const url = e.target.value;
+                                                        const iconUrl = `https://www.google.com/s2/favicons?domain=${url}&sz=64`;
+                                                        updateBlock(block.id, { linkUrl: url, iconUrl });
+                                                    }}
+                                                    className="border border-black p-2 font-mono text-sm"
+                                                    placeholder="https://example.com"
+                                                />
+                                            </div>
+                                            <div className="flex gap-4">
+                                                <div className="flex flex-col gap-1">
+                                                    <label className="text-xs font-bold">Background</label>
+                                                    <input
+                                                        type="color"
+                                                        value={block.bgColor || '#ffffff'}
+                                                        onChange={e => updateBlock(block.id, { bgColor: e.target.value })}
+                                                        className="h-8 w-full cursor-pointer"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-1">
+                                                    <label className="text-xs font-bold">Text</label>
+                                                    <input
+                                                        type="color"
+                                                        value={block.textColor || '#000000'}
+                                                        onChange={e => updateBlock(block.id, { textColor: e.target.value })}
+                                                        className="h-8 w-full cursor-pointer"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col gap-1">
+                                                    <label className="text-xs font-bold">Border</label>
+                                                    <input
+                                                        type="color"
+                                                        value={block.borderColor || '#000000'}
+                                                        onChange={e => updateBlock(block.id, { borderColor: e.target.value })}
+                                                        className="h-8 w-full cursor-pointer"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="mt-2 p-4 border border-gray-200 bg-gray-50 flex flex-col gap-2 items-center">
+                                                <span className="text-xs text-gray-500 font-mono">Preview</span>
+                                                <RetroButton
+                                                    className="flex items-center gap-2"
+                                                    style={{
+                                                        backgroundColor: block.bgColor,
+                                                        color: block.textColor,
+                                                        borderColor: block.borderColor
+                                                    }}
+                                                >
+                                                    {block.iconUrl && <img src={block.iconUrl} alt="" className="w-4 h-4" />}
+                                                    {block.linkText || 'Button'}
+                                                </RetroButton>
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Add Block Section - Always Visible */}
+                        <div className="flex flex-col gap-2 mt-4 pt-4 border-t-2 border-black">
+                            <span className="text-sm font-bold">ADD NEW BLOCK</span>
+                            <div className="flex gap-2 flex-wrap">
+                                <RetroButton onClick={() => addBlock('text')} className="text-xs">Text</RetroButton>
+                                <RetroButton onClick={() => addBlock('subtitle')} className="text-xs">Subtitle</RetroButton>
+                                <RetroButton onClick={() => addBlock('image')} className="text-xs">Image</RetroButton>
+                                <RetroButton onClick={() => addBlock('video')} className="text-xs">Video</RetroButton>
+                                <RetroButton onClick={() => addBlock('grid')} className="text-xs">Grid</RetroButton>
+                                <RetroButton onClick={() => addBlock('link')} className="text-xs">Button</RetroButton>
+                            </div>
+                        </div>
+
+                        {/* Save Button - Always Visible */}
+                        <div className="flex justify-end mt-4 pb-8">
+                            <RetroButton onClick={handleSavePost} className="bg-black text-white hover:bg-white hover:text-black flex gap-2 w-full justify-center py-3">
+                                <Save size={16} /> Save Post
+                            </RetroButton>
+                        </div>
+                    </div>
+                </RetroContainer>
+            </main>
+        );
+    }
+
+    return (
+        <main className="min-h-screen p-4 flex flex-col items-center">
+            <RetroContainer title="CMS Admin">
+                <div className="flex justify-between items-center mb-6">
+                    <h1 className="text-xl font-bold">Projects</h1>
+                    <div className="flex gap-2">
+                        <RetroButton onClick={handleLogout} className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"><LogOut size={16} /></RetroButton>
+                        <RetroButton onClick={handleCreatePost}><Plus size={16} /> New Project</RetroButton>
+                    </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                    {posts.map(post => (
+                        <div key={post.id} className="border border-black p-2 flex justify-between items-center hover:bg-gray-100 cursor-pointer" onClick={() => setEditingPost(post)}>
+                            <span className="font-bold">{post.title}</span>
+                            <span className="text-xs text-gray-500">{post.date}</span>
+                        </div>
+                    ))}
+                </div>
+            </RetroContainer>
+        </main>
+    );
+}
