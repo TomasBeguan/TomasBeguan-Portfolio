@@ -8,7 +8,7 @@ const posts: Post[] = postsData as Post[];
 
 export default function Home() {
     return (
-        <main className="fixed inset-0 w-full h-full overflow-hidden flex flex-col items-center justify-center p-4 pt-12 sm:pt-24">
+        <main className="fixed inset-0 w-full h-full overflow-hidden flex flex-col items-center justify-center p-2 sm:p-4 pt-12 sm:pt-24">
             {/* Title Section */}
             <div className="mb-4 sm:mb-8 text-center z-10 shrink-0">
                 <h1 className="text-4xl sm:text-6xl md:text-8xl mb-2 font-ultra tracking-tight text-black">

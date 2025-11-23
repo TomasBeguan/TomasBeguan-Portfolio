@@ -32,7 +32,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
     }
 
     return (
-        <main className="min-h-screen p-4 flex flex-col items-center justify-center">
+        <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
             <RetroContainer
                 title={post.title}
                 backgroundColor={post.backgroundColor}
@@ -41,6 +41,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 backgroundOpacity={post.backgroundOpacity}
                 backgroundSize={post.backgroundSize}
                 backgroundBlendMode={post.backgroundBlendMode}
+                className="mt-[30px]"
             >
                 <BlockRenderer blocks={post.blocks} />
             </RetroContainer>

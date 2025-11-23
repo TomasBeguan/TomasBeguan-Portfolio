@@ -18,8 +18,8 @@ export default async function PortfolioPage() {
     const projects = await getPosts();
 
     return (
-        <main className="min-h-screen p-4 flex flex-col items-center justify-center">
-            <RetroContainer title="My Portfolio">
+        <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
+            <RetroContainer title="My Portfolio" className="mt-[30px] flex-1 min-h-0">
                 <PortfolioGrid posts={projects} />
             </RetroContainer>
         </main>

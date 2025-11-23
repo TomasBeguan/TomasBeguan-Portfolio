@@ -110,8 +110,8 @@ export default function AdminPage() {
 
     if (editingPost) {
         return (
-            <main className="min-h-screen p-4 flex flex-col items-center">
-                <RetroContainer title={`Editing: ${editingPost.title}`} onBack={() => setEditingPost(null)}>
+            <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
+                <RetroContainer title={`Editing: ${editingPost.title}`} onBack={() => setEditingPost(null)} className="mt-[30px] flex-1 min-h-0">
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2 border-b-2 border-black pb-4">
                             <label className="font-bold">Title</label>
@@ -528,8 +528,8 @@ export default function AdminPage() {
     }
 
     return (
-        <main className="min-h-screen p-4 flex flex-col items-center">
-            <RetroContainer title="CMS Admin">
+        <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
+            <RetroContainer title="CMS Admin" className="mt-[30px] flex-1 min-h-0">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-xl font-bold">Projects</h1>
                     <div className="flex gap-2">

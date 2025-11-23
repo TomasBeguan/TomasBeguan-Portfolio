@@ -5,8 +5,8 @@ import { RetroButton } from "@/components/RetroButton";
 
 export default function ContactPage() {
     return (
-        <main className="min-h-screen p-4 flex flex-col items-center justify-center">
-            <RetroContainer title="Contact Me" className="max-w-xl">
+        <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
+            <RetroContainer title="Contact Me" className="mt-[30px] max-w-xl flex-1 min-h-0">
                 <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
                     <div className="flex flex-col gap-1">
                         <label className="font-bold uppercase text-sm">Name</label>

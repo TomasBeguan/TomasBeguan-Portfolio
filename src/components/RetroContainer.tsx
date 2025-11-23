@@ -71,27 +71,16 @@ export function RetroContainer({
 
     return (
         <>
-            {/* Mobile Back Button - Outside Window */}
-            <div className="w-full max-w-3xl mx-auto mb-2 block sm:hidden px-1">
-                <RetroButton
-                    onClick={handleClose}
-                    className="px-3 py-1 text-sm border border-black shadow-retro-sm bg-white flex items-center gap-2 w-fit"
-                >
-                    <ArrowLeft size={14} />
-                    Back
-                </RetroButton>
-            </div>
-
             <div
                 className={cn(
-                    "flex flex-col bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-retro dark:shadow-[4px_4px_0px_0px_#ffffff] w-full max-w-3xl mx-auto my-0 h-[80vh] transition-colors duration-300",
+                    "flex flex-col bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-retro dark:shadow-[4px_4px_0px_0px_#ffffff] w-full max-w-3xl mx-auto my-0 flex-1 min-h-0 transition-colors duration-300",
                     className
                 )}
             >
                 {/* Title Bar */}
                 <div className="w-full bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white px-2 py-1 flex items-center justify-center relative h-12 shrink-0 select-none transition-colors duration-300">
-                    {/* Back Button (Absolute Left) - Desktop Only */}
-                    <div className="absolute left-2 z-10 h-8 top-1/2 -translate-y-1/2 hidden sm:block">
+                    {/* Back Button (Absolute Left) */}
+                    <div className="absolute left-2 z-10 h-8 top-1/2 -translate-y-1/2">
                         <RetroButton
                             onClick={handleClose}
                             className="px-3 py-0 text-sm h-full border border-black dark:border-white shadow-none active:translate-x-0 active:translate-y-0 hover:translate-x-0 hover:translate-y-0 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-chicago flex items-center gap-2 bg-white dark:bg-retro-dark-blue dark:text-white transition-colors duration-300"

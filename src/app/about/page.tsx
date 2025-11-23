@@ -6,8 +6,8 @@ import Link from "next/link";
 
 export default function AboutPage() {
     return (
-        <main className="min-h-screen p-4 flex flex-col items-center justify-center">
-            <RetroContainer title="About Me">
+        <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
+            <RetroContainer title="About Me" className="mt-[30px] flex-1 min-h-0">
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                     <div className="w-full md:w-1/3 aspect-[3/4] border-2 border-black bg-gray-200 shrink-0 relative shadow-retro-sm">
                         {/* Placeholder for profile image */}
