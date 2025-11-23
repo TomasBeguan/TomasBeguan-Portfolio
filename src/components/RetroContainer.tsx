@@ -84,7 +84,7 @@ export function RetroContainer({
 
             <div
                 className={cn(
-                    "flex flex-col bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-retro dark:shadow-[4px_4px_0px_0px_#ffffff] w-full max-w-3xl mx-auto my-0 sm:my-8 h-[80vh] transition-colors duration-300",
+                    "flex flex-col bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-retro dark:shadow-[4px_4px_0px_0px_#ffffff] w-full max-w-3xl mx-auto my-0 h-[80vh] transition-colors duration-300",
                     className
                 )}
             >
@@ -147,7 +147,7 @@ export function RetroContainer({
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

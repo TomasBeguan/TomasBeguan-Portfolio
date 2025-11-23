@@ -23,11 +23,11 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose }: ImageModalPro
                 </div>
 
                 {/* Image Container */}
-                <div className="bg-white p-2 border-2 border-white shadow-retro-lg w-auto h-auto max-h-[80vh] overflow-hidden flex flex-col">
+                <div className="bg-white p-2 border-2 border-white shadow-retro-lg w-auto h-auto max-h-[85vh] overflow-hidden flex flex-col">
                     <img
                         src={imageUrl}
                         alt={altText || "Full size view"}
-                        className="w-full h-full object-contain max-h-[75vh]"
+                        className="w-full h-full object-contain flex-1 min-h-0"
                     />
 
                     {/* Alt Text Caption */}

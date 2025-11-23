@@ -517,7 +517,7 @@ export default function AdminPage() {
 
                         {/* Save Button - Always Visible */}
                         <div className="flex justify-end mt-4 pb-8">
-                            <RetroButton onClick={handleSavePost} className="bg-black text-white hover:bg-white hover:text-black flex gap-2 w-full justify-center py-3">
+                            <RetroButton onClick={handleSavePost} className="bg-green-600 text-white hover:bg-green-500 hover:text-white border-green-700 flex gap-2 w-full justify-center py-3 shadow-[4px_4px_0px_0px_#14532d] hover:shadow-[2px_2px_0px_0px_#14532d]">
                                 <Save size={16} /> Save Post
                             </RetroButton>
                         </div>
