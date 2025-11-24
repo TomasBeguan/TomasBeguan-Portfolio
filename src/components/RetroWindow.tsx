@@ -12,7 +12,7 @@ export const RetroWindow = ({ title = "My Stuff", children, className = "" }: Re
             {/* Window Title Bar */}
             <div className="w-full bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white px-2 py-1 flex items-center justify-center relative h-12 transition-colors duration-300">
                 {/* Close Box */}
-                <div className="absolute left-3 w-4 h-4 border-2 border-black dark:border-white bg-white dark:bg-retro-dark-blue"></div>
+
 
                 {/* Title with striped background */}
                 <div className="w-full h-full flex items-center justify-center relative overflow-hidden">
@@ -25,7 +25,7 @@ export const RetroWindow = ({ title = "My Stuff", children, className = "" }: Re
 
                     {/* Title Text with white background to cover stripes */}
                     <div className="relative z-10 px-4 bg-white dark:bg-retro-dark-blue border-x-2 border-black dark:border-white transition-colors duration-300">
-                        <h2 className="text-xl font-chicago tracking-normal dark:text-white">{title}</h2>
+                        <h2 className="text-xl font-chicago tracking-normal text-retro-text">{title}</h2>
                     </div>
                 </div>
             </div>

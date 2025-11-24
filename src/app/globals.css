@@ -2,9 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Chicago';
+  src: url('/uploads/fonts/Chicago.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
+  --main-color: #333333;
+  --font-chicago: 'Chicago', sans-serif;
 }
 
 [data-theme='dark'] {
@@ -37,7 +46,7 @@ body {
 .retro-scrollbar::-webkit-scrollbar {
   width: 16px;
   background-color: #ffffff;
-  border-left: 2px solid #000000;
+  border-left: 2px solid var(--main-color);
 }
 
 .retro-scrollbar::-webkit-scrollbar-track {
@@ -51,8 +60,8 @@ body {
 
 .retro-scrollbar::-webkit-scrollbar-thumb {
   background-color: #ffffff;
-  border: 2px solid #000000;
-  box-shadow: 2px 2px 0px 0px #000000;
+  border: 2px solid var(--main-color);
+  box-shadow: 2px 2px 0px 0px var(--main-color);
 }
 
 .retro-scrollbar::-webkit-scrollbar-thumb:hover {

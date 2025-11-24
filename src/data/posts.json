@@ -106,7 +106,7 @@
         "linkText": "twitter",
         "linkUrl": "https://x.com/home",
         "iconUrl": "https://www.google.com/s2/favicons?domain=https://x.com/home&sz=64",
-        "bgColor": "#000000",
+        "bgColor": "#333333",
         "textColor": "#ffffff",
         "borderColor": "#ffffff"
       },
@@ -171,7 +171,7 @@
     "backgroundSize": "20%",
     "backgroundColor": "#f4ecfe",
     "cardBackgroundColor": "#9934fe",
-    "cardTextColor": "#000000",
+    "cardTextColor": "#333333",
     "category": "Dibujo",
     "backgroundBlendMode": "overlay"
   },
@@ -185,6 +185,11 @@
         "id": "1763924977420",
         "type": "video",
         "content": "https://www.youtube.com/watch?v=SJUmZ0DbUUQ"
+      },
+      {
+        "id": "1763943064702",
+        "type": "subtitle",
+        "content": "Titulo? "
       }
     ],
     "category": "Animación 2D",

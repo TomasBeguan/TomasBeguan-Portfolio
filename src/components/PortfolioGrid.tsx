@@ -23,7 +23,7 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                         <div
                             className="border-2 border-black dark:border-white p-2 hover:shadow-retro dark:hover:shadow-[4px_4px_0px_0px_#ffffff] transition-all cursor-pointer h-full flex flex-col relative overflow-hidden"
                             style={{
-                                color: post.cardTextColor || 'var(--card-text, #000000)'
+                                color: post.cardTextColor || 'var(--card-text, var(--main-color))'
                             }}
                         >
                             {/* Background Layers */}
@@ -54,22 +54,22 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                                         <ImageIcon size={48} className="text-gray-400 group-hover:text-black dark:text-gray-500 dark:group-hover:text-white" />
                                     )}
                                 </div>
-                                <h3 className="font-bold text-lg truncate font-chicago mb-2">{post.title}</h3>
+                                <h3 className="font-bold text-lg truncate mb-2">{post.title}</h3>
 
                                 <div className="flex gap-2 mt-auto items-center justify-between">
                                     {/* Grouped Date Block */}
                                     <div className="flex border border-black dark:border-white bg-white dark:bg-retro-dark-blue text-black dark:text-white">
-                                        <div className="px-2 py-0.5 text-xs font-chicago border-r border-black dark:border-white">
+                                        <div className="px-2 py-0.5 text-xs border-r border-black dark:border-white">
                                             {year}
                                         </div>
-                                        <div className="px-2 py-0.5 text-xs font-chicago uppercase">
+                                        <div className="px-2 py-0.5 text-xs uppercase">
                                             {monthName}
                                         </div>
                                     </div>
 
                                     {/* Category Tag */}
                                     {post.category && (
-                                        <div className="border border-black dark:border-white px-2 py-0.5 text-xs font-chicago bg-black text-white dark:bg-white dark:text-black uppercase">
+                                        <div className="border border-black dark:border-white px-2 py-0.5 text-xs bg-black text-white dark:bg-white dark:text-black uppercase">
                                             {post.category}
                                         </div>
                                     )}

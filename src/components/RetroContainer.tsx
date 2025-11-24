@@ -83,10 +83,10 @@ export function RetroContainer({
                     <div className="absolute left-2 z-10 h-8 top-1/2 -translate-y-1/2">
                         <RetroButton
                             onClick={handleClose}
-                            className="px-3 py-0 text-sm h-full border border-black dark:border-white shadow-none active:translate-x-0 active:translate-y-0 hover:translate-x-0 hover:translate-y-0 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-chicago flex items-center gap-2 bg-white dark:bg-retro-dark-blue dark:text-white transition-colors duration-300"
+                            className="px-2 sm:px-3 py-0 text-sm h-full border border-black dark:border-white shadow-none active:translate-x-0 active:translate-y-0 hover:translate-x-0 hover:translate-y-0 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-chicago flex items-center gap-2 bg-white dark:bg-retro-dark-blue dark:text-white transition-colors duration-300"
                         >
-                            <ArrowLeft size={14} />
-                            Back
+                            <ArrowLeft size={14} strokeWidth={3} />
+                            <span className="hidden sm:inline">Back</span>
                         </RetroButton>
                     </div>
 
@@ -101,7 +101,7 @@ export function RetroContainer({
 
                         {/* Title Text with white background to cover stripes */}
                         <div className="relative z-10 px-4 bg-white dark:bg-retro-dark-blue border-x-2 border-black dark:border-white transition-colors duration-300">
-                            <h2 className="text-xl font-chicago tracking-normal pt-1 dark:text-white">{title}</h2>
+                            <h2 className="text-xl font-chicago tracking-normal pt-1 text-retro-text">{title}</h2>
                         </div>
                     </div>
                 </div>

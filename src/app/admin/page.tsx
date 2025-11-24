@@ -153,7 +153,7 @@ export default function AdminPage() {
                                             <div className="flex gap-2 items-center">
                                                 <input
                                                     type="color"
-                                                    value={editingPost.cardTextColor || '#000000'}
+                                                    value={editingPost.cardTextColor || '#333333'}
                                                     onChange={e => setEditingPost({ ...editingPost, cardTextColor: e.target.value })}
                                                     className="h-8 w-12 cursor-pointer border border-black"
                                                 />
@@ -467,7 +467,7 @@ export default function AdminPage() {
                                                     <label className="text-xs font-bold">Text</label>
                                                     <input
                                                         type="color"
-                                                        value={block.textColor || '#000000'}
+                                                        value={block.textColor || '#333333'}
                                                         onChange={e => updateBlock(block.id, { textColor: e.target.value })}
                                                         className="h-8 w-full cursor-pointer"
                                                     />
@@ -476,7 +476,7 @@ export default function AdminPage() {
                                                     <label className="text-xs font-bold">Border</label>
                                                     <input
                                                         type="color"
-                                                        value={block.borderColor || '#000000'}
+                                                        value={block.borderColor || '#333333'}
                                                         onChange={e => updateBlock(block.id, { borderColor: e.target.value })}
                                                         className="h-8 w-full cursor-pointer"
                                                     />
@@ -506,6 +506,7 @@ export default function AdminPage() {
                         <div className="flex flex-col gap-2 mt-4 pt-4 border-t-2 border-black">
                             <span className="text-sm font-bold">ADD NEW BLOCK</span>
                             <div className="flex gap-2 flex-wrap">
+                                <RetroButton onClick={() => addBlock('header')} className="text-xs">Header</RetroButton>
                                 <RetroButton onClick={() => addBlock('text')} className="text-xs">Text</RetroButton>
                                 <RetroButton onClick={() => addBlock('subtitle')} className="text-xs">Subtitle</RetroButton>
                                 <RetroButton onClick={() => addBlock('image')} className="text-xs">Image</RetroButton>
