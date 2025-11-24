@@ -1,4 +1,4 @@
-export type BlockType = 'header' | 'text' | 'subtitle' | 'image' | 'grid' | 'link' | 'video';
+export type BlockType = 'header' | 'text' | 'subtitle' | 'image' | 'grid' | 'link' | 'video' | 'model3d';
 
 export interface Block {
     id: string;
@@ -14,6 +14,7 @@ export interface Block {
     textColor?: string; // Text color for button
     borderColor?: string; // Border color for button
     iconUrl?: string; // Icon URL for button (e.g., favicon)
+    textureUrl?: string; // For 3D models
 }
 
 export interface Post {

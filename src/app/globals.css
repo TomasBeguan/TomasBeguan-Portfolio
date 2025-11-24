@@ -84,6 +84,25 @@ body {
   animation: scroll-bounce 1.5s infinite ease-in-out;
 }
 
+/* Custom Cursors */
+body {
+  cursor: url('/uploads/mac_os_9_cursors_for_windows_by_nonme85851_d7cy4v2/arrow.cur'), auto;
+}
+
+a,
+button,
+[role="button"],
+.cursor-pointer,
+label {
+  cursor: url('/uploads/mac_os_9_cursors_for_windows_by_nonme85851_d7cy4v2/hand.cur'), pointer;
+}
+
+input[type="text"],
+textarea,
+[contenteditable="true"] {
+  cursor: url('/uploads/mac_os_9_cursors_for_windows_by_nonme85851_d7cy4v2/beam.cur'), text;
+}
+
 .cursor-wait {
   cursor: url('/uploads/mac_os_9_cursors_for_windows_by_nonme85851_d7cy4v2/watch.ani'), wait;
 }
