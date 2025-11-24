@@ -47,7 +47,7 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
 
                             {/* Content */}
                             <div className="relative z-10 flex flex-col h-full">
-                                <div className="aspect-video border border-black dark:border-white flex items-center justify-center mb-2 transition-colors overflow-hidden relative">
+                                <div className="aspect-square border border-black dark:border-white flex items-center justify-center mb-2 transition-colors overflow-hidden relative">
                                     {post.thumbnail ? (
                                         <img src={post.thumbnail} alt={post.title} className="w-full h-full object-cover pixelated" />
                                     ) : (

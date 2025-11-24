@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { RetroButton } from './RetroButton';
 
@@ -10,10 +11,17 @@ interface ImageModalProps {
 }
 
 export const ImageModal = ({ isOpen, imageUrl, altText, onClose }: ImageModalProps) => {
-    if (!isOpen) return null;
+    const [mounted, setMounted] = useState(false);
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.8)] p-4" onClick={onClose}>
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
+
+    if (!isOpen || !mounted) return null;
+
+    return createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(0,0,0,0.8)] p-4" onClick={onClose}>
             <div className="relative max-w-5xl w-fit max-h-[90vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
                 {/* Close Button - Desktop (Outside Right) */}
                 <div className="hidden sm:block absolute left-full top-0 ml-2 pointer-events-auto z-50">
@@ -45,6 +53,7 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose }: ImageModalPro
                     )}
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };

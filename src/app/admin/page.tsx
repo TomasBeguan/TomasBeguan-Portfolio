@@ -255,7 +255,30 @@ export default function AdminPage() {
                                                 onChange={e => setEditingPost({ ...editingPost, backgroundColor: e.target.value })}
                                                 className="h-8 w-12 cursor-pointer border border-black"
                                             />
-                                            <span className="text-xs font-mono">{editingPost.backgroundColor || '#ffffff'}</span>
+                                            <button
+                                                onClick={() => setEditingPost({ ...editingPost, backgroundColor: undefined })}
+                                                className="text-xs underline text-red-500"
+                                            >
+                                                Clear
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col gap-1">
+                                        <label className="text-xs font-bold">Text Color</label>
+                                        <div className="flex gap-2 items-center">
+                                            <input
+                                                type="color"
+                                                value={editingPost.textColor || '#000000'}
+                                                onChange={e => setEditingPost({ ...editingPost, textColor: e.target.value })}
+                                                className="h-8 w-12 cursor-pointer border border-black"
+                                            />
+                                            <button
+                                                onClick={() => setEditingPost({ ...editingPost, textColor: undefined })}
+                                                className="text-xs underline text-red-500"
+                                            >
+                                                Clear
+                                            </button>
                                         </div>
                                     </div>
 
@@ -431,6 +454,15 @@ export default function AdminPage() {
                                                 placeholder="Description for modal..."
                                             />
                                             {block.content && <img src={block.content} alt="Preview" className="max-h-40 object-contain border border-gray-300 mt-2" />}
+                                            <label className="flex items-center gap-2 text-xs cursor-pointer select-none mt-2">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={block.noBorder || false}
+                                                    onChange={e => updateBlock(block.id, { noBorder: e.target.checked })}
+                                                    className="accent-black"
+                                                />
+                                                No Border
+                                            </label>
                                         </div>
                                     ) : block.type === 'video' ? (
                                         <div className="flex flex-col gap-2">
@@ -444,7 +476,18 @@ export default function AdminPage() {
                                         </div>
                                     ) : block.type === 'grid' ? (
                                         <div className="flex flex-col gap-2">
-                                            <label className="text-xs font-bold">Grid Images</label>
+                                            <div className="flex justify-between items-center">
+                                                <label className="text-xs font-bold">Grid Images</label>
+                                                <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={block.noBorder || false}
+                                                        onChange={e => updateBlock(block.id, { noBorder: e.target.checked })}
+                                                        className="accent-black"
+                                                    />
+                                                    No Border
+                                                </label>
+                                            </div>
                                             <div className="flex flex-col gap-4">
                                                 {block.items?.map((item, i) => (
                                                     <div key={i} className="flex gap-2 items-start border border-gray-300 p-2 relative group">
@@ -495,69 +538,164 @@ export default function AdminPage() {
                                         </div>
                                     ) : block.type === 'link' ? (
                                         <div className="flex flex-col gap-2">
-                                            <div className="flex flex-col gap-1">
-                                                <label className="text-xs font-bold">Button Text</label>
-                                                <input
-                                                    value={block.linkText || ''}
-                                                    onChange={e => updateBlock(block.id, { linkText: e.target.value })}
-                                                    className="border border-black p-2 font-mono text-sm"
-                                                    placeholder="e.g. Visit Website"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col gap-1">
-                                                <label className="text-xs font-bold">URL</label>
-                                                <input
-                                                    value={block.linkUrl || ''}
-                                                    onChange={e => {
-                                                        const url = e.target.value;
-                                                        const iconUrl = `https://www.google.com/s2/favicons?domain=${url}&sz=64`;
-                                                        updateBlock(block.id, { linkUrl: url, iconUrl });
-                                                    }}
-                                                    className="border border-black p-2 font-mono text-sm"
-                                                    placeholder="https://example.com"
-                                                />
-                                            </div>
-                                            <div className="flex gap-4">
-                                                <div className="flex flex-col gap-1">
-                                                    <label className="text-xs font-bold">Background</label>
-                                                    <input
-                                                        type="color"
-                                                        value={block.bgColor || '#ffffff'}
-                                                        onChange={e => updateBlock(block.id, { bgColor: e.target.value })}
-                                                        className="h-8 w-full cursor-pointer"
-                                                    />
-                                                </div>
-                                                <div className="flex flex-col gap-1">
-                                                    <label className="text-xs font-bold">Text</label>
-                                                    <input
-                                                        type="color"
-                                                        value={block.textColor || '#333333'}
-                                                        onChange={e => updateBlock(block.id, { textColor: e.target.value })}
-                                                        className="h-8 w-full cursor-pointer"
-                                                    />
-                                                </div>
-                                                <div className="flex flex-col gap-1">
-                                                    <label className="text-xs font-bold">Border</label>
-                                                    <input
-                                                        type="color"
-                                                        value={block.borderColor || '#333333'}
-                                                        onChange={e => updateBlock(block.id, { borderColor: e.target.value })}
-                                                        className="h-8 w-full cursor-pointer"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="mt-2 p-4 border border-gray-200 bg-gray-50 flex flex-col gap-2 items-center">
-                                                <span className="text-xs text-gray-500 font-mono">Preview</span>
+                                            <label className="text-xs font-bold">Buttons</label>
+                                            <div className="flex flex-col gap-4">
+                                                {(block.buttons && block.buttons.length > 0 ? block.buttons : [{
+                                                    text: block.linkText || block.content || 'Button',
+                                                    url: block.linkUrl || '#',
+                                                    bgColor: block.bgColor,
+                                                    textColor: block.textColor,
+                                                    borderColor: block.borderColor,
+                                                    iconUrl: block.iconUrl
+                                                }]).map((btn, i) => (
+                                                    <div key={i} className="border border-gray-300 p-2 bg-white relative group">
+                                                        <div className="flex flex-col gap-2">
+                                                            <div className="flex gap-2">
+                                                                <div className="flex flex-col gap-1 flex-1">
+                                                                    <label className="text-[10px] font-bold">Text</label>
+                                                                    <input
+                                                                        value={btn.text}
+                                                                        onChange={e => {
+                                                                            const newButtons = [...(block.buttons || [{
+                                                                                text: block.linkText || block.content || 'Button',
+                                                                                url: block.linkUrl || '#',
+                                                                                bgColor: block.bgColor,
+                                                                                textColor: block.textColor,
+                                                                                borderColor: block.borderColor,
+                                                                                iconUrl: block.iconUrl
+                                                                            }])];
+                                                                            newButtons[i] = { ...newButtons[i], text: e.target.value };
+                                                                            updateBlock(block.id, { buttons: newButtons });
+                                                                        }}
+                                                                        className="border border-black p-1 font-mono text-xs w-full"
+                                                                    />
+                                                                </div>
+                                                                <div className="flex flex-col gap-1 flex-1">
+                                                                    <label className="text-[10px] font-bold">URL</label>
+                                                                    <input
+                                                                        value={btn.url}
+                                                                        onChange={e => {
+                                                                            const url = e.target.value;
+                                                                            const iconUrl = `https://www.google.com/s2/favicons?domain=${url}&sz=64`;
+                                                                            const newButtons = [...(block.buttons || [{
+                                                                                text: block.linkText || block.content || 'Button',
+                                                                                url: block.linkUrl || '#',
+                                                                                bgColor: block.bgColor,
+                                                                                textColor: block.textColor,
+                                                                                borderColor: block.borderColor,
+                                                                                iconUrl: block.iconUrl
+                                                                            }])];
+                                                                            newButtons[i] = { ...newButtons[i], url, iconUrl };
+                                                                            updateBlock(block.id, { buttons: newButtons });
+                                                                        }}
+                                                                        className="border border-black p-1 font-mono text-xs w-full"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex gap-2">
+                                                                <div className="flex flex-col gap-1 flex-1">
+                                                                    <label className="text-[10px] font-bold">BG</label>
+                                                                    <input
+                                                                        type="color"
+                                                                        value={btn.bgColor || '#ffffff'}
+                                                                        onChange={e => {
+                                                                            const newButtons = [...(block.buttons || [{
+                                                                                text: block.linkText || block.content || 'Button',
+                                                                                url: block.linkUrl || '#',
+                                                                                bgColor: block.bgColor,
+                                                                                textColor: block.textColor,
+                                                                                borderColor: block.borderColor,
+                                                                                iconUrl: block.iconUrl
+                                                                            }])];
+                                                                            newButtons[i] = { ...newButtons[i], bgColor: e.target.value };
+                                                                            updateBlock(block.id, { buttons: newButtons });
+                                                                        }}
+                                                                        className="h-6 w-full cursor-pointer"
+                                                                    />
+                                                                </div>
+                                                                <div className="flex flex-col gap-1 flex-1">
+                                                                    <label className="text-[10px] font-bold">Text</label>
+                                                                    <input
+                                                                        type="color"
+                                                                        value={btn.textColor || '#333333'}
+                                                                        onChange={e => {
+                                                                            const newButtons = [...(block.buttons || [{
+                                                                                text: block.linkText || block.content || 'Button',
+                                                                                url: block.linkUrl || '#',
+                                                                                bgColor: block.bgColor,
+                                                                                textColor: block.textColor,
+                                                                                borderColor: block.borderColor,
+                                                                                iconUrl: block.iconUrl
+                                                                            }])];
+                                                                            newButtons[i] = { ...newButtons[i], textColor: e.target.value };
+                                                                            updateBlock(block.id, { buttons: newButtons });
+                                                                        }}
+                                                                        className="h-6 w-full cursor-pointer"
+                                                                    />
+                                                                </div>
+                                                                <div className="flex flex-col gap-1 flex-1">
+                                                                    <label className="text-[10px] font-bold">Border</label>
+                                                                    <input
+                                                                        type="color"
+                                                                        value={btn.borderColor || '#333333'}
+                                                                        onChange={e => {
+                                                                            const newButtons = [...(block.buttons || [{
+                                                                                text: block.linkText || block.content || 'Button',
+                                                                                url: block.linkUrl || '#',
+                                                                                bgColor: block.bgColor,
+                                                                                textColor: block.textColor,
+                                                                                borderColor: block.borderColor,
+                                                                                iconUrl: block.iconUrl
+                                                                            }])];
+                                                                            newButtons[i] = { ...newButtons[i], borderColor: e.target.value };
+                                                                            updateBlock(block.id, { buttons: newButtons });
+                                                                        }}
+                                                                        className="h-6 w-full cursor-pointer"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            onClick={() => {
+                                                                const newButtons = (block.buttons || [{
+                                                                    text: block.linkText || block.content || 'Button',
+                                                                    url: block.linkUrl || '#',
+                                                                    bgColor: block.bgColor,
+                                                                    textColor: block.textColor,
+                                                                    borderColor: block.borderColor,
+                                                                    iconUrl: block.iconUrl
+                                                                }]).filter((_, idx) => idx !== i);
+                                                                updateBlock(block.id, { buttons: newButtons });
+                                                            }}
+                                                            className="absolute top-1 right-1 text-red-500 hover:bg-red-50 p-1 rounded"
+                                                        >
+                                                            <Trash size={14} />
+                                                        </button>
+                                                    </div>
+                                                ))}
                                                 <RetroButton
-                                                    className="flex items-center gap-2"
-                                                    style={{
-                                                        backgroundColor: block.bgColor,
-                                                        color: block.textColor,
-                                                        borderColor: block.borderColor
+                                                    onClick={() => {
+                                                        const currentButtons = block.buttons || [{
+                                                            text: block.linkText || block.content || 'Button',
+                                                            url: block.linkUrl || '#',
+                                                            bgColor: block.bgColor,
+                                                            textColor: block.textColor,
+                                                            borderColor: block.borderColor,
+                                                            iconUrl: block.iconUrl
+                                                        }];
+                                                        updateBlock(block.id, {
+                                                            buttons: [...currentButtons, {
+                                                                text: 'New Button',
+                                                                url: '#',
+                                                                bgColor: '#ffffff',
+                                                                textColor: '#000000',
+                                                                borderColor: '#000000'
+                                                            }]
+                                                        });
                                                     }}
+                                                    className="text-xs w-full justify-center py-2 border-dashed"
                                                 >
-                                                    {block.iconUrl && <img src={block.iconUrl} alt="" className="w-4 h-4" />}
-                                                    {block.linkText || 'Button'}
+                                                    <Plus size={14} /> Add Button
                                                 </RetroButton>
                                             </div>
                                         </div>
@@ -587,8 +725,8 @@ export default function AdminPage() {
                             </RetroButton>
                         </div>
                     </div>
-                </RetroContainer>
-            </main>
+                </RetroContainer >
+            </main >
         );
     }
 

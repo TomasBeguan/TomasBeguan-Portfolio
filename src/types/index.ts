@@ -1,5 +1,14 @@
 export type BlockType = 'header' | 'text' | 'subtitle' | 'image' | 'grid' | 'link' | 'video' | 'model3d';
 
+export interface BlockButton {
+    text: string;
+    url: string;
+    bgColor?: string;
+    textColor?: string;
+    borderColor?: string;
+    iconUrl?: string;
+}
+
 export interface Block {
     id: string;
     type: BlockType;
@@ -15,6 +24,8 @@ export interface Block {
     borderColor?: string; // Border color for button
     iconUrl?: string; // Icon URL for button (e.g., favicon)
     textureUrl?: string; // For 3D models
+    buttons?: BlockButton[]; // For multiple buttons
+    noBorder?: boolean; // Option to remove border from images/grids
 }
 
 export interface Post {
@@ -35,4 +46,5 @@ export interface Post {
     active?: boolean; // Whether the post is active/visible (default: true)
     order?: number; // Custom sort order
     usePostBackgroundForCard?: boolean; // Use post background for card
+    textColor?: string; // Global text color for the post content
 }

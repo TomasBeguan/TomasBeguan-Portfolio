@@ -9,9 +9,10 @@ import { ImageModal } from "./ImageModal";
 
 interface BlockRendererProps {
     blocks: Block[];
+    textColor?: string;
 }
 
-export function BlockRenderer({ blocks }: BlockRendererProps) {
+export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
     const [selectedImage, setSelectedImage] = useState<{ url: string; alt?: string } | null>(null);
 
     const parseRichText = (text: string, linkColor?: string) => {
@@ -46,12 +47,12 @@ export function BlockRenderer({ blocks }: BlockRendererProps) {
 
     return (
         <>
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6" style={{ color: textColor }}>
                 {blocks.map((block) => {
                     switch (block.type) {
                         case 'header':
                             return (
-                                <h1 key={block.id} className="text-3xl md:text-4xl font-bold border-b-2 border-black pb-2 font-space-grotesk tracking-tight">
+                                <h1 key={block.id} className="text-3xl md:text-4xl font-bold border-b-2 border-black pb-2 font-space-grotesk tracking-tight" style={{ borderColor: textColor }}>
                                     {parseRichText(block.content, block.linkColor)}
                                 </h1>
                             );
@@ -69,7 +70,15 @@ export function BlockRenderer({ blocks }: BlockRendererProps) {
                             );
                         case 'image':
                             return (
-                                <div key={block.id} className="w-full border-2 border-black p-1 bg-white shadow-retro-sm cursor-zoom-in" onClick={() => setSelectedImage({ url: block.content, alt: block.altText })}>
+                                <div
+                                    key={block.id}
+                                    className={cn(
+                                        "w-full p-1 bg-white",
+                                        !block.noBorder && "border-2 border-black shadow-retro-sm cursor-zoom-in",
+                                        block.noBorder && "bg-transparent p-0"
+                                    )}
+                                    onClick={() => !block.noBorder && setSelectedImage({ url: block.content, alt: block.altText })}
+                                >
                                     <img src={block.content} alt={block.altText || "Project Image"} className="w-full h-auto pixelated" />
                                 </div>
                             );
@@ -100,33 +109,53 @@ export function BlockRenderer({ blocks }: BlockRendererProps) {
                             return (
                                 <div key={block.id} className={cn("grid gap-4", cols)}>
                                     {items.map((src, idx) => (
-                                        <div key={idx} className="border-2 border-black p-1 bg-white hover:shadow-retro-sm transition-shadow cursor-zoom-in" onClick={() => setSelectedImage({ url: src, alt: block.itemAlts?.[idx] })}>
-                                            <img src={src} alt={block.itemAlts?.[idx] || `Grid item ${idx}`} className="w-full h-auto pixelated" />
+                                        <div
+                                            key={idx}
+                                            className={cn(
+                                                "p-1 bg-white h-full",
+                                                !block.noBorder && "border-2 border-black hover:shadow-retro-sm transition-shadow cursor-zoom-in",
+                                                block.noBorder && "bg-transparent p-0"
+                                            )}
+                                            onClick={() => !block.noBorder && setSelectedImage({ url: src, alt: block.itemAlts?.[idx] })}
+                                        >
+                                            <img src={src} alt={block.itemAlts?.[idx] || `Grid item ${idx}`} className="w-full h-full object-cover pixelated" />
                                         </div>
                                     ))}
                                 </div>
                             );
                         case 'link':
+                            const buttons = block.buttons && block.buttons.length > 0 ? block.buttons : [{
+                                text: block.linkText || block.content || 'Button',
+                                url: block.linkUrl || '#',
+                                bgColor: block.bgColor,
+                                textColor: block.textColor,
+                                borderColor: block.borderColor,
+                                iconUrl: block.iconUrl
+                            }];
+
                             return (
-                                <div key={block.id} className="flex justify-center my-4">
-                                    <a
-                                        href={block.linkUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={cn(
-                                            "px-4 py-1 border-2 border-black bg-white shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-black active:text-white font-bold flex items-center gap-2",
-                                        )}
-                                        style={{
-                                            backgroundColor: block.bgColor,
-                                            color: block.textColor,
-                                            borderColor: block.borderColor
-                                        }}
-                                    >
-                                        {block.iconUrl && (
-                                            <img src={block.iconUrl} alt="icon" className="w-4 h-4" />
-                                        )}
-                                        {block.linkText || block.content}
-                                    </a>
+                                <div key={block.id} className="flex flex-wrap justify-center gap-4 my-4">
+                                    {buttons.map((btn, idx) => (
+                                        <a
+                                            key={idx}
+                                            href={btn.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={cn(
+                                                "px-4 py-1 border-2 border-black bg-white shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-black active:text-white font-bold flex items-center gap-2",
+                                            )}
+                                            style={{
+                                                backgroundColor: btn.bgColor,
+                                                color: btn.textColor,
+                                                borderColor: btn.borderColor
+                                            }}
+                                        >
+                                            {btn.iconUrl && (
+                                                <img src={btn.iconUrl} alt="icon" className="w-4 h-4" />
+                                            )}
+                                            {btn.text}
+                                        </a>
+                                    ))}
                                 </div>
                             );
                         default:

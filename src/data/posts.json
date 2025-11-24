@@ -175,29 +175,33 @@
         "linkUrl": "https://www.instagram.com/p/CVlh3Z_Jw8p/?img_index=1",
         "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/p/CVlh3Z_Jw8p/?img_index=1&sz=64",
         "bgColor": "#fcff5c",
-        "borderColor": "#0081fa"
-      },
-      {
-        "id": "1763970125591",
-        "type": "link",
-        "content": "",
-        "linkText": "IGNIS 🔥",
-        "linkUrl": "https://www.instagram.com/p/CVrM1ciMJdb/?img_index=1",
-        "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/p/CVrM1ciMJdb/?img_index=1&sz=64",
-        "bgColor": "#ff7b24",
-        "textColor": "#ffffff",
-        "borderColor": "#ffdd00"
-      },
-      {
-        "id": "1763970186237",
-        "type": "link",
-        "content": "",
-        "linkText": "OSSEUS 💀",
-        "linkUrl": "https://www.instagram.com/p/CVWLuDdpLDX/",
-        "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/p/CVWLuDdpLDX/&sz=64",
-        "bgColor": "#121212",
-        "textColor": "#ffffff",
-        "borderColor": "#6f10fe"
+        "borderColor": "#0081fa",
+        "buttons": [
+          {
+            "text": "HELIANTHUS 🌻",
+            "url": "https://www.instagram.com/p/CVlh3Z_Jw8p/?img_index=1",
+            "bgColor": "#121212",
+            "borderColor": "#faf200",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/p/CVlh3Z_Jw8p/?img_index=1&sz=64",
+            "textColor": "#ffffff"
+          },
+          {
+            "text": "IGNIS 🔥",
+            "url": "https://www.instagram.com/p/CVrM1ciMJdb/?img_index=1",
+            "bgColor": "#000000",
+            "textColor": "#ffffff",
+            "borderColor": "#ff7b00",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/p/CVrM1ciMJdb/?img_index=1&sz=64"
+          },
+          {
+            "text": "OSSEUS 💀",
+            "url": "https://www.instagram.com/p/CVWLuDdpLDX/",
+            "bgColor": "#121212",
+            "textColor": "#ffffff",
+            "borderColor": "#6f10fe",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/p/CVWLuDdpLDX/&sz=64"
+          }
+        ]
       }
     ],
     "cardBackgroundColor": "#1a1c23",
@@ -206,6 +210,85 @@
     "order": 2,
     "active": true,
     "usePostBackgroundForCard": false
+  },
+  {
+    "id": "1763971928765",
+    "title": "Galactic Ganger",
+    "date": "2023-07-24",
+    "thumbnail": "/uploads/1763972003749-6f484121-36f0-4ab0-abaf-357d65e67bd0_rwc_0x0x644x644x644.webp",
+    "blocks": [
+      {
+        "id": "1763973115622",
+        "type": "subtitle",
+        "content": "Galactic Ganger is a prototype multiplayer arena pvp game.\nDeveloped in Unreal Engine 5."
+      },
+      {
+        "id": "1763971941975",
+        "type": "image",
+        "content": "/uploads/1763971946993-f4b79289-0176-4a72-8fdc-853e5b2a9484_rw_1200.webp",
+        "altText": "",
+        "noBorder": true
+      },
+      {
+        "id": "1763972075754",
+        "type": "image",
+        "content": "/uploads/1763972078831-f69365cb-344b-42b6-902b-d1b7ffde99d3_rw_1920.gif",
+        "noBorder": true
+      },
+      {
+        "id": "1763972081552",
+        "type": "image",
+        "content": "/uploads/1763972086922-KPP_WG.webp"
+      },
+      {
+        "id": "1763972091381",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1763972095272-1610a7d3-d812-4a19-8667-8997f8a43b4e_rw_1200.webp",
+          "/uploads/1763972098992-16cfdddc-a461-44e4-bcd2-4149e30077ef_rw_1200.webp"
+        ],
+        "itemAlts": [
+          "",
+          ""
+        ],
+        "noBorder": true
+      },
+      {
+        "id": "1763972100340",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1763972103589-bc622615-576a-4d91-91ef-cea2bb627c3c_rw_1200.webp",
+          "/uploads/1763972106431-5df79adc-21ef-42d7-96c7-ebdaf4357a43_rw_1200.webp"
+        ],
+        "itemAlts": [
+          "",
+          ""
+        ],
+        "noBorder": true
+      },
+      {
+        "id": "1763972187680",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "Download on Itch.io",
+            "url": "https://tomasbeguan.itch.io/galacticganger",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://tomasbeguan.itch.io/galacticganger&sz=64",
+            "textColor": "#292929"
+          }
+        ]
+      }
+    ],
+    "order": 3,
+    "active": true,
+    "cardBackgroundColor": "#222222",
+    "cardTextColor": "#ffffff",
+    "backgroundColor": "#222222",
+    "category": "Animación 3D",
+    "textColor": "#ffffff"
   },
   {
     "id": "1",
@@ -244,7 +327,7 @@
       }
     ],
     "active": true,
-    "order": 3
+    "order": 4
   },
   {
     "id": "2",
@@ -269,7 +352,7 @@
       }
     ],
     "active": true,
-    "order": 4
+    "order": 5
   },
   {
     "id": "1763786411061",
@@ -294,7 +377,7 @@
       }
     ],
     "active": true,
-    "order": 5
+    "order": 6
   },
   {
     "id": "1763787261278",
@@ -337,7 +420,7 @@
       }
     ],
     "active": true,
-    "order": 6
+    "order": 7
   },
   {
     "id": "1763869828054",
@@ -391,7 +474,7 @@
     "category": "Dibujo",
     "backgroundBlendMode": "overlay",
     "active": false,
-    "order": 7
+    "order": 8
   },
   {
     "id": "1763924064027",
@@ -416,7 +499,7 @@
     "backgroundBlendMode": "multiply",
     "cardTextColor": "#ffffff",
     "active": true,
-    "order": 8
+    "order": 9
   },
   {
     "id": "1763947110404",
@@ -448,6 +531,6 @@
     ],
     "category": "Textura",
     "active": true,
-    "order": 9
+    "order": 10
   }
 ]
