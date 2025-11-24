@@ -33,4 +33,6 @@ export interface Post {
     cardTextColor?: string;
     category?: string;
     active?: boolean; // Whether the post is active/visible (default: true)
+    order?: number; // Custom sort order
+    usePostBackgroundForCard?: boolean; // Use post background for card
 }

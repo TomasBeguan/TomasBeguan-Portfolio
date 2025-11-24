@@ -29,9 +29,9 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                             {/* Background Layers */}
                             <div
                                 className="absolute inset-0 z-0"
-                                style={{ backgroundColor: post.backgroundColor || 'var(--card-bg, #f9fafb)' }}
+                                style={{ backgroundColor: post.usePostBackgroundForCard ? (post.backgroundColor || 'var(--card-bg, #f9fafb)') : (post.cardBackgroundColor || 'var(--card-bg, #f9fafb)') }}
                             />
-                            {post.backgroundImage && (
+                            {post.usePostBackgroundForCard && post.backgroundImage && (
                                 <div
                                     className="absolute inset-0 z-0 pointer-events-none"
                                     style={{
@@ -47,7 +47,7 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
 
                             {/* Content */}
                             <div className="relative z-10 flex flex-col h-full">
-                                <div className="aspect-video border border-black dark:border-white bg-gray-200 dark:bg-gray-800 flex items-center justify-center mb-2 group-hover:bg-white dark:group-hover:bg-gray-700 transition-colors overflow-hidden relative">
+                                <div className="aspect-video border border-black dark:border-white flex items-center justify-center mb-2 transition-colors overflow-hidden relative">
                                     {post.thumbnail ? (
                                         <img src={post.thumbnail} alt={post.title} className="w-full h-full object-cover pixelated" />
                                     ) : (

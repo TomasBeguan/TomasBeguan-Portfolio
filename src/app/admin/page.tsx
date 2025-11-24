@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { RetroContainer } from "@/components/RetroContainer";
 import { RetroButton } from "@/components/RetroButton";
 import { Block, Post, BlockType } from "@/types";
-import { Plus, Trash, ArrowUp, ArrowDown, Save, LogOut } from "lucide-react";
+import { Plus, Trash, ArrowUp, ArrowDown, Save, LogOut, Eye, EyeOff } from "lucide-react";
 import { ImageUploader } from "@/components/Admin/ImageUploader";
 
 export default function AdminPage() {
@@ -66,6 +66,34 @@ export default function AdminPage() {
         } else {
             alert('Error updating post status');
             // Revert optimistic update on error
+            fetch('/api/posts').then(res => res.json()).then(data => setPosts(data));
+        }
+    };
+
+    const handleMovePost = async (index: number, direction: 'up' | 'down') => {
+        if (direction === 'up' && index === 0) return;
+        if (direction === 'down' && index === posts.length - 1) return;
+
+        const newPosts = [...posts];
+        const targetIndex = direction === 'up' ? index - 1 : index + 1;
+
+        // Swap
+        [newPosts[index], newPosts[targetIndex]] = [newPosts[targetIndex], newPosts[index]];
+
+        // Optimistic update
+        setPosts(newPosts);
+
+        // Send new order to server
+        const orderedIds = newPosts.map(p => p.id);
+        const res = await fetch('/api/posts/reorder', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderedIds })
+        });
+
+        if (!res.ok) {
+            alert('Error reordering posts');
+            // Revert
             fetch('/api/posts').then(res => res.json()).then(data => setPosts(data));
         }
     };
@@ -171,7 +199,17 @@ export default function AdminPage() {
                                                     value={editingPost.cardBackgroundColor || '#f9fafb'}
                                                     onChange={e => setEditingPost({ ...editingPost, cardBackgroundColor: e.target.value })}
                                                     className="h-8 w-12 cursor-pointer border border-black"
+                                                    disabled={editingPost.usePostBackgroundForCard}
                                                 />
+                                                <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={editingPost.usePostBackgroundForCard || false}
+                                                        onChange={e => setEditingPost({ ...editingPost, usePostBackgroundForCard: e.target.checked })}
+                                                        className="accent-black"
+                                                    />
+                                                    Use Post Background
+                                                </label>
                                             </div>
                                         </div>
                                         <div className="flex flex-col gap-1">
@@ -565,9 +603,37 @@ export default function AdminPage() {
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                    {posts.map(post => (
-                        <div key={post.id} className="border border-black p-2 flex justify-between items-center hover:bg-gray-100 cursor-pointer" onClick={() => setEditingPost(post)}>
-                            <span className="font-bold">{post.title}</span>
+                    {posts.map((post, index) => (
+                        <div key={post.id} className={`border border-black p-2 flex justify-between items-center hover:bg-gray-100 cursor-pointer ${!post.active ? 'opacity-50 bg-gray-50' : ''}`} onClick={() => setEditingPost(post)}>
+                            <div className="flex items-center gap-2">
+                                <div className="flex flex-col mr-2" onClick={(e) => e.stopPropagation()}>
+                                    <button
+                                        onClick={() => handleMovePost(index, 'up')}
+                                        disabled={index === 0}
+                                        className="text-gray-500 hover:text-black disabled:opacity-20"
+                                    >
+                                        <ArrowUp size={12} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleMovePost(index, 'down')}
+                                        disabled={index === posts.length - 1}
+                                        className="text-gray-500 hover:text-black disabled:opacity-20"
+                                    >
+                                        <ArrowDown size={12} />
+                                    </button>
+                                </div>
+                                <button
+                                    onClick={(e) => handleToggleActive(post, e)}
+                                    className="p-1 hover:bg-gray-200 rounded"
+                                    title={post.active ? "Deactivate" : "Activate"}
+                                >
+                                    {post.active ? <Eye size={16} /> : <EyeOff size={16} />}
+                                </button>
+                                {post.thumbnail && (
+                                    <img src={post.thumbnail} alt="" className="w-10 h-10 object-cover border border-black" />
+                                )}
+                                <span className="font-bold">{post.title}</span>
+                            </div>
                             <span className="text-xs text-gray-500">{post.date}</span>
                         </div>
                     ))}

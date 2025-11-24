@@ -21,7 +21,9 @@ async function getPosts(): Promise<Post[]> {
 export default async function PortfolioPage() {
     const posts = await getPosts();
     // Filter to only show active posts
-    const activePosts = posts.filter(post => post.active !== false);
+    const activePosts = posts
+        .filter(post => post.active !== false)
+        .sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
 
     return (
         <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">

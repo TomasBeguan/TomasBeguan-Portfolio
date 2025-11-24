@@ -1,4 +1,8 @@
 export async function compressImage(file: File, maxWidth: number = 1920): Promise<File> {
+    if (file.type === 'image/gif') {
+        return file;
+    }
+
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);

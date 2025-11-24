@@ -8,7 +8,9 @@ const dataFilePath = path.join(process.cwd(), 'src/data/posts.json');
 export async function GET() {
     try {
         const fileContents = fs.readFileSync(dataFilePath, 'utf8');
-        const posts = JSON.parse(fileContents);
+        const posts: Post[] = JSON.parse(fileContents);
+        // Sort by order, fallback to 0 (or large number to put at end)
+        posts.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
         return NextResponse.json(posts);
     } catch (error) {
         return NextResponse.json({ error: 'Failed to load posts' }, { status: 500 });
@@ -26,6 +28,9 @@ export async function POST(request: Request) {
         if (index !== -1) {
             posts[index] = newPost;
         } else {
+            // New post: add to end
+            const maxOrder = Math.max(...posts.map(p => p.order ?? 0), 0);
+            newPost.order = maxOrder + 1;
             posts.push(newPost);
         }
 
