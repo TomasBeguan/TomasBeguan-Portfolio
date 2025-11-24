@@ -197,5 +197,35 @@
     "backgroundImage": "/uploads/1763924088314-Gm73vn3bYAAsysm.jpg",
     "backgroundBlendMode": "multiply",
     "cardTextColor": "#ffffff"
+  },
+  {
+    "id": "1763947110404",
+    "title": "Prueba de compresión",
+    "date": "2025-11-24",
+    "thumbnail": "/uploads/1763947138830-DSC_0276.webp",
+    "blocks": [
+      {
+        "id": "1763947148241",
+        "type": "image",
+        "content": "/uploads/1763947152406-DSC_0152.webp",
+        "altText": "El Peke"
+      },
+      {
+        "id": "1763947154726",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1763947158035-DSC_0180.webp",
+          "/uploads/1763947164935-DSC_0386.webp",
+          "/uploads/1763947169789-DSC_0139.webp"
+        ],
+        "itemAlts": [
+          "Pajarito 1",
+          "Nubes por mi Abuelo",
+          "Pajaritos 2"
+        ]
+      }
+    ],
+    "category": "Textura"
   }
 ]

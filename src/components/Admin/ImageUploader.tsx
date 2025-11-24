@@ -3,24 +3,30 @@
 import { useState } from "react";
 import { RetroButton } from "@/components/RetroButton";
 import { Upload, Loader2 } from "lucide-react";
+import { compressImage } from "@/lib/imageCompression";
 
 interface ImageUploaderProps {
     onUpload: (url: string) => void;
     currentValue?: string;
+    maxWidth?: number;
 }
 
-export function ImageUploader({ onUpload, currentValue }: ImageUploaderProps) {
+export function ImageUploader({ onUpload, currentValue, maxWidth }: ImageUploaderProps) {
     const [uploading, setUploading] = useState(false);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
+        const originalFile = e.target.files?.[0];
+        if (!originalFile) return;
 
         setUploading(true);
-        const formData = new FormData();
-        formData.append('file', file);
 
         try {
+            // Compress image before upload
+            const file = await compressImage(originalFile, maxWidth);
+
+            const formData = new FormData();
+            formData.append('file', file);
+
             const res = await fetch('/api/upload', {
                 method: 'POST',
                 body: formData
@@ -34,7 +40,7 @@ export function ImageUploader({ onUpload, currentValue }: ImageUploaderProps) {
             }
         } catch (error) {
             console.error(error);
-            alert('Error uploading');
+            alert('Error uploading or compressing');
         } finally {
             setUploading(false);
         }

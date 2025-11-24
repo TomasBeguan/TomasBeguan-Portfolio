@@ -13,7 +13,7 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose }: ImageModalPro
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={onClose}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.8)] p-4" onClick={onClose}>
             <div className="relative max-w-5xl w-fit max-h-[90vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
                 {/* Close Button - Desktop (Outside Right) */}
                 <div className="hidden sm:block absolute left-full top-0 ml-2 pointer-events-auto z-50">

@@ -131,6 +131,7 @@ export default function AdminPage() {
                             <ImageUploader
                                 currentValue={editingPost.thumbnail}
                                 onUpload={(url) => setEditingPost({ ...editingPost, thumbnail: url })}
+                                maxWidth={500}
                             />
 
                             <div className="border-t-2 border-black pt-4 mt-2">
