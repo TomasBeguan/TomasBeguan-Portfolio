@@ -1,12 +1,24 @@
 import { RetroWindow } from "@/components/RetroWindow";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
-import postsData from "@/data/posts.json";
 import { Post } from "@/types";
+import fs from 'fs';
+import path from 'path';
 
-// Cast the imported JSON to the Post type to avoid type errors if strict
-const posts: Post[] = postsData as Post[];
+// Force dynamic rendering to always get fresh data
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-export default function Home() {
+async function getPosts(): Promise<Post[]> {
+    const filePath = path.join(process.cwd(), 'src/data/posts.json');
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(fileContents);
+}
+
+export default async function Home() {
+    const posts = await getPosts();
+    // Filter to only show active posts (posts without 'active' field are considered active by default)
+    const activePosts = posts.filter(post => post.active !== false);
+
     return (
         <main className="fixed inset-0 w-full h-full overflow-hidden flex flex-col items-center justify-center p-2 sm:p-4 pt-12 sm:pt-24">
             {/* Title Section */}
@@ -21,7 +33,7 @@ export default function Home() {
 
             {/* Mac OS Window with Portfolio Feed */}
             <RetroWindow className="z-10 w-full max-w-5xl flex-1 min-h-0 mb-8 sm:mb-12 flex flex-col">
-                <PortfolioGrid posts={posts} />
+                <PortfolioGrid posts={activePosts} />
             </RetroWindow>
 
             {/* Cursor Graphic (Decorative) */}

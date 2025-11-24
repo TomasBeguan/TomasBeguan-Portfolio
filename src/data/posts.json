@@ -125,7 +125,7 @@
   },
   {
     "id": "1763869828054",
-    "title": "HUI LINDA HERMOSA",
+    "title": "CUMPLE HUI",
     "date": "2013-05-07",
     "thumbnail": "/uploads/1763869868408-06.jpg",
     "blocks": [
@@ -173,7 +173,8 @@
     "cardBackgroundColor": "#9934fe",
     "cardTextColor": "#333333",
     "category": "Dibujo",
-    "backgroundBlendMode": "overlay"
+    "backgroundBlendMode": "overlay",
+    "active": false
   },
   {
     "id": "1763924064027",

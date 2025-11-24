@@ -32,4 +32,5 @@ export interface Post {
     cardBackgroundColor?: string;
     cardTextColor?: string;
     category?: string;
+    active?: boolean; // Whether the post is active/visible (default: true)
 }

@@ -46,6 +46,31 @@ export default function AdminPage() {
         setEditingPost(newPost);
     };
 
+    const handleToggleActive = async (post: Post, e: React.MouseEvent) => {
+        e.stopPropagation();
+
+        // Optimistic update - immediately update UI
+        const updatedPost = { ...post, active: !post.active };
+        setPosts(posts.map(p => p.id === post.id ? updatedPost : p));
+
+        // Then update server
+        const res = await fetch('/api/posts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedPost)
+        });
+
+        if (res.ok) {
+            // Refresh list to ensure sync with server
+            fetch('/api/posts').then(res => res.json()).then(data => setPosts(data));
+        } else {
+            alert('Error updating post status');
+            // Revert optimistic update on error
+            fetch('/api/posts').then(res => res.json()).then(data => setPosts(data));
+        }
+    };
+
+
     const handleSavePost = async () => {
         if (!editingPost) return;
 
