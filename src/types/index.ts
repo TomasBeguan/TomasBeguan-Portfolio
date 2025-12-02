@@ -14,6 +14,8 @@ export interface Block {
     type: BlockType;
     content: string; // Text content or Image URL
     altText?: string; // Alt text for image blocks
+    width?: number; // Image width
+    height?: number; // Image height
     items?: string[]; // For grids (array of image URLs)
     itemAlts?: string[]; // Alt text for grid items
     linkUrl?: string; // For link blocks
@@ -33,6 +35,8 @@ export interface Post {
     title: string;
     date: string;
     thumbnail: string;
+    thumbnailWidth?: number;
+    thumbnailHeight?: number;
     blocks: Block[];
     backgroundColor?: string;
     backgroundImage?: string;

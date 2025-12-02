@@ -1,6 +1,7 @@
 import { Post } from "@/types";
 import { Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
+import { ImageWithLoader } from "./ImageWithLoader";
 
 interface PortfolioGridProps {
     posts: Post[];
@@ -49,7 +50,12 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                             <div className="relative z-10 flex flex-col h-full">
                                 <div className="aspect-square border border-black dark:border-white flex items-center justify-center mb-2 transition-colors overflow-hidden relative">
                                     {post.thumbnail ? (
-                                        <img src={post.thumbnail} alt={post.title} className="w-full h-full object-cover pixelated" />
+                                        <ImageWithLoader
+                                            src={post.thumbnail}
+                                            alt={post.title}
+                                            className="w-full h-full object-cover pixelated"
+                                            containerClassName="w-full h-full"
+                                        />
                                     ) : (
                                         <ImageIcon size={48} className="text-gray-400 group-hover:text-black dark:text-gray-500 dark:group-hover:text-white" />
                                     )}

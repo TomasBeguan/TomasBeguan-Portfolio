@@ -183,7 +183,12 @@ export default function AdminPage() {
                             <label className="font-bold">Thumbnail</label>
                             <ImageUploader
                                 currentValue={editingPost.thumbnail}
-                                onUpload={(url) => setEditingPost({ ...editingPost, thumbnail: url })}
+                                onUpload={(url, width, height) => setEditingPost({
+                                    ...editingPost,
+                                    thumbnail: url,
+                                    thumbnailWidth: width,
+                                    thumbnailHeight: height
+                                })}
                                 maxWidth={500}
                             />
 
@@ -444,7 +449,11 @@ export default function AdminPage() {
                                             <label className="text-xs font-bold">Image URL</label>
                                             <ImageUploader
                                                 currentValue={block.content}
-                                                onUpload={(url) => updateBlock(block.id, { content: url })}
+                                                onUpload={(url, width, height) => updateBlock(block.id, {
+                                                    content: url,
+                                                    width,
+                                                    height
+                                                })}
                                             />
                                             <label className="text-xs font-bold mt-2">Alt Text (Caption)</label>
                                             <input

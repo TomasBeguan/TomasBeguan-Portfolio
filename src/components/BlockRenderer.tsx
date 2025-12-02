@@ -5,6 +5,7 @@ import { Block } from "@/types";
 import { RetroButton } from "./RetroButton";
 import { cn } from "@/lib/utils";
 import { ImageModal } from "./ImageModal";
+import { ImageWithLoader } from "./ImageWithLoader";
 
 
 interface BlockRendererProps {
@@ -79,7 +80,13 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                     )}
                                     onClick={() => !block.noBorder && setSelectedImage({ url: block.content, alt: block.altText })}
                                 >
-                                    <img src={block.content} alt={block.altText || "Project Image"} className="w-full h-auto pixelated" />
+                                    <ImageWithLoader
+                                        src={block.content}
+                                        alt={block.altText || "Project Image"}
+                                        width={block.width}
+                                        height={block.height}
+                                        className="w-full h-auto pixelated"
+                                    />
                                 </div>
                             );
                         case 'video':
@@ -118,7 +125,11 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                             )}
                                             onClick={() => !block.noBorder && setSelectedImage({ url: src, alt: block.itemAlts?.[idx] })}
                                         >
-                                            <img src={src} alt={block.itemAlts?.[idx] || `Grid item ${idx}`} className="w-full h-full object-cover pixelated" />
+                                            <ImageWithLoader
+                                                src={src}
+                                                alt={block.itemAlts?.[idx] || `Grid item ${idx}`}
+                                                className="w-full h-full object-cover pixelated"
+                                            />
                                         </div>
                                     ))}
                                 </div>

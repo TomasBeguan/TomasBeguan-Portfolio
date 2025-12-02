@@ -204,7 +204,7 @@
         ]
       }
     ],
-    "cardBackgroundColor": "#1a1c23",
+    "cardBackgroundColor": "#1e1f25",
     "cardTextColor": "#ffffff",
     "category": "Animación 3D",
     "order": 2,
@@ -532,5 +532,30 @@
     "category": "Textura",
     "active": true,
     "order": 10
+  },
+  {
+    "id": "1764701259239",
+    "title": "Prueba imagen loader",
+    "date": "2025-12-02",
+    "thumbnail": "/uploads/1764701274655-Daco_4056279.webp",
+    "blocks": [
+      {
+        "id": "1764701277894",
+        "type": "image",
+        "content": "/uploads/1764701281703-GbLimq_bwAARd7G.webp",
+        "width": 474,
+        "height": 463
+      },
+      {
+        "id": "1764701284953",
+        "type": "image",
+        "content": "/uploads/1764701294842-pola.webp",
+        "width": 2496,
+        "height": 3849
+      }
+    ],
+    "thumbnailWidth": 656,
+    "thumbnailHeight": 414,
+    "order": 11
   }
 ]

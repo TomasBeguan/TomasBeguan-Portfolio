@@ -6,7 +6,7 @@ import { Upload, Loader2 } from "lucide-react";
 import { compressImage } from "@/lib/imageCompression";
 
 interface ImageUploaderProps {
-    onUpload: (url: string) => void;
+    onUpload: (url: string, width?: number, height?: number) => void;
     currentValue?: string;
     maxWidth?: number;
 }
@@ -21,6 +21,14 @@ export function ImageUploader({ onUpload, currentValue, maxWidth }: ImageUploade
         setUploading(true);
 
         try {
+            // Get dimensions
+            const img = new Image();
+            img.src = URL.createObjectURL(originalFile);
+            await new Promise((resolve) => {
+                img.onload = resolve;
+            });
+            const { naturalWidth, naturalHeight } = img;
+
             // Compress image before upload
             const file = await compressImage(originalFile, maxWidth);
 
@@ -34,7 +42,7 @@ export function ImageUploader({ onUpload, currentValue, maxWidth }: ImageUploade
 
             if (res.ok) {
                 const data = await res.json();
-                onUpload(data.url);
+                onUpload(data.url, naturalWidth, naturalHeight);
             } else {
                 alert('Upload failed');
             }
