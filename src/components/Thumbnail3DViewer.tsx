@@ -218,7 +218,7 @@ export function Thumbnail3DViewer({ url, className }: Thumbnail3DViewerProps) {
                         <ambientLight intensity={0.5} />
                         <directionalLight position={[10, 10, 5]} intensity={2} castShadow />
                         <Stage environment="city" intensity={0.2} adjustCamera={1.2} shadows={false}>
-                            <ThumbnailModel url={url} isVisible={isVisible} track={containerRef} />
+                            <ThumbnailModel url={url} isVisible={isVisible} />
                             <ScissorController track={containerRef} />
                         </Stage>
                     </Suspense>
