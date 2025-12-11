@@ -18,8 +18,8 @@ export const GlobalCanvas = () => {
                 position: 'fixed',
                 top: 0,
                 left: 0,
-                width: '100%',
-                height: '100%',
+                width: '100vw',
+                height: '100dvh', // Use dynamic viewport height to track mobile URL bar
                 pointerEvents: 'none',
                 background: 'transparent',
                 zIndex: 20

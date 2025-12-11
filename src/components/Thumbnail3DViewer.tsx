@@ -10,12 +10,15 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
     const { gl, scene } = useThree();
 
     useEffect(() => {
+        // Mobile Layout Change: Native Scroll.
+        // We disable strict clipping on mobile because the page scrolls naturally, so no internal container clipping is needed.
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) return;
+
         // onBeforeRender runs synchronously right before drawing starts
-        // This defeats the race condition with Drei View's internal useFrame loop
         scene.onBeforeRender = () => {
             const el = track.current;
             if (!el) {
-                gl.setScissorTest(false); // Disable scissor if track.current is null
+                gl.setScissorTest(false);
                 return;
             }
 
@@ -24,14 +27,13 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
             const scrollContainer = el.closest('.retro-scrollbar');
 
             if (!scrollContainer) {
-                // Reset/Default behavior if no scroll container? 
-                // If View sets it, we might leave it. But we want strict behavior.
-                gl.setScissorTest(false); // Disable scissor if no scroll container
+                gl.setScissorTest(false);
                 return;
             }
 
             const scrollRect = scrollContainer.getBoundingClientRect();
 
+            // Intersection (clipping window)
             const top = Math.max(rect.top, scrollRect.top);
             const bottom = Math.min(rect.bottom, scrollRect.bottom);
             const left = Math.max(rect.left, scrollRect.left);
@@ -40,9 +42,13 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
             const width = Math.max(0, right - left);
             const height = Math.max(0, bottom - top);
 
-            const windowHeight = window.innerHeight;
-            const scissorBottom = (windowHeight - bottom) * pixelRatio;
-            const scissorLeft = left * pixelRatio;
+            // Universal Scissor Logic
+            // We rely on GlobalCanvas having height: 100dvh to track the mobile viewport correctly.
+            // This means canvasRect.bottom should always match the visual viewport bottom.
+            const canvasRect = gl.domElement.getBoundingClientRect();
+            const scissorBottom = (canvasRect.bottom - bottom) * pixelRatio;
+
+            const scissorLeft = (left - canvasRect.left) * pixelRatio;
             const scissorWidth = width * pixelRatio;
             const scissorHeight = height * pixelRatio;
 
@@ -70,6 +76,8 @@ interface ThumbnailModelProps {
 function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
     const { scene } = useGLTF(url);
     const ref = useRef<THREE.Group>(null);
+
+    const inputRef = useRef({ rotX: 0, rotY: 0 }); // Stores Mouse (Desktop) or Gyro (Mobile) target
     const [isMobile, setIsMobile] = useState(false);
 
 
@@ -86,28 +94,30 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
     useFrame((state) => {
         if (!ref.current || !isVisible) return;
 
-        if (isMobile) {
-            // Mobile logic (gyroscope handled in useEffect below)
-        } else {
-            // Desktop Logic
-
-            // 1. Constant Wiggle (Reduced vertical movement)
-            // Rotate back and forth on Y axis
+        if (ref.current) {
+            // 1. Common Wiggle (Apply to both Desktop and Mobile)
+            // Reduced vertical movement for subtle "alive" feel
             const wiggleRotY = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-            // Slight floating on Y axis (Reduced to 0.02 for extremely subtle movement)
             const wigglePosY = Math.sin(state.clock.elapsedTime * 1) * 0.02;
 
-            // 2. Mouse Interaction
-            // state.pointer.x/y are normalized (-1 to 1)
-            // We want the model to look at the mouse
-            const mouseRotY = state.pointer.x * 0.5; // Rotate 0.5 rad max based on X
-            const mouseRotX = -state.pointer.y * 0.5; // Rotate 0.5 rad max based on Y
+            let targetRotX = 0;
+            let targetRotY = 0;
+
+            if (isMobile) {
+                // Mobile Input: Gyroscope (from Ref)
+                targetRotX = inputRef.current.rotX;
+                targetRotY = inputRef.current.rotY;
+            } else {
+                // Desktop Input: Mouse
+                // state.pointer.x/y are normalized (-1 to 1)
+                targetRotY = state.pointer.x * 0.5; // Rotate 0.5 rad max based on X
+                targetRotX = -state.pointer.y * 0.5; // Rotate 0.5 rad max based on Y
+            }
 
             // Combine animations
-            // Smoothly interpolate current rotation to target
-            // Target = Wiggle + Mouse
-            ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, wiggleRotY + mouseRotY, 0.2);
-            ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, mouseRotX, 0.2);
+            // Smoothly interpolate current rotation to target (Input + Wiggle)
+            ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, targetRotY + wiggleRotY, 0.1);
+            ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, targetRotX, 0.1);
 
             ref.current.position.y = wigglePosY;
         }
@@ -128,8 +138,8 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
                 const rotY = THREE.MathUtils.degToRad(gamma) * 0.5;
                 const rotX = THREE.MathUtils.degToRad(beta - 45) * 0.3; // Subtract 45 to account for holding phone at angle
 
-                ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, rotY, 0.1);
-                ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, rotX, 0.1);
+                // Update input ref instead of direct mutation
+                inputRef.current = { rotX, rotY };
             }
         };
 
@@ -208,7 +218,7 @@ export function Thumbnail3DViewer({ url, className }: Thumbnail3DViewerProps) {
                         <ambientLight intensity={0.5} />
                         <directionalLight position={[10, 10, 5]} intensity={2} castShadow />
                         <Stage environment="city" intensity={0.2} adjustCamera={1.2} shadows={false}>
-                            <ThumbnailModel url={url} isVisible={isVisible} />
+                            <ThumbnailModel url={url} isVisible={isVisible} track={containerRef} />
                             <ScissorController track={containerRef} />
                         </Stage>
                     </Suspense>

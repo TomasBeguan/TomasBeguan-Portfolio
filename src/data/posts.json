@@ -20,7 +20,8 @@
     "order": 0,
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#ffffff",
-    "thumbnail3dBackgroundColor": "#ff3838"
+    "thumbnail3dBackgroundColor": "#ff3838",
+    "active": true
   },
   {
     "id": "1763960726758",
@@ -610,7 +611,7 @@
     "thumbnailHeight": 1080,
     "category": "Modelado",
     "order": 13,
-    "active": true,
+    "active": false,
     "slug": "prueba-de-modelo-3d"
   },
   {
@@ -622,7 +623,8 @@
     "blocks": [],
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
-    "order": 14
+    "order": 14,
+    "active": false
   },
   {
     "id": "1765409894695",
@@ -632,6 +634,7 @@
     "thumbnail": "",
     "blocks": [],
     "thumbnailModel": "/uploads/1765412829156-Lucas_web2.glb",
-    "order": 15
+    "order": 15,
+    "active": false
   }
 ]
