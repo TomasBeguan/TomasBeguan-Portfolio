@@ -1,5 +1,7 @@
 import { RetroWindow } from "@/components/RetroWindow";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
+import { GlobalCanvas } from "@/components/GlobalCanvas";
+
 import { Post } from "@/types";
 import fs from 'fs';
 import path from 'path';
@@ -32,7 +34,7 @@ export default async function Home() {
             </div>
 
             {/* Mac OS Window with Portfolio Feed */}
-            <RetroWindow className="z-10 w-full max-w-5xl flex-1 min-h-0 mb-8 sm:mb-12 flex flex-col">
+            <RetroWindow className="w-full max-w-5xl flex-1 min-h-0 mb-8 sm:mb-12 flex flex-col">
                 <PortfolioGrid posts={activePosts} />
             </RetroWindow>
 
@@ -42,6 +44,8 @@ export default async function Home() {
                     <path d="M9.5 2L2 28L8.5 26.5L11.5 38L16.5 36.5L13.5 25.5L20 24L9.5 2Z" fill="white" stroke="var(--main-color)" strokeWidth="2" />
                 </svg>
             </div>
+
+            <GlobalCanvas />
         </main>
     );
 }

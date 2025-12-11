@@ -1,4 +1,7 @@
-import React from 'react';
+"use client";
+
+import React, { useRef } from 'react';
+
 
 interface RetroWindowProps {
     title?: string;
@@ -7,10 +10,12 @@ interface RetroWindowProps {
 }
 
 export const RetroWindow = ({ title = "My Stuff", children, className = "" }: RetroWindowProps) => {
+    const scrollRef = useRef<HTMLDivElement>(null);
+
     return (
         <div className={`w-full max-w-4xl bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-retro dark:shadow-[4px_4px_0px_0px_#ffffff] relative transition-colors duration-300 ${className}`}>
             {/* Window Title Bar */}
-            <div className="w-full bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white px-2 py-1 flex items-center justify-center relative h-12 transition-colors duration-300">
+            <div className="w-full bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white px-2 py-1 flex items-center justify-center relative z-30 h-12 transition-colors duration-300">
                 {/* Close Box */}
 
 
@@ -30,8 +35,10 @@ export const RetroWindow = ({ title = "My Stuff", children, className = "" }: Re
                 </div>
             </div>
 
+
+
             {/* Window Content */}
-            <div className="flex-1 min-h-0 overflow-y-auto retro-scrollbar bg-white dark:bg-retro-dark-blue p-0 relative transition-colors duration-300">
+            <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto retro-scrollbar bg-white dark:bg-retro-dark-blue p-0 relative z-10 transition-colors duration-300">
                 {children}
             </div>
 

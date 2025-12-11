@@ -1,4 +1,4 @@
-export async function compressImage(file: File, maxWidth: number = 1920): Promise<File> {
+export async function compressImage(file: File, maxWidth: number = 1920, quality: number = 0.8): Promise<File> {
     if (file.type === 'image/gif') {
         return file;
     }
@@ -58,7 +58,7 @@ export async function compressImage(file: File, maxWidth: number = 1920): Promis
                         resolve(compressedFile);
                     },
                     'image/webp',
-                    0.8 // Quality (0.0 - 1.0)
+                    quality // Quality (0.0 - 1.0)
                 );
             };
             img.onerror = (error) => reject(error);

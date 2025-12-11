@@ -33,10 +33,12 @@ export interface Block {
 export interface Post {
     id: string;
     title: string;
+    slug?: string;
     date: string;
     thumbnail: string;
     thumbnailWidth?: number;
     thumbnailHeight?: number;
+    thumbnailModel?: string; // URL for 3D model thumbnail
     blocks: Block[];
     backgroundColor?: string;
     backgroundImage?: string;
@@ -51,4 +53,5 @@ export interface Post {
     order?: number; // Custom sort order
     usePostBackgroundForCard?: boolean; // Use post background for card
     textColor?: string; // Global text color for the post content
+    thumbnail3dBackgroundColor?: string; // Background color specifically for 3D thumbnail container
 }

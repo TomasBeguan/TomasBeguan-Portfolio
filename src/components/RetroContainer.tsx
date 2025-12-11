@@ -78,7 +78,7 @@ export function RetroContainer({
                 )}
             >
                 {/* Title Bar */}
-                <div className="w-full bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white px-2 py-1 flex items-center justify-center relative h-12 shrink-0 select-none transition-colors duration-300">
+                <div className="w-full bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white px-2 py-1 flex items-center justify-center relative z-20 h-12 shrink-0 select-none transition-colors duration-300">
                     {/* Back Button (Absolute Left) */}
                     <div className="absolute left-2 z-10 h-8 top-1/2 -translate-y-1/2">
                         <RetroButton

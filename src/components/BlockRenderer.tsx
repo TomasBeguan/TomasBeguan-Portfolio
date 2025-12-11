@@ -6,6 +6,7 @@ import { RetroButton } from "./RetroButton";
 import { cn } from "@/lib/utils";
 import { ImageModal } from "./ImageModal";
 import { ImageWithLoader } from "./ImageWithLoader";
+import { Model3DViewer } from "./Model3DViewer";
 
 
 interface BlockRendererProps {
@@ -70,6 +71,18 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                 </p>
                             );
                         case 'image':
+                            // Auto-detect if user accidentally used an Image block for a 3D model
+                            if (block.content.toLowerCase().endsWith('.glb') || block.content.toLowerCase().endsWith('.gltf')) {
+                                return (
+                                    <Model3DViewer
+                                        key={block.id}
+                                        url={block.content}
+                                        altText={block.altText}
+                                        className="border-2 border-black shadow-retro-sm"
+                                    />
+                                );
+                            }
+
                             return (
                                 <div
                                     key={block.id}
@@ -168,6 +181,16 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                         </a>
                                     ))}
                                 </div>
+                            );
+                        case 'model3d':
+                            return (
+                                <Model3DViewer
+                                    key={block.id}
+                                    url={block.content}
+                                    textureUrl={block.textureUrl}
+                                    altText={block.altText}
+                                    className="border-2 border-black shadow-retro-sm"
+                                />
                             );
                         default:
                             return null;

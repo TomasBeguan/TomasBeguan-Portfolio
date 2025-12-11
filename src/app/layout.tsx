@@ -36,7 +36,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className={`${spaceGrotesk.variable} ${inter.variable} ${ultra.variable} ${libreBaskerville.variable} ${silkscreen.variable} font-sans antialiased bg-gray-100 pt-8 dark:bg-gray-900 transition-colors duration-300`}>
                 <Providers>
                     <RetroMenuBar />

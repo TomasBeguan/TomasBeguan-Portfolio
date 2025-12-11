@@ -7,6 +7,7 @@ import { RetroButton } from "@/components/RetroButton";
 import { Block, Post, BlockType } from "@/types";
 import { Plus, Trash, ArrowUp, ArrowDown, Save, LogOut, Eye, EyeOff } from "lucide-react";
 import { ImageUploader } from "@/components/Admin/ImageUploader";
+import { ModelUploader } from "@/components/Admin/ModelUploader";
 
 export default function AdminPage() {
     const [posts, setPosts] = useState<Post[]>([]);
@@ -39,6 +40,7 @@ export default function AdminPage() {
         const newPost: Post = {
             id: Date.now().toString(),
             title: "New Project",
+            slug: "new-project-" + Date.now(),
             date: new Date().toISOString().split('T')[0],
             thumbnail: "",
             blocks: []
@@ -170,8 +172,18 @@ export default function AdminPage() {
                             <label className="font-bold">Title</label>
                             <input
                                 value={editingPost.title}
-                                onChange={e => setEditingPost({ ...editingPost, title: e.target.value })}
+                                onChange={e => {
+                                    const title = e.target.value;
+                                    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                                    setEditingPost({ ...editingPost, title, slug });
+                                }}
                                 className="border-2 border-black p-2 font-mono"
+                            />
+                            <label className="font-bold">Slug (URL)</label>
+                            <input
+                                value={editingPost.slug || ''}
+                                onChange={e => setEditingPost({ ...editingPost, slug: e.target.value })}
+                                className="border-2 border-black p-2 font-mono text-sm text-gray-600"
                             />
                             <label className="font-bold">Date</label>
                             <input
@@ -189,8 +201,33 @@ export default function AdminPage() {
                                     thumbnailWidth: width,
                                     thumbnailHeight: height
                                 })}
-                                maxWidth={500}
+                                maxWidth={800}
+                                quality={0.95}
                             />
+                            <label className="font-bold mt-2">Thumbnail 3D Model (Optional)</label>
+                            <ModelUploader
+                                currentValue={editingPost.thumbnailModel}
+                                onUpload={(url) => setEditingPost({ ...editingPost, thumbnailModel: url })}
+                            />
+                            {editingPost.thumbnailModel && (
+                                <div className="flex flex-col gap-1 mt-2">
+                                    <label className="text-xs font-bold">3D Thumbnail Background</label>
+                                    <div className="flex gap-2 items-center">
+                                        <input
+                                            type="color"
+                                            value={editingPost.thumbnail3dBackgroundColor || '#f9fafb'}
+                                            onChange={e => setEditingPost({ ...editingPost, thumbnail3dBackgroundColor: e.target.value })}
+                                            className="h-8 w-12 cursor-pointer border border-black"
+                                        />
+                                        <button
+                                            onClick={() => setEditingPost({ ...editingPost, thumbnail3dBackgroundColor: undefined })}
+                                            className="text-xs underline text-red-500"
+                                        >
+                                            Clear
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="border-t-2 border-black pt-4 mt-2">
                                 <label className="font-bold block mb-2">Card Customization</label>
@@ -708,6 +745,26 @@ export default function AdminPage() {
                                                 </RetroButton>
                                             </div>
                                         </div>
+                                    ) : block.type === 'model3d' ? (
+                                        <div className="flex flex-col gap-2">
+                                            <label className="text-xs font-bold">3D Model (.glb/.gltf)</label>
+                                            <ModelUploader
+                                                currentValue={block.content}
+                                                onUpload={(url) => updateBlock(block.id, { content: url })}
+                                            />
+                                            <label className="text-xs font-bold mt-2">Texture (Optional)</label>
+                                            <ImageUploader
+                                                currentValue={block.textureUrl || ''}
+                                                onUpload={(url) => updateBlock(block.id, { textureUrl: url })}
+                                            />
+                                            <label className="text-xs font-bold mt-2">Alt Text (Caption)</label>
+                                            <input
+                                                value={block.altText || ''}
+                                                onChange={e => updateBlock(block.id, { altText: e.target.value })}
+                                                className="border border-black p-2 font-mono text-sm"
+                                                placeholder="Description..."
+                                            />
+                                        </div>
                                     ) : null}
                                 </div>
                             ))}
@@ -724,6 +781,7 @@ export default function AdminPage() {
                                 <RetroButton onClick={() => addBlock('video')} className="text-xs">Video</RetroButton>
                                 <RetroButton onClick={() => addBlock('grid')} className="text-xs">Grid</RetroButton>
                                 <RetroButton onClick={() => addBlock('link')} className="text-xs">Button</RetroButton>
+                                <RetroButton onClick={() => addBlock('model3d')} className="text-xs">3D Model</RetroButton>
                             </div>
                         </div>
 

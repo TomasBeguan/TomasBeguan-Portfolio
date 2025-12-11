@@ -1,5 +1,28 @@
 [
   {
+    "id": "1765408026219",
+    "title": "The Anger Price",
+    "slug": "theAngerPrice",
+    "date": "2025-12-10",
+    "thumbnail": "",
+    "blocks": [
+      {
+        "id": "1765416186394",
+        "type": "image",
+        "content": "/uploads/1765416193777-07.webp",
+        "width": 1080,
+        "height": 1920,
+        "altText": "Lucas"
+      }
+    ],
+    "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
+    "category": "Animación 3D",
+    "order": 0,
+    "cardBackgroundColor": "#ffffff",
+    "cardTextColor": "#ffffff",
+    "thumbnail3dBackgroundColor": "#ff3838"
+  },
+  {
     "id": "1763960726758",
     "title": "HELP_ME.exe",
     "date": "2023-01-16",
@@ -53,7 +76,8 @@
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#333333",
     "category": "Animación 3D",
-    "order": 0
+    "order": 1,
+    "slug": "help-me-exe"
   },
   {
     "id": "1763968807315",
@@ -117,9 +141,10 @@
         "linkText": "Instagram post"
       }
     ],
-    "order": 1,
+    "order": 2,
     "active": true,
-    "category": "Animación 3D"
+    "category": "Animación 3D",
+    "slug": "pencil-oceans"
   },
   {
     "id": "1763969465604",
@@ -207,9 +232,10 @@
     "cardBackgroundColor": "#1e1f25",
     "cardTextColor": "#ffffff",
     "category": "Animación 3D",
-    "order": 2,
+    "order": 3,
     "active": true,
-    "usePostBackgroundForCard": false
+    "usePostBackgroundForCard": false,
+    "slug": "spooky-collection"
   },
   {
     "id": "1763971928765",
@@ -282,13 +308,14 @@
         ]
       }
     ],
-    "order": 3,
+    "order": 4,
     "active": true,
     "cardBackgroundColor": "#222222",
     "cardTextColor": "#ffffff",
     "backgroundColor": "#222222",
     "category": "Animación 3D",
-    "textColor": "#ffffff"
+    "textColor": "#ffffff",
+    "slug": "galactic-ganger"
   },
   {
     "id": "1",
@@ -327,7 +354,8 @@
       }
     ],
     "active": true,
-    "order": 4
+    "order": 5,
+    "slug": "zoombie-berry-cade"
   },
   {
     "id": "2",
@@ -352,7 +380,8 @@
       }
     ],
     "active": true,
-    "order": 5
+    "order": 6,
+    "slug": "retro-computer"
   },
   {
     "id": "1763786411061",
@@ -378,11 +407,12 @@
       }
     ],
     "active": true,
-    "order": 6
+    "order": 7,
+    "slug": "nuevo-proyecto-de-prueba"
   },
   {
     "id": "1763787261278",
-    "title": "New Project",
+    "title": "Editando ",
     "date": "2025-11-22",
     "thumbnail": "/uploads/1763787289801-basado.gif",
     "blocks": [
@@ -421,7 +451,8 @@
       }
     ],
     "active": true,
-    "order": 7
+    "order": 8,
+    "slug": "new-project"
   },
   {
     "id": "1763869828054",
@@ -475,7 +506,8 @@
     "category": "Dibujo",
     "backgroundBlendMode": "overlay",
     "active": false,
-    "order": 8
+    "order": 9,
+    "slug": "cumple-hui"
   },
   {
     "id": "1763924064027",
@@ -500,7 +532,8 @@
     "backgroundBlendMode": "multiply",
     "cardTextColor": "#ffffff",
     "active": true,
-    "order": 9
+    "order": 10,
+    "slug": "test-de-prueba"
   },
   {
     "id": "1763947110404",
@@ -532,7 +565,8 @@
     ],
     "category": "Textura",
     "active": true,
-    "order": 10
+    "order": 11,
+    "slug": "prueba-de-compresi-n"
   },
   {
     "id": "1764701259239",
@@ -557,6 +591,47 @@
     ],
     "thumbnailWidth": 656,
     "thumbnailHeight": 414,
-    "order": 11
+    "order": 12,
+    "slug": "prueba-imagen-loader"
+  },
+  {
+    "id": "1765403395709",
+    "title": "Prueba de modelo 3D",
+    "date": "2025-12-10",
+    "thumbnail": "/uploads/1765403409475-Test01.webp",
+    "blocks": [
+      {
+        "id": "1765404451755",
+        "type": "model3d",
+        "content": "/uploads/1765404456797-Faction03.glb"
+      }
+    ],
+    "thumbnailWidth": 1920,
+    "thumbnailHeight": 1080,
+    "category": "Modelado",
+    "order": 13,
+    "active": true,
+    "slug": "prueba-de-modelo-3d"
+  },
+  {
+    "id": "1765406415598",
+    "title": "Prueba de id",
+    "slug": "new-project-1765406415599",
+    "date": "2025-12-10",
+    "thumbnail": "/uploads/1765406428569-Test17.webp",
+    "blocks": [],
+    "thumbnailWidth": 1920,
+    "thumbnailHeight": 1080,
+    "order": 14
+  },
+  {
+    "id": "1765409894695",
+    "title": "Prueba cubos rojos?",
+    "slug": "prueba-cubos-rojos",
+    "date": "2025-12-10",
+    "thumbnail": "",
+    "blocks": [],
+    "thumbnailModel": "/uploads/1765412829156-Lucas_web2.glb",
+    "order": 15
   }
 ]
