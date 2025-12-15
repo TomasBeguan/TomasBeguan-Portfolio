@@ -90,6 +90,17 @@ interface ThumbnailModelProps {
 }
 
 function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
+
+
+    const touchRef = useRef({
+        startX: 0,
+        startY: 0,
+        currentX: 0,
+        currentY: 0,
+        dragging: false,
+    });
+
+
     const { scene } = useGLTF(url);
     const ref = useRef<THREE.Group>(null);
 
@@ -107,70 +118,85 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+
+
+    useEffect(() => {
+        if (!isMobile) return;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            const t = e.touches[0];
+            touchRef.current.startX = t.clientX;
+            touchRef.current.startY = t.clientY;
+            touchRef.current.dragging = true;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (!touchRef.current.dragging) return;
+
+            const t = e.touches[0];
+            const dx = t.clientX - touchRef.current.startX;
+            const dy = t.clientY - touchRef.current.startY;
+
+            // Sensibilidad (ajustable)
+            const rotY = dx * 0.005;
+            const rotX = dy * 0.005;
+
+            inputRef.current.rotY = THREE.MathUtils.clamp(rotY, -0.6, 0.6);
+            inputRef.current.rotX = THREE.MathUtils.clamp(rotX, -0.6, 0.6);
+        };
+
+        const handleTouchEnd = () => {
+            touchRef.current.dragging = false;
+        };
+
+        window.addEventListener("touchstart", handleTouchStart, { passive: true });
+        window.addEventListener("touchmove", handleTouchMove, { passive: true });
+        window.addEventListener("touchend", handleTouchEnd);
+
+        return () => {
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchmove", handleTouchMove);
+            window.removeEventListener("touchend", handleTouchEnd);
+        };
+    }, [isMobile]);
+
+
+
     useFrame((state) => {
         if (!ref.current || !isVisible) return;
 
-        if (ref.current) {
-            // 1. Common Wiggle (Apply to both Desktop and Mobile)
-            // Reduced vertical movement for subtle "alive" feel
-            const wiggleRotY = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-            const wigglePosY = Math.sin(state.clock.elapsedTime * 1) * 0.02;
+        const wiggleRotY = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+        const wigglePosY = Math.sin(state.clock.elapsedTime * 1) * 0.02;
 
-            let targetRotX = 0;
-            let targetRotY = 0;
+        let targetRotX = 0;
+        let targetRotY = 0;
 
-            if (isMobile) {
-                // Mobile Input: Gyroscope (from Ref)
-                targetRotX = inputRef.current.rotX;
-                targetRotY = inputRef.current.rotY;
-            } else {
-                // Desktop Input: Mouse
-                // state.pointer.x/y are normalized (-1 to 1)
-                targetRotY = state.pointer.x * 0.5; // Rotate 0.5 rad max based on X
-                targetRotX = -state.pointer.y * 0.5; // Rotate 0.5 rad max based on Y
-            }
-
-            // Combine animations
-            // Smoothly interpolate current rotation to target (Input + Wiggle)
-            ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, targetRotY + wiggleRotY, 0.1);
-            ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, targetRotX, 0.1);
-
-            ref.current.position.y = wigglePosY;
+        if (isMobile) {
+            // Mobile: Touch drag
+            targetRotX = inputRef.current.rotX;
+            targetRotY = inputRef.current.rotY;
+        } else {
+            // Desktop: Mouse
+            targetRotY = state.pointer.x * 0.5;
+            targetRotX = -state.pointer.y * 0.5;
         }
+
+        ref.current.rotation.y = THREE.MathUtils.lerp(
+            ref.current.rotation.y,
+            targetRotY + wiggleRotY,
+            0.1
+        );
+
+        ref.current.rotation.x = THREE.MathUtils.lerp(
+            ref.current.rotation.x,
+            targetRotX,
+            0.1
+        );
+
+        ref.current.position.y = wigglePosY;
     });
 
-    // Gyroscope Logic
-    useEffect(() => {
-        const handleOrientation = (event: DeviceOrientationEvent) => {
-            if (!ref.current || !isMobile) return;
 
-            const { gamma, beta } = event; // gamma: left-right, beta: front-back
-
-            if (gamma !== null && beta !== null) {
-                // Clamp and map values to small rotation angles
-                // Gamma (-90 to 90) -> Rotation Y
-                // Beta (-180 to 180) -> Rotation X
-
-                const rotY = THREE.MathUtils.degToRad(gamma) * 0.5;
-                const rotX = THREE.MathUtils.degToRad(beta - 45) * 0.3; // Subtract 45 to account for holding phone at angle
-
-                // Update input ref instead of direct mutation
-                inputRef.current = { rotX, rotY };
-            }
-        };
-
-        if (isMobile && typeof window !== 'undefined' && window.DeviceOrientationEvent) {
-            // Request permission for iOS 13+ if needed (usually needs button click, so might skip for thumbnail)
-            // We'll add the listener and hope it works or fallback to wiggle
-            window.addEventListener('deviceorientation', handleOrientation);
-        }
-
-        return () => {
-            if (window.DeviceOrientationEvent) {
-                window.removeEventListener('deviceorientation', handleOrientation);
-            }
-        };
-    }, [isMobile]);
 
 
     return (
