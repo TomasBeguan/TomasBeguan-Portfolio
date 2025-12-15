@@ -9,6 +9,34 @@ import * as THREE from "three";
 function ScissorController({ track }: { track: React.RefObject<HTMLElement | null> }) {
     const { gl, scene } = useThree();
 
+    const rectRef = useRef<DOMRect | null>(null);
+    const scrollRectRef = useRef<DOMRect | null>(null);
+
+
+    useEffect(() => {
+        const el = track.current;
+        if (!el) return;
+
+        const updateRects = () => {
+            rectRef.current = el.getBoundingClientRect();
+            const scrollContainer = el.closest(".retro-scrollbar") as HTMLElement | null;
+            scrollRectRef.current = scrollContainer
+                ? scrollContainer.getBoundingClientRect()
+                : null;
+        };
+
+        updateRects();
+
+        window.addEventListener("scroll", updateRects, { passive: true });
+        window.addEventListener("resize", updateRects);
+
+        return () => {
+            window.removeEventListener("scroll", updateRects);
+            window.removeEventListener("resize", updateRects);
+        };
+    }, [track]);
+
+
     useEffect(() => {
         // Mobile Layout Change: Native Scroll.
         // We disable strict clipping on mobile because it doesn't work as expected
