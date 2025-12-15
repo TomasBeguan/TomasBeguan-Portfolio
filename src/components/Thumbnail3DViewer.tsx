@@ -26,7 +26,6 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
         };
 
         updateRects();
-
         window.addEventListener("scroll", updateRects, { passive: true });
         window.addEventListener("resize", updateRects);
 
@@ -42,25 +41,22 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
         // We disable strict clipping on mobile because it doesn't work as expected
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) return;
 
+
         // onBeforeRender runs synchronously right before drawing starts
         scene.onBeforeRender = () => {
-            const el = track.current;
-            if (!el) {
+            const rect = rectRef.current;
+            const scrollRect = scrollRectRef.current;
+
+            if (!rect) {
                 gl.setScissorTest(false);
                 return;
             }
 
             const pixelRatio = gl.getPixelRatio();
-            const rect = el.getBoundingClientRect();
-            const scrollContainer = el.closest('.retro-scrollbar');
 
             let clipRect;
 
-            if (scrollContainer) {
-                // If inside a scrollable container, clip to the intersection
-                const scrollRect = scrollContainer.getBoundingClientRect();
-
-                // Intersection (clipping window)
+            if (scrollRect) {
                 const top = Math.max(rect.top, scrollRect.top);
                 const bottom = Math.min(rect.bottom, scrollRect.bottom);
                 const left = Math.max(rect.left, scrollRect.left);
@@ -72,23 +68,20 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
                     left,
                     right,
                     width: Math.max(0, right - left),
-                    height: Math.max(0, bottom - top)
+                    height: Math.max(0, bottom - top),
                 };
             } else {
-                // If not in a scrollable container (e.g., portfolio cards), clip to element bounds
                 clipRect = {
                     top: rect.top,
                     bottom: rect.bottom,
                     left: rect.left,
                     right: rect.right,
                     width: rect.width,
-                    height: rect.height
+                    height: rect.height,
                 };
             }
 
-            // Universal Scissor Logic
-            // We rely on GlobalCanvas having height: 100dvh to track the mobile viewport correctly.
-            // This means canvasRect.bottom should always match the visual viewport bottom.
+            // 👇 TODO esto queda igual
             const canvasRect = gl.domElement.getBoundingClientRect();
             const scissorBottom = (canvasRect.bottom - clipRect.bottom) * pixelRatio;
 
@@ -99,6 +92,7 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
             gl.setScissorTest(true);
             gl.setScissor(scissorLeft, scissorBottom, scissorWidth, scissorHeight);
         };
+
 
         // Cleanup
         return () => {
