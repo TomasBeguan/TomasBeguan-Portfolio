@@ -11,7 +11,7 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
 
     useEffect(() => {
         // Mobile Layout Change: Native Scroll.
-        // We disable strict clipping on mobile because the page scrolls naturally, so no internal container clipping is needed.
+        // We disable strict clipping on mobile because it doesn't work as expected
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) return;
 
         // onBeforeRender runs synchronously right before drawing starts
@@ -26,31 +26,47 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
             const rect = el.getBoundingClientRect();
             const scrollContainer = el.closest('.retro-scrollbar');
 
-            if (!scrollContainer) {
-                gl.setScissorTest(false);
-                return;
+            let clipRect;
+
+            if (scrollContainer) {
+                // If inside a scrollable container, clip to the intersection
+                const scrollRect = scrollContainer.getBoundingClientRect();
+
+                // Intersection (clipping window)
+                const top = Math.max(rect.top, scrollRect.top);
+                const bottom = Math.min(rect.bottom, scrollRect.bottom);
+                const left = Math.max(rect.left, scrollRect.left);
+                const right = Math.min(rect.right, scrollRect.right);
+
+                clipRect = {
+                    top,
+                    bottom,
+                    left,
+                    right,
+                    width: Math.max(0, right - left),
+                    height: Math.max(0, bottom - top)
+                };
+            } else {
+                // If not in a scrollable container (e.g., portfolio cards), clip to element bounds
+                clipRect = {
+                    top: rect.top,
+                    bottom: rect.bottom,
+                    left: rect.left,
+                    right: rect.right,
+                    width: rect.width,
+                    height: rect.height
+                };
             }
-
-            const scrollRect = scrollContainer.getBoundingClientRect();
-
-            // Intersection (clipping window)
-            const top = Math.max(rect.top, scrollRect.top);
-            const bottom = Math.min(rect.bottom, scrollRect.bottom);
-            const left = Math.max(rect.left, scrollRect.left);
-            const right = Math.min(rect.right, scrollRect.right);
-
-            const width = Math.max(0, right - left);
-            const height = Math.max(0, bottom - top);
 
             // Universal Scissor Logic
             // We rely on GlobalCanvas having height: 100dvh to track the mobile viewport correctly.
             // This means canvasRect.bottom should always match the visual viewport bottom.
             const canvasRect = gl.domElement.getBoundingClientRect();
-            const scissorBottom = (canvasRect.bottom - bottom) * pixelRatio;
+            const scissorBottom = (canvasRect.bottom - clipRect.bottom) * pixelRatio;
 
-            const scissorLeft = (left - canvasRect.left) * pixelRatio;
-            const scissorWidth = width * pixelRatio;
-            const scissorHeight = height * pixelRatio;
+            const scissorLeft = (clipRect.left - canvasRect.left) * pixelRatio;
+            const scissorWidth = clipRect.width * pixelRatio;
+            const scissorHeight = clipRect.height * pixelRatio;
 
             gl.setScissorTest(true);
             gl.setScissor(scissorLeft, scissorBottom, scissorWidth, scissorHeight);
@@ -200,13 +216,13 @@ export function Thumbnail3DViewer({ url, className }: Thumbnail3DViewerProps) {
     }, []);
 
     return (
-        <div ref={containerRef} className={`relative w-full h-full ${className}`}>
+        <div ref={containerRef} className={`relative w-full h-full overflow-hidden ${className}`}>
             {!isVisible ? (
                 <div className="absolute inset-0 flex items-center justify-center">
                     <Loader2 className="animate-spin text-gray-400" size={24} />
                 </div>
             ) : (
-                <View track={containerRef as any} className="absolute inset-0 w-full h-full">
+                <View track={containerRef as any} className="absolute inset-0 w-full h-full overflow-hidden">
                     <Suspense fallback={
                         <Html center>
                             <div className="flex items-center justify-center">
@@ -214,6 +230,7 @@ export function Thumbnail3DViewer({ url, className }: Thumbnail3DViewerProps) {
                             </div>
                         </Html>
                     }>
+                        <ScissorController track={containerRef} />
                         <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={15} />
                         <ambientLight intensity={0.5} />
                         <directionalLight position={[10, 10, 5]} intensity={2} castShadow />
