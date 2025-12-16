@@ -38,7 +38,7 @@ export const RetroWindow = ({ title = "My Stuff", children, className = "" }: Re
 
 
             {/* Window Content */}
-            <div ref={scrollRef} className="md:flex-1 md:min-h-0 md:overflow-y-auto retro-scrollbar bg-white dark:bg-retro-dark-blue p-0 relative z-10 transition-colors duration-300">
+            <div ref={scrollRef} className="md:flex-1 md:min-h-0 md:overflow-y-auto retro-scrollbar bg-white dark:bg-retro-dark-blue p-0 relative z-10 transition-colors duration-300" data-lenis-prevent>
                 {children}
             </div>
 

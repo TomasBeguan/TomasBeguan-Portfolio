@@ -6,6 +6,7 @@ import { Post } from "@/types";
 import fs from 'fs';
 import path from 'path';
 
+
 // Force dynamic rendering to always get fresh data
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
