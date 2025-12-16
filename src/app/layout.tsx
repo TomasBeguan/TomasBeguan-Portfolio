@@ -31,12 +31,12 @@ export default function RootLayout({
 
                 {/* 2. Envolver todo el contenido dentro del body con ReactLenis */}
                 {/* 'root' indica que Lenis controla el scroll de la ventana (html/window) */}
-                <ReactLenis root>
-                    <Providers>
-                        <RetroMenuBar />
-                        {children}
-                    </Providers>
-                </ReactLenis>
+
+                <Providers>
+                    <RetroMenuBar />
+                    {children}
+                </Providers>
+
 
             </body>
         </html>
