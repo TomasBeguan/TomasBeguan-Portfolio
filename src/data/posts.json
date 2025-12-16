@@ -1,8 +1,8 @@
 [
   {
     "id": "1765408026219",
-    "title": "The Anger Price TEST 2",
-    "slug": "the-anger-price-test-2",
+    "title": "The Anger Price",
+    "slug": "the-anger-price",
     "date": "2025-12-10",
     "thumbnail": "",
     "blocks": [
@@ -16,7 +16,7 @@
       }
     ],
     "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
-    "category": "Modelado",
+    "category": "3D Model",
     "order": 0,
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#0d0d0d",

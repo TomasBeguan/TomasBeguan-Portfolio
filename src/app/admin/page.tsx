@@ -274,12 +274,14 @@ export default function AdminPage() {
                                             className="border border-black p-2 font-mono text-sm"
                                         >
                                             <option value="">Select Category...</option>
-                                            <option value="Animación 3D">Animación 3D</option>
-                                            <option value="Animación 2D">Animación 2D</option>
-                                            <option value="Modelado">Modelado</option>
-                                            <option value="Textura">Textura</option>
-                                            <option value="Diseño">Diseño</option>
-                                            <option value="Dibujo">Dibujo</option>
+                                            <option value="3D Animation">3D Animation</option>
+                                            <option value="3D Model">3D Model</option>
+                                            <option value="3D Texturing">3D Texturing</option>
+                                            <option value="Digital art">Digital art</option>
+                                            <option value="Traditional art">Traditional art</option>
+                                            <option value="2D Animation">2D Animation</option>
+                                            <option value="Game development">Game development</option>
+                                            <option value="Photography">Photography</option>
                                         </select>
                                     </div>
                                 </div>

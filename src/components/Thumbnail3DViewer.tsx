@@ -8,15 +8,16 @@ import * as THREE from "three";
 
 function ScissorController({ track }: { track: React.RefObject<HTMLElement | null> }) {
     const { gl, scene } = useThree();
-
     const rectRef = useRef<DOMRect | null>(null);
     const scrollRectRef = useRef<DOMRect | null>(null);
 
+    // 1. Eliminamos el ref de smoothScissor porque causa el retraso
 
     useEffect(() => {
         const el = track.current;
         if (!el) return;
 
+        // Actualizamos las coordenadas del DOM
         const updateRects = () => {
             rectRef.current = el.getBoundingClientRect();
             const scrollContainer = el.closest(".retro-scrollbar") as HTMLElement | null;
@@ -26,37 +27,38 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
         };
 
         updateRects();
-        window.addEventListener("scroll", updateRects, { passive: true });
+        // Usamos 'scroll' en captura y pasivo para mayor precisión
+        window.addEventListener("scroll", updateRects, { capture: true, passive: true });
         window.addEventListener("resize", updateRects);
+
+        // Observer opcional para detectar cambios en el DOM que no son scroll/resize
+        const observer = new ResizeObserver(updateRects);
+        observer.observe(el);
+        const scrollNode = el.closest(".retro-scrollbar");
+        if (scrollNode) observer.observe(scrollNode);
 
         return () => {
             window.removeEventListener("scroll", updateRects);
             window.removeEventListener("resize", updateRects);
+            observer.disconnect();
         };
     }, [track]);
 
-
     useEffect(() => {
-        // Mobile Layout Change: Native Scroll.
-        // We disable strict clipping on mobile because it doesn't work as expected
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) return;
 
-
-        // onBeforeRender runs synchronously right before drawing starts
         scene.onBeforeRender = () => {
             const rect = rectRef.current;
             const scrollRect = scrollRectRef.current;
 
-            if (!rect) {
-                gl.setScissorTest(false);
-                return;
-            }
+            if (!rect) return;
 
             const pixelRatio = gl.getPixelRatio();
 
+            // Cálculo de la intersección (Clipping)
             let clipRect;
-
             if (scrollRect) {
+                // Calculamos la intersección entre la tarjeta y el contenedor de scroll
                 const top = Math.max(rect.top, scrollRect.top);
                 const bottom = Math.min(rect.bottom, scrollRect.bottom);
                 const left = Math.max(rect.left, scrollRect.left);
@@ -71,36 +73,34 @@ function ScissorController({ track }: { track: React.RefObject<HTMLElement | nul
                     height: Math.max(0, bottom - top),
                 };
             } else {
-                clipRect = {
-                    top: rect.top,
-                    bottom: rect.bottom,
-                    left: rect.left,
-                    right: rect.right,
-                    width: rect.width,
-                    height: rect.height,
-                };
+                clipRect = rect;
             }
 
-            // 👇 TODO esto queda igual
-            const canvasRect = gl.domElement.getBoundingClientRect();
-            const scissorBottom = (canvasRect.bottom - clipRect.bottom) * pixelRatio;
+            // Si el ancho o alto es 0, no dibujamos nada para ahorrar recursos
+            if (clipRect.width <= 0 || clipRect.height <= 0) {
+                gl.setScissorTest(false);
+                return;
+            }
 
-            const scissorLeft = (clipRect.left - canvasRect.left) * pixelRatio;
+            gl.setScissorTest(true);
+
+            const canvasHeight = gl.domElement.height / pixelRatio;
+
+            // 2. Aplicamos cálculo directo sin interpolación (EASE)
+            const scissorLeft = clipRect.left * pixelRatio;
+            const scissorBottom = (canvasHeight - clipRect.bottom) * pixelRatio;
             const scissorWidth = clipRect.width * pixelRatio;
             const scissorHeight = clipRect.height * pixelRatio;
 
-            gl.setScissorTest(true);
+            // 3. SetScissor instantáneo para que coincida perfectamente con el View
             gl.setScissor(scissorLeft, scissorBottom, scissorWidth, scissorHeight);
         };
 
-
-        // Cleanup
         return () => {
-            scene.onBeforeRender = () => { }; // Reset to an empty function
-            gl.setScissorTest(false); // Also disable scissor test on cleanup
+            scene.onBeforeRender = () => { };
+            gl.setScissorTest(false);
         };
-
-    }, [gl, scene, track]); // Rerun if these change
+    }, [gl, scene, track]);
 
     return null;
 }
@@ -163,7 +163,7 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
             const rotY = dx * 0.005;
             const rotX = dy * 0.005;
 
-            inputRef.current.rotY = THREE.MathUtils.clamp(rotY, -0.6, 0.6);
+            inputRef.current.rotY = THREE.MathUtils.clamp(rotY, -0.3, 0.3);
             inputRef.current.rotX = THREE.MathUtils.clamp(rotX, -0.6, 0.6);
         };
 
@@ -188,7 +188,7 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
         if (!ref.current || !isVisible) return;
 
         const wiggleRotY = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-        const wigglePosY = Math.sin(state.clock.elapsedTime * 1) * 0.02;
+        const wigglePosY = Math.sin(state.clock.elapsedTime * 2) * 0.01;
 
         let targetRotX = 0;
         let targetRotY = 0;

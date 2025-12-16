@@ -64,7 +64,9 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                                         {post.thumbnailModel ? (
                                             <Thumbnail3DViewer
                                                 url={post.thumbnailModel}
-                                                className="w-full h-full"
+                                                className={`relative w-full h-full overflow-hidden `}
+                                            // 👇 Esto fuerza a iOS a promocionar la capa a GPU y reduce el jitter
+                                            //style={{ transform: 'translateZ(0)' }}
                                             />
                                         ) : post.thumbnail ? (
                                             <ImageWithLoader
