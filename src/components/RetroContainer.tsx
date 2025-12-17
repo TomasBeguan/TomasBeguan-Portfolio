@@ -101,17 +101,17 @@ export function RetroContainer({
 
                         {/* Title Text with white background to cover stripes */}
                         <div className="relative z-10 px-4 bg-white dark:bg-retro-dark-blue border-x-2 border-black dark:border-white transition-colors duration-300">
-                            <h2 className="text-xl font-chicago tracking-normal pt-1 text-retro-text">{title}</h2>
+                            <h2 className="text-xl font-chicago tracking-normal pt-1 text-retro-text ">{title}</h2>
                         </div>
                     </div>
                 </div>
 
                 {/* Content Area */}
-                <div className="flex-1 p-2 sm:p-4 bg-white dark:bg-retro-dark-blue min-h-0 transition-colors duration-300">
+                <div className="flex-1 p-2 sm:p-2 bg-white dark:bg-retro-dark-blue min-h-0 transition-colors duration-300">
                     <div className="h-full w-full border border-black dark:border-white relative overflow-hidden bg-white dark:bg-retro-dark-blue transition-colors duration-300">
                         {/* Layer 1: Background Color */}
                         <div
-                            className="absolute inset-0 z-0"
+                            className="absolute inset-0 z-0 "
                             style={{ backgroundColor: backgroundColor || '#ffffff' }}
                         />
 
@@ -131,7 +131,7 @@ export function RetroContainer({
                         )}
 
                         {/* Layer 3: Content */}
-                        <div className="relative z-10 h-full w-full overflow-y-auto retro-scrollbar p-4">
+                        <div className="relative z-10 h-full w-full overflow-y-auto retro-scrollbar p-4 md:p-8">
                             {children}
                         </div>
                     </div>

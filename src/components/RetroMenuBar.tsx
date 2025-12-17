@@ -31,7 +31,7 @@ export const RetroMenuBar = () => {
         { label: "Home", href: "/" },
         { label: "Portfolio", href: "/portfolio" },
         { label: "About", href: "/about" },
-        //{ label: "Admin", href: "/admin" },
+        { label: "Admin", href: "/admin" },
     ];
 
     return (

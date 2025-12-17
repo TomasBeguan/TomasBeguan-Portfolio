@@ -1,4 +1,4 @@
-export async function compressImage(file: File, maxWidth: number = 1920, quality: number = 0.8): Promise<File> {
+export async function compressImage(file: File, maxWidth: number = 1920, quality: number = 0.95): Promise<File> {
     if (file.type === 'image/gif') {
         return file;
     }

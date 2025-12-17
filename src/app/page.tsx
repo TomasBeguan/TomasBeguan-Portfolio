@@ -30,7 +30,7 @@ export default async function Home() {
                     Tomás Beguan
                 </h1>
                 <p className="text-xl sm:text-2xl md:text-3xl text-gray-600 font-libre italic">
-                    Just a designer.
+                    3D Artist.
                 </p>
             </div>
 
