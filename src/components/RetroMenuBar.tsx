@@ -99,23 +99,23 @@ export const RetroMenuBar = () => {
         <div
             ref={menuRef}
             className={cn(
-                "fixed z-50 select-none transition-colors duration-300 flex",
-                "md:top-0 md:left-0 md:w-full md:h-8 md:bg-white md:dark:bg-retro-dark-blue md:border-b-2 md:border-black md:dark:border-white md:flex-row md:items-center md:px-2 md:shadow-sm",
-                "top-4 left-4 flex-col items-start"
+                "fixed top-0 left-0 w-full z-50 select-none transition-colors duration-300 flex items-center",
+                "bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white h-8 shadow-sm",
+                "px-2"
             )}
         >
-            {/* Mobile Menu Trigger */}
+            {/* Mobile Menu Trigger (Burger without Icon) */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "md:hidden p-2 flex items-center justify-center border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] transition-colors",
+                    "md:hidden h-full px-4 flex items-center justify-center font-chicago text-[14px] tracking-wide border-r-2 border-black dark:border-white transition-colors",
                     "hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black",
                     isOpen
                         ? "bg-black text-white dark:bg-white dark:text-black"
                         : "bg-white text-black dark:bg-retro-dark-blue dark:text-white"
                 )}
             >
-                <Menu size={20} />
+                MENU
             </button>
 
             {/* Apple Logo / Brand - HIDDEN ON MOBILE */}
@@ -144,7 +144,7 @@ export const RetroMenuBar = () => {
                 ))}
             </div>
 
-            {/* Mobile Dropdown Menu (Animated & Separated Blocks) */}
+            {/* Mobile Dropdown Menu (Solid & Stacked) */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -152,19 +152,19 @@ export const RetroMenuBar = () => {
                         animate="open"
                         exit="closed"
                         variants={menuVariants}
-                        className="md:hidden flex flex-col gap-2 mt-6 w-56 origin-top-left"
+                        className="md:hidden absolute top-8 left-0 w-48 bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] origin-top-left z-[60]"
                     >
                         {navItems.map((item) => (
                             <motion.div
                                 key={item.href}
                                 variants={itemVariants}
-                                className="w-full"
+                                className="w-full border-b-2 border-black dark:border-white last:border-b-0"
                             >
                                 <Link
                                     href={item.href}
                                     className={cn(
-                                        "block px-4 py-3 font-chicago text-sm tracking-wide transition-colors border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]",
-                                        "hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black active:translate-x-[2px] active:translate-y-[2px] active:shadow-none",
+                                        "block px-4 py-3 font-chicago text-sm tracking-wide transition-colors",
+                                        "hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black",
                                         pathname === item.href
                                             ? "bg-black text-white dark:bg-white dark:text-black"
                                             : "bg-white text-black dark:bg-retro-dark-blue dark:text-white"
