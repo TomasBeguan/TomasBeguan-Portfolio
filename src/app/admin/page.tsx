@@ -457,6 +457,38 @@ export default function AdminPage() {
                                             />
                                             <div className="flex gap-2 flex-wrap items-center">
                                                 <button
+                                                    className="text-xs border border-black px-2 hover:bg-black hover:text-white transition-colors font-bold"
+                                                    onClick={() => {
+                                                        const textarea = document.getElementById(`textarea-${block.id}`) as HTMLTextAreaElement;
+                                                        if (textarea) {
+                                                            const start = textarea.selectionStart;
+                                                            const end = textarea.selectionEnd;
+                                                            const text = textarea.value;
+                                                            const selected = text.substring(start, end);
+                                                            const newText = text.substring(0, start) + `**${selected || 'bold'}**` + text.substring(end);
+                                                            updateBlock(block.id, { content: newText });
+                                                        }
+                                                    }}
+                                                >
+                                                    B
+                                                </button>
+                                                <button
+                                                    className="text-xs border border-black px-2 hover:bg-black hover:text-white transition-colors italic font-serif"
+                                                    onClick={() => {
+                                                        const textarea = document.getElementById(`textarea-${block.id}`) as HTMLTextAreaElement;
+                                                        if (textarea) {
+                                                            const start = textarea.selectionStart;
+                                                            const end = textarea.selectionEnd;
+                                                            const text = textarea.value;
+                                                            const selected = text.substring(start, end);
+                                                            const newText = text.substring(0, start) + `*${selected || 'italic'}*` + text.substring(end);
+                                                            updateBlock(block.id, { content: newText });
+                                                        }
+                                                    }}
+                                                >
+                                                    i
+                                                </button>
+                                                <button
                                                     className="text-xs border border-black px-2 hover:bg-black hover:text-white transition-colors"
                                                     onClick={() => {
                                                         const textarea = document.getElementById(`textarea-${block.id}`) as HTMLTextAreaElement;
@@ -465,14 +497,44 @@ export default function AdminPage() {
                                                             const end = textarea.selectionEnd;
                                                             const text = textarea.value;
                                                             const selected = text.substring(start, end);
-                                                            const newText = text.substring(0, start) + `[${selected || 'text'}](url)` + text.substring(end);
+                                                            const newText = text.substring(0, start) + `[${selected || 'text'}](${block.linkColor || '#7c3aed'})` + text.substring(end);
                                                             updateBlock(block.id, { content: newText });
                                                         }
                                                     }}
                                                 >
                                                     Link
                                                 </button>
-                                                <div className="flex items-center gap-2">
+
+                                                <div className="flex items-center gap-1 border-l pl-2 border-gray-300">
+                                                    <span className="text-[10px] font-bold">COLOR</span>
+                                                    <input
+                                                        type="color"
+                                                        id={`color-picker-${block.id}`}
+                                                        className="h-6 w-8 cursor-pointer border border-black p-0"
+                                                        defaultValue="#ff0000"
+                                                    />
+                                                    <button
+                                                        className="text-xs border border-black px-2 hover:bg-black hover:text-white transition-colors"
+                                                        onClick={() => {
+                                                            const textarea = document.getElementById(`textarea-${block.id}`) as HTMLTextAreaElement;
+                                                            const colorInput = document.getElementById(`color-picker-${block.id}`) as HTMLInputElement;
+
+                                                            if (textarea && colorInput) {
+                                                                const color = colorInput.value;
+                                                                const start = textarea.selectionStart;
+                                                                const end = textarea.selectionEnd;
+                                                                const text = textarea.value;
+                                                                const selected = text.substring(start, end);
+                                                                const newText = text.substring(0, start) + `[${selected || 'text'}]\{${color}\}` + text.substring(end);
+                                                                updateBlock(block.id, { content: newText });
+                                                            }
+                                                        }}
+                                                    >
+                                                        Apply
+                                                    </button>
+                                                </div>
+
+                                                <div className="flex items-center gap-2 ml-auto">
                                                     <label className="text-xs font-bold">Link Color</label>
                                                     <input
                                                         type="color"

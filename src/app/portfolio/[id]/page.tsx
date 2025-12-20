@@ -42,7 +42,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 backgroundOpacity={post.backgroundOpacity}
                 backgroundSize={post.backgroundSize}
                 backgroundBlendMode={post.backgroundBlendMode}
-                className="mt-[30px]"
+                className="mt-[10px] md:mt-[30px]"
             >
                 <BlockRenderer blocks={post.blocks} textColor={post.textColor} />
             </RetroContainer>

@@ -17,34 +17,75 @@ interface BlockRendererProps {
 export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
     const [selectedImage, setSelectedImage] = useState<{ url: string; alt?: string } | null>(null);
 
-    const parseRichText = (text: string, linkColor?: string) => {
-        const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
-        const parts = [];
-        let lastIndex = 0;
-        let match;
+    const parseRichText = (text: string, linkColor?: string): React.ReactNode[] => {
+        let nodes: (string | React.ReactNode)[] = [text];
 
-        while ((match = regex.exec(text)) !== null) {
-            if (match.index > lastIndex) {
-                parts.push(text.substring(lastIndex, match.index));
-            }
-            parts.push(
-                <a
-                    key={match.index}
-                    href={match[2]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold underline hover:opacity-80"
-                    style={{ color: linkColor || '#7c3aed' }}
-                >
-                    {match[1]}
-                </a>
-            );
-            lastIndex = regex.lastIndex;
-        }
-        if (lastIndex < text.length) {
-            parts.push(text.substring(lastIndex));
-        }
-        return parts.length > 0 ? parts : text;
+        const process = (
+            currentNodes: (string | React.ReactNode)[],
+            regex: RegExp,
+            transform: (match: RegExpExecArray, index: number) => React.ReactNode
+        ) => {
+            const newNodes: (string | React.ReactNode)[] = [];
+            currentNodes.forEach(node => {
+                if (typeof node !== 'string') {
+                    newNodes.push(node);
+                    return;
+                }
+
+                let lastIndex = 0;
+                let match;
+                regex.lastIndex = 0;
+
+                while ((match = regex.exec(node)) !== null) {
+                    if (match.index > lastIndex) {
+                        newNodes.push(node.substring(lastIndex, match.index));
+                    }
+                    newNodes.push(transform(match, newNodes.length));
+                    lastIndex = regex.lastIndex;
+                }
+                if (lastIndex < node.length) {
+                    newNodes.push(node.substring(lastIndex));
+                }
+            });
+            return newNodes;
+        };
+
+        // 1. Links: [text](url)
+        nodes = process(nodes, /\[([^\]]+)\]\(([^)]+)\)/g, (match, i) => (
+            <a
+                key={`link-${i}`}
+                href={match[2]}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold underline hover:opacity-80"
+                style={{ color: linkColor || '#7c3aed' }}
+            >
+                {parseRichText(match[1], linkColor)}
+            </a>
+        ));
+
+        // 2. Color: [text]{color} (e.g. [my text]{#ff0000} or [my text]{red})
+        nodes = process(nodes, /\[([^\]]+)\]\{([^}]+)\}/g, (match, i) => (
+            <span key={`color-${i}`} style={{ color: match[2] }}>
+                {parseRichText(match[1], linkColor)}
+            </span>
+        ));
+
+        // 3. Bold: **text**
+        nodes = process(nodes, /\*\*([^*]+)\*\*/g, (match, i) => (
+            <strong key={`bold-${i}`}>
+                {parseRichText(match[1], linkColor)}
+            </strong>
+        ));
+
+        // 4. Italic: *text*
+        nodes = process(nodes, /\*([^*]+)\*/g, (match, i) => (
+            <em key={`italic-${i}`}>
+                {parseRichText(match[1], linkColor)}
+            </em>
+        ));
+
+        return nodes;
     };
 
     return (
@@ -60,13 +101,13 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                             );
                         case 'subtitle':
                             return (
-                                <h2 key={block.id} className="text-xl md:text-2xl  mt-4 font-space-grotesk text-left leading-none">
+                                <h2 key={block.id} className="text-xl md:text-2xl mt-4 font-space-grotesk text-left leading-none">
                                     {parseRichText(block.content, block.linkColor)}
                                 </h2>
                             );
                         case 'text':
                             return (
-                                <p key={block.id} className="text-xl leading-tight whitespace-pre-wrap font-space-grotesk leading-none">
+                                <p key={block.id} className="text-xl whitespace-pre-wrap font-space-grotesk leading-none">
                                     {parseRichText(block.content, block.linkColor)}
                                 </p>
                             );

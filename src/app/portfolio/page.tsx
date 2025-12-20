@@ -1,6 +1,7 @@
 
 
-import { RetroContainer } from "@/components/RetroContainer";
+import { RetroWindow } from "@/components/RetroWindow";
+import { GlobalCanvas } from "@/components/GlobalCanvas";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
 import { Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
@@ -27,9 +28,10 @@ export default async function PortfolioPage() {
 
     return (
         <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
-            <RetroContainer title="My Portfolio" className="mt-[30px] flex-1 min-h-0">
+            <RetroWindow className="w-full max-w-5xl md:flex-1 md:min-h-0 mb-8 sm:mb-12 flex flex-col mt-8">
                 <PortfolioGrid posts={activePosts} />
-            </RetroContainer>
+            </RetroWindow>
+            <GlobalCanvas />
         </main>
     );
 }

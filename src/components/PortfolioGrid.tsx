@@ -18,7 +18,7 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
 
     const getMonthName = (monthStr: string) => {
         const date = new Date(2000, parseInt(monthStr) - 1, 1);
-        return date.toLocaleString('default', { month: 'long' });
+        return date.toLocaleString('en-US', { month: 'long' });
     };
 
     return (
