@@ -139,7 +139,7 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                         alt={block.altText || "Project Image"}
                                         width={block.width}
                                         height={block.height}
-                                        className="w-full h-auto pixelated"
+                                        className={cn("w-full h-auto", block.pixelate && "pixelated")}
                                     />
                                 </div>
                             );
@@ -182,7 +182,7 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                             <ImageWithLoader
                                                 src={src}
                                                 alt={block.itemAlts?.[idx] || `Grid item ${idx}`}
-                                                className="w-full h-full object-cover pixelated"
+                                                className={cn("w-full h-full object-cover", block.pixelate && "pixelated")}
                                             />
                                         </div>
                                     ))}

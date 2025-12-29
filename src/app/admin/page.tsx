@@ -573,6 +573,15 @@ export default function AdminPage() {
                                                 />
                                                 No Border
                                             </label>
+                                            <label className="flex items-center gap-2 text-xs cursor-pointer select-none mt-1">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={block.pixelate || false}
+                                                    onChange={e => updateBlock(block.id, { pixelate: e.target.checked })}
+                                                    className="accent-black"
+                                                />
+                                                Pixelate Image (Nearest Neighbor)
+                                            </label>
                                         </div>
                                     ) : block.type === 'video' ? (
                                         <div className="flex flex-col gap-2">
@@ -596,6 +605,15 @@ export default function AdminPage() {
                                                         className="accent-black"
                                                     />
                                                     No Border
+                                                </label>
+                                                <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={block.pixelate || false}
+                                                        onChange={e => updateBlock(block.id, { pixelate: e.target.checked })}
+                                                        className="accent-black"
+                                                    />
+                                                    Pixelate
                                                 </label>
                                             </div>
                                             <div className="flex flex-col gap-4">

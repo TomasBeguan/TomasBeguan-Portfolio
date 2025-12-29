@@ -112,3 +112,9 @@ label {
 .cursor-ns-resize {
   cursor: url('/uploads/mac_os_9_cursors_for_windows_by_nonme85851_d7cy4v2/vertical.cur'), ns-resize;
 }
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}

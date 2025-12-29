@@ -54,7 +54,100 @@
           "Spaceship 360 gif",
           "Moon 360 gif"
         ],
-        "noBorder": true
+        "noBorder": true,
+        "pixelate": true
+      },
+      {
+        "id": "1766985459069",
+        "type": "subtitle",
+        "content": "Gráficas animadas para algunos props como las pantallas analógicas de la nave."
+      },
+      {
+        "id": "1766984018272",
+        "type": "image",
+        "content": "/uploads/1766984023777-Pantlla.gif",
+        "width": 263,
+        "height": 196,
+        "pixelate": true,
+        "noBorder": true,
+        "altText": "ship screen interface fuel animation gif"
+      },
+      {
+        "id": "1766990990015",
+        "type": "image",
+        "content": "/uploads/1766990999213-pantalla2.gif",
+        "width": 400,
+        "height": 400,
+        "altText": "ship screen console interface animation gif",
+        "noBorder": true,
+        "pixelate": true
+      },
+      {
+        "id": "1766991497359",
+        "type": "image",
+        "content": "/uploads/1766991631480-Pantalla3.gif",
+        "width": 216,
+        "height": 216,
+        "noBorder": true,
+        "pixelate": true,
+        "altText": "ship screen ship interface animation gif"
+      },
+      {
+        "id": "1766972265749",
+        "type": "subtitle",
+        "content": "Shots breakdowns"
+      },
+      {
+        "id": "1766972141330",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1766972152612-wireframe_01.webp",
+          "/uploads/1766972156160-wireframe_02.webp"
+        ],
+        "itemAlts": [
+          "Shot 01 Wireframe Overlay",
+          "Shot 02 Wireframe Overlay"
+        ]
+      },
+      {
+        "id": "1766972341523",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1766972354115-wireframe_03.webp",
+          "/uploads/1766972357243-wireframe_04.webp"
+        ],
+        "itemAlts": [
+          "Shot 03 Wireframe Overlay",
+          "Shot 04 Wireframe Overlay"
+        ]
+      },
+      {
+        "id": "1766972359516",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1766972364020-wireframe_05.webp",
+          "/uploads/1766972367626-wireframe_06.webp"
+        ],
+        "itemAlts": [
+          "Shot 05 Wireframe Overlay",
+          "Shot 06 Wireframe Overlay"
+        ]
+      },
+      {
+        "id": "1766972373877",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1766972376849-wireframe_07.webp",
+          "/uploads/1766972380169-wireframe_08.webp"
+        ],
+        "itemAlts": [
+          "Shot 07 Wireframe Overlay",
+          "Shot 08 Wireframe Overlay"
+        ]
       }
     ],
     "thumbnailWidth": 1080,
@@ -67,7 +160,8 @@
     "usePostBackgroundForCard": true,
     "cardTextColor": "#ffffff",
     "backgroundSize": "70%",
-    "backgroundMode": "repeat"
+    "backgroundMode": "repeat",
+    "pixelateImages": true
   },
   {
     "id": "1765408026219",

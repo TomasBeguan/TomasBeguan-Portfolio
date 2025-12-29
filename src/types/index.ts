@@ -28,6 +28,7 @@ export interface Block {
     textureUrl?: string; // For 3D models
     buttons?: BlockButton[]; // For multiple buttons
     noBorder?: boolean; // Option to remove border from images/grids
+    pixelate?: boolean; // Whether to use nearest neighbor interpolation
 }
 
 export interface Post {
