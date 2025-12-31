@@ -20,8 +20,31 @@ export const RetroWindow = ({ title = "My Stuff", children, className = "" }: Re
         const container = scrollRef.current;
         if (!container) return;
 
-        // Inicializamos el target con la posición actual real
-        targetScroll.current = container.scrollTop;
+        const scrollKey = `scroll-${window.location.pathname}`;
+
+        // Función para obtener scroll actual (dependiendo de si es mobile o no)
+        const getScrollPos = () => {
+            const isMobile = window.innerWidth < 768;
+            return isMobile ? window.scrollY : container.scrollTop;
+        };
+
+        // Restaurar posición al montar
+        const savedScroll = sessionStorage.getItem(scrollKey);
+        if (savedScroll) {
+            if ('scrollRestoration' in window.history) {
+                window.history.scrollRestoration = 'manual';
+            }
+            const pos = parseInt(savedScroll);
+            setTimeout(() => {
+                const isMobile = window.innerWidth < 768;
+                if (isMobile) {
+                    window.scrollTo(0, pos);
+                } else {
+                    container.scrollTop = pos;
+                    targetScroll.current = pos;
+                }
+            }, 150); // Aumentado para asegurar que el contenido cargó
+        }
 
         // Función de animación (Loop)
         const updateScroll = () => {
@@ -34,19 +57,20 @@ export const RetroWindow = ({ title = "My Stuff", children, className = "" }: Re
             const diff = targetScroll.current - currentScroll;
 
             // 3. Si la distancia es pequeña, paramos (ahorramos batería)
-            // (0.5px es un buen umbral de "llegada")
             if (Math.abs(diff) < 0.5) {
                 isAnimating.current = false;
-                // Sincronizamos final para evitar micro-saltos
                 targetScroll.current = currentScroll;
+                // Guardamos posición final
+                sessionStorage.setItem(scrollKey, currentScroll.toString());
                 return;
             }
 
-            // 4. LERP: Nos movemos un 10% de la distancia restante en cada frame
-            // '0.1' es el factor de suavidad (menor = más lento/pesado, mayor = más rápido)
+            // 4. LERP
             const newScroll = currentScroll + (diff * 0.1);
-
             container.scrollTop = newScroll;
+
+            // Guardamos posición intermedia
+            sessionStorage.setItem(scrollKey, newScroll.toString());
 
             // 5. Pedimos el siguiente frame
             requestAnimationFrame(updateScroll);
@@ -61,44 +85,37 @@ export const RetroWindow = ({ title = "My Stuff", children, className = "" }: Re
 
         const handleGlobalWheel = (e: WheelEvent) => {
             if (!container) return;
+            if (window.innerWidth < 768) return; // No actuar en mobile vía wheel global
 
-            // Si el mouse está DENTRO de la ventana, dejamos que el navegador (o Lenis prevent) 
-            // se encargue nativamente. Solo actuamos si está FUERA.
             if (container.contains(e.target as Node)) {
-                // Importante: Si el usuario usa el scroll nativo, actualizamos nuestro target
-                // inmediatamente para que no haya saltos si luego saca el mouse.
                 targetScroll.current = container.scrollTop;
                 return;
             }
 
-            // Calculamos límites para no scrollear al infinito
             const maxScroll = container.scrollHeight - container.clientHeight;
-
-            // Actualizamos el OBJETIVO, no la posición directa
             targetScroll.current += e.deltaY;
-
-            // Clampeamos (limitamos) el objetivo entre 0 y el máximo
             targetScroll.current = Math.max(0, Math.min(targetScroll.current, maxScroll));
-
-            // Arrancamos el loop de física
             startAnimation();
         };
 
-        // Listener extra: Si el usuario arrastra la barra de scroll manualmente,
-        // necesitamos actualizar el targetScroll para que no "salte" hacia atrás.
-        const handleNativeScroll = () => {
-            // Solo actualizamos si NO estamos animando nosotros (es decir, fue el usuario)
+        const handleScroll = () => {
+            const isMobile = window.innerWidth < 768;
+            const pos = getScrollPos();
+
             if (!isAnimating.current) {
-                targetScroll.current = container.scrollTop;
+                targetScroll.current = pos;
             }
+            sessionStorage.setItem(scrollKey, pos.toString());
         };
 
         window.addEventListener('wheel', handleGlobalWheel, { passive: false });
-        container.addEventListener('scroll', handleNativeScroll, { passive: true });
+        container.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
             window.removeEventListener('wheel', handleGlobalWheel);
-            container.removeEventListener('scroll', handleNativeScroll);
+            container.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 

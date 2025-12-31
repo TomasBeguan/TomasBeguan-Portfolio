@@ -178,8 +178,8 @@ export default function AdminPage() {
 
     if (editingPost) {
         return (
-            <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
-                <RetroContainer title={`Editing: ${editingPost.title}`} onBack={() => setEditingPost(null)} className="mt-[30px] flex-1 min-h-0">
+            <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-16">
+                <RetroContainer title={`Editing: ${editingPost.title}`} onBack={() => setEditingPost(null)} className="md:flex-1 md:min-h-0 md:mt-8">
                     <div className="flex flex-col gap-4">
                         {/* Language Toggle */}
                         <div className="flex bg-gray-200 border-2 border-black p-1 gap-1 self-start sticky top-0 z-20">
@@ -943,8 +943,8 @@ export default function AdminPage() {
     }
 
     return (
-        <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
-            <RetroContainer title="CMS Admin" className="mt-[30px] flex-1 min-h-0">
+        <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-16">
+            <RetroContainer title="CMS Admin" className="md:flex-1 md:min-h-0 md:mt-8">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-xl font-bold">Projects</h1>
                     <div className="flex gap-2">

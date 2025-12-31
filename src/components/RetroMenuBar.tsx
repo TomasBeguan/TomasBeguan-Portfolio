@@ -103,7 +103,7 @@ export const RetroMenuBar = () => {
             className={cn(
                 "fixed top-0 left-0 w-full z-50 select-none transition-colors duration-300 flex items-center",
                 "bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white h-8 shadow-sm",
-                "px-2"
+
             )}
         >
             {/* Mobile Menu Trigger (Burger without Icon) */}
@@ -152,45 +152,38 @@ export const RetroMenuBar = () => {
                     onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
                     className="h-full px-3 font-chicago text-xs hover:bg-black hover:text-white dark:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
                 >
-                    {language === 'es' ? 'EN' : 'ES'}
+                    {language.toUpperCase()}
                 </button>
             </div>
 
 
             {/* Mobile Dropdown Menu (Solid & Stacked) */}
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial="closed"
-                        animate="open"
-                        exit="closed"
-                        variants={menuVariants}
-                        className="md:hidden absolute top-8 left-0 w-48 bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] origin-top-left z-[60]"
-                    >
-                        {navItems.map((item) => (
-                            <motion.div
-                                key={item.href}
-                                variants={itemVariants}
-                                className="w-full border-b-2 border-black dark:border-white last:border-b-0"
+            {isOpen && (
+                <div
+                    className="md:hidden absolute top-8 left-2 w-48 bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] origin-top-left z-[60]"
+                >
+                    {navItems.map((item) => (
+                        <div
+                            key={item.href}
+                            className="w-full border-b-2 border-black dark:border-white last:border-b-0"
+                        >
+                            <Link
+                                href={item.href}
+                                className={cn(
+                                    "block px-4 py-3 font-chicago text-sm tracking-wide transition-colors",
+                                    "hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black",
+                                    pathname === item.href
+                                        ? "bg-black text-white dark:bg-white dark:text-black"
+                                        : "bg-white text-black dark:bg-retro-dark-blue dark:text-white"
+                                )}
+                                onClick={() => setIsOpen(false)}
                             >
-                                <Link
-                                    href={item.href}
-                                    className={cn(
-                                        "block px-4 py-3 font-chicago text-sm tracking-wide transition-colors",
-                                        "hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black",
-                                        pathname === item.href
-                                            ? "bg-black text-white dark:bg-white dark:text-black"
-                                            : "bg-white text-black dark:bg-retro-dark-blue dark:text-white"
-                                    )}
-                                    onClick={() => setIsOpen(false)}
-                                >
-                                    {item.label}
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                                {item.label}
+                            </Link>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
