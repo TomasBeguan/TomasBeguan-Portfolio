@@ -5,13 +5,26 @@ import { useRouter } from "next/navigation";
 import { RetroContainer } from "@/components/RetroContainer";
 import { RetroButton } from "@/components/RetroButton";
 import { Block, Post, BlockType } from "@/types";
+import { cn } from "@/lib/utils";
 import { Plus, Trash, ArrowUp, ArrowDown, Save, LogOut, Eye, EyeOff } from "lucide-react";
 import { ImageUploader } from "@/components/Admin/ImageUploader";
 import { ModelUploader } from "@/components/Admin/ModelUploader";
 
+const CATEGORIES = [
+    { es: "Animación 3D", en: "3D Animation" },
+    { es: "Modelo 3D", en: "3D Model" },
+    { es: "Texturizado 3D", en: "3D Texturing" },
+    { es: "Arte digital", en: "Digital art" },
+    { es: "Arte tradicional", en: "Traditional art" },
+    { es: "Animación 2D", en: "2D Animation" },
+    { es: "Desarrollo de videojuegos", en: "Game development" },
+    { es: "Fotografía", en: "Photography" },
+];
+
 export default function AdminPage() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [editingPost, setEditingPost] = useState<Post | null>(null);
+    const [editLang, setEditLang] = useState<'es' | 'en'>('es');
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -168,14 +181,39 @@ export default function AdminPage() {
             <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
                 <RetroContainer title={`Editing: ${editingPost.title}`} onBack={() => setEditingPost(null)} className="mt-[30px] flex-1 min-h-0">
                     <div className="flex flex-col gap-4">
+                        {/* Language Toggle */}
+                        <div className="flex bg-gray-200 border-2 border-black p-1 gap-1 self-start sticky top-0 z-20">
+                            <button
+                                onClick={() => setEditLang('es')}
+                                className={cn(
+                                    "px-4 py-1 font-chicago text-xs transition-all",
+                                    editLang === 'es' ? "bg-black text-white" : "hover:bg-gray-300"
+                                )}
+                            >
+                                ESPAÑOL
+                            </button>
+                            <button
+                                onClick={() => setEditLang('en')}
+                                className={cn(
+                                    "px-4 py-1 font-chicago text-xs transition-all",
+                                    editLang === 'en' ? "bg-black text-white" : "hover:bg-gray-300"
+                                )}
+                            >
+                                ENGLISH
+                            </button>
+                        </div>
                         <div className="flex flex-col gap-2 border-b-2 border-black pb-4">
-                            <label className="font-bold">Title</label>
+                            <label className="font-bold">Title ({editLang.toUpperCase()})</label>
                             <input
-                                value={editingPost.title}
+                                value={(editLang === 'en' ? editingPost.title_en : editingPost.title) || ''}
                                 onChange={e => {
-                                    const title = e.target.value;
-                                    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-                                    setEditingPost({ ...editingPost, title, slug });
+                                    if (editLang === 'en') {
+                                        setEditingPost({ ...editingPost, title_en: e.target.value });
+                                    } else {
+                                        const title = e.target.value;
+                                        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                                        setEditingPost({ ...editingPost, title, slug });
+                                    }
                                 }}
                                 className="border-2 border-black p-2 font-mono"
                             />
@@ -267,21 +305,34 @@ export default function AdminPage() {
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        <label className="text-xs font-bold">Category</label>
+                                        <label className="text-xs font-bold">Category ({editLang.toUpperCase()})</label>
                                         <select
-                                            value={editingPost.category || ''}
-                                            onChange={e => setEditingPost({ ...editingPost, category: e.target.value })}
+                                            value={(editLang === 'en' ? editingPost.category_en : editingPost.category) || ''}
+                                            onChange={e => {
+                                                const val = e.target.value;
+                                                const cat = CATEGORIES.find(c => c.es === val || c.en === val);
+                                                if (cat) {
+                                                    setEditingPost({
+                                                        ...editingPost,
+                                                        category: cat.es,
+                                                        category_en: cat.en
+                                                    });
+                                                } else {
+                                                    setEditingPost({
+                                                        ...editingPost,
+                                                        category: val,
+                                                        category_en: val
+                                                    });
+                                                }
+                                            }}
                                             className="border border-black p-2 font-mono text-sm"
                                         >
                                             <option value="">Select Category...</option>
-                                            <option value="3D Animation">3D Animation</option>
-                                            <option value="3D Model">3D Model</option>
-                                            <option value="3D Texturing">3D Texturing</option>
-                                            <option value="Digital art">Digital art</option>
-                                            <option value="Traditional art">Traditional art</option>
-                                            <option value="2D Animation">2D Animation</option>
-                                            <option value="Game development">Game development</option>
-                                            <option value="Photography">Photography</option>
+                                            {CATEGORIES.map(cat => (
+                                                <option key={cat.en} value={editLang === 'en' ? cat.en : cat.es}>
+                                                    {editLang === 'en' ? cat.en : cat.es}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
@@ -449,10 +500,14 @@ export default function AdminPage() {
 
                                     {block.type === 'text' || block.type === 'header' || block.type === 'subtitle' ? (
                                         <div className="flex flex-col gap-2">
+                                            <div className="flex justify-between items-center">
+                                                <label className="text-xs font-bold">Content ({editLang.toUpperCase()})</label>
+                                                <span className="text-[10px] text-gray-400 italic">Editing {editLang === 'es' ? 'Spanish' : 'English'} version</span>
+                                            </div>
                                             <textarea
                                                 id={`textarea-${block.id}`}
-                                                value={block.content}
-                                                onChange={e => updateBlock(block.id, { content: e.target.value })}
+                                                value={(editLang === 'en' ? block.content_en : block.content) || ''}
+                                                onChange={e => updateBlock(block.id, editLang === 'en' ? { content_en: e.target.value } : { content: e.target.value })}
                                                 className="w-full border border-black p-1 font-mono h-24 text-sm"
                                             />
                                             <div className="flex gap-2 flex-wrap items-center">
@@ -466,7 +521,7 @@ export default function AdminPage() {
                                                             const text = textarea.value;
                                                             const selected = text.substring(start, end);
                                                             const newText = text.substring(0, start) + `**${selected || 'bold'}**` + text.substring(end);
-                                                            updateBlock(block.id, { content: newText });
+                                                            updateBlock(block.id, editLang === 'en' ? { content_en: newText } : { content: newText });
                                                         }
                                                     }}
                                                 >
@@ -482,7 +537,7 @@ export default function AdminPage() {
                                                             const text = textarea.value;
                                                             const selected = text.substring(start, end);
                                                             const newText = text.substring(0, start) + `*${selected || 'italic'}*` + text.substring(end);
-                                                            updateBlock(block.id, { content: newText });
+                                                            updateBlock(block.id, editLang === 'en' ? { content_en: newText } : { content: newText });
                                                         }
                                                     }}
                                                 >
@@ -498,7 +553,7 @@ export default function AdminPage() {
                                                             const text = textarea.value;
                                                             const selected = text.substring(start, end);
                                                             const newText = text.substring(0, start) + `[${selected || 'text'}](${block.linkColor || '#7c3aed'})` + text.substring(end);
-                                                            updateBlock(block.id, { content: newText });
+                                                            updateBlock(block.id, editLang === 'en' ? { content_en: newText } : { content: newText });
                                                         }
                                                     }}
                                                 >
@@ -526,7 +581,7 @@ export default function AdminPage() {
                                                                 const text = textarea.value;
                                                                 const selected = text.substring(start, end);
                                                                 const newText = text.substring(0, start) + `[${selected || 'text'}]\{${color}\}` + text.substring(end);
-                                                                updateBlock(block.id, { content: newText });
+                                                                updateBlock(block.id, editLang === 'en' ? { content_en: newText } : { content: newText });
                                                             }
                                                         }}
                                                     >
@@ -556,10 +611,10 @@ export default function AdminPage() {
                                                     height
                                                 })}
                                             />
-                                            <label className="text-xs font-bold mt-2">Alt Text (Caption)</label>
+                                            <label className="text-xs font-bold mt-2">Alt Text / Caption ({editLang.toUpperCase()})</label>
                                             <input
-                                                value={block.altText || ''}
-                                                onChange={e => updateBlock(block.id, { altText: e.target.value })}
+                                                value={(editLang === 'en' ? block.altText_en : block.altText) || ''}
+                                                onChange={e => updateBlock(block.id, editLang === 'en' ? { altText_en: e.target.value } : { altText: e.target.value })}
                                                 className="border border-black p-2 font-mono text-sm"
                                                 placeholder="Description for modal..."
                                             />
@@ -623,15 +678,16 @@ export default function AdminPage() {
                                                             <img src={item} alt="" className="h-full w-auto object-contain" />
                                                         </div>
                                                         <div className="flex flex-col gap-1 flex-1">
-                                                            <label className="text-xs font-bold">Alt Text</label>
+                                                            <label className="text-xs font-bold">Alt Text ({editLang.toUpperCase()})</label>
                                                             <input
-                                                                value={block.itemAlts?.[i] || ''}
+                                                                value={((editLang === 'en' ? block.itemAlts_en : block.itemAlts) || [])[i] || ''}
                                                                 onChange={e => {
-                                                                    const newAlts = [...(block.itemAlts || [])];
+                                                                    const currentAlts = editLang === 'en' ? (block.itemAlts_en || []) : (block.itemAlts || []);
+                                                                    const newAlts = [...currentAlts];
                                                                     // Ensure array is long enough
                                                                     while (newAlts.length <= i) newAlts.push('');
                                                                     newAlts[i] = e.target.value;
-                                                                    updateBlock(block.id, { itemAlts: newAlts });
+                                                                    updateBlock(block.id, editLang === 'en' ? { itemAlts_en: newAlts } : { itemAlts: newAlts });
                                                                 }}
                                                                 className="border border-black p-1 font-mono text-xs w-full"
                                                                 placeholder="Caption..."
@@ -670,6 +726,7 @@ export default function AdminPage() {
                                             <div className="flex flex-col gap-4">
                                                 {(block.buttons && block.buttons.length > 0 ? block.buttons : [{
                                                     text: block.linkText || block.content || 'Button',
+                                                    text_en: block.linkText_en,
                                                     url: block.linkUrl || '#',
                                                     bgColor: block.bgColor,
                                                     textColor: block.textColor,
@@ -680,19 +737,24 @@ export default function AdminPage() {
                                                         <div className="flex flex-col gap-2">
                                                             <div className="flex gap-2">
                                                                 <div className="flex flex-col gap-1 flex-1">
-                                                                    <label className="text-[10px] font-bold">Text</label>
+                                                                    <label className="text-[10px] font-bold">Text ({editLang.toUpperCase()})</label>
                                                                     <input
-                                                                        value={btn.text}
+                                                                        value={(editLang === 'en' ? btn.text_en : btn.text) || ''}
                                                                         onChange={e => {
                                                                             const newButtons = [...(block.buttons || [{
                                                                                 text: block.linkText || block.content || 'Button',
+                                                                                text_en: block.linkText_en,
                                                                                 url: block.linkUrl || '#',
                                                                                 bgColor: block.bgColor,
                                                                                 textColor: block.textColor,
                                                                                 borderColor: block.borderColor,
                                                                                 iconUrl: block.iconUrl
                                                                             }])];
-                                                                            newButtons[i] = { ...newButtons[i], text: e.target.value };
+                                                                            if (editLang === 'en') {
+                                                                                newButtons[i] = { ...newButtons[i], text_en: e.target.value };
+                                                                            } else {
+                                                                                newButtons[i] = { ...newButtons[i], text: e.target.value };
+                                                                            }
                                                                             updateBlock(block.id, { buttons: newButtons });
                                                                         }}
                                                                         className="border border-black p-1 font-mono text-xs w-full"
@@ -805,6 +867,7 @@ export default function AdminPage() {
                                                     onClick={() => {
                                                         const currentButtons = block.buttons || [{
                                                             text: block.linkText || block.content || 'Button',
+                                                            text_en: block.linkText_en,
                                                             url: block.linkUrl || '#',
                                                             bgColor: block.bgColor,
                                                             textColor: block.textColor,
@@ -839,10 +902,10 @@ export default function AdminPage() {
                                                 currentValue={block.textureUrl || ''}
                                                 onUpload={(url) => updateBlock(block.id, { textureUrl: url })}
                                             />
-                                            <label className="text-xs font-bold mt-2">Alt Text (Caption)</label>
+                                            <label className="text-xs font-bold mt-2">Alt Text / Caption ({editLang.toUpperCase()})</label>
                                             <input
-                                                value={block.altText || ''}
-                                                onChange={e => updateBlock(block.id, { altText: e.target.value })}
+                                                value={(editLang === 'en' ? block.altText_en : block.altText) || ''}
+                                                onChange={e => updateBlock(block.id, editLang === 'en' ? { altText_en: e.target.value } : { altText: e.target.value })}
                                                 className="border border-black p-2 font-mono text-sm"
                                                 placeholder="Description..."
                                             />

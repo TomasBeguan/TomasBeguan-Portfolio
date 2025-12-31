@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ImageModal } from "./ImageModal";
 import { ImageWithLoader } from "./ImageWithLoader";
 import { Model3DViewer } from "./Model3DViewer";
+import { useLanguage } from "@/context/LanguageContext";
 
 
 interface BlockRendererProps {
@@ -16,6 +17,12 @@ interface BlockRendererProps {
 
 export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
     const [selectedImage, setSelectedImage] = useState<{ url: string; alt?: string } | null>(null);
+    const { language } = useLanguage();
+
+    // Helper to get localized content
+    const getText = (text: string, textEn?: string) => {
+        return (language === 'en' && textEn) ? textEn : text;
+    };
 
     const parseRichText = (text: string, linkColor?: string): React.ReactNode[] => {
         let nodes: (string | React.ReactNode)[] = [text];
@@ -92,23 +99,25 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
         <>
             <div className="flex flex-col gap-6" style={{ color: textColor }}>
                 {blocks.map((block) => {
+                    const content = getText(block.content, block.content_en);
+
                     switch (block.type) {
                         case 'header':
                             return (
                                 <h1 key={block.id} className="text-2xl md:text-4xl font-bold border-b-2 border-black pb-2 font-space-grotesk tracking-tight text-center " style={{ borderColor: textColor }}>
-                                    {parseRichText(block.content, block.linkColor)}
+                                    {parseRichText(content, block.linkColor)}
                                 </h1>
                             );
                         case 'subtitle':
                             return (
                                 <h2 key={block.id} className="text-xl md:text-2xl mt-4 font-space-grotesk text-left leading-none">
-                                    {parseRichText(block.content, block.linkColor)}
+                                    {parseRichText(content, block.linkColor)}
                                 </h2>
                             );
                         case 'text':
                             return (
                                 <p key={block.id} className="text-xl whitespace-pre-wrap font-space-grotesk leading-none">
-                                    {parseRichText(block.content, block.linkColor)}
+                                    {parseRichText(content, block.linkColor)}
                                 </p>
                             );
                         case 'image':
@@ -118,11 +127,13 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                     <Model3DViewer
                                         key={block.id}
                                         url={block.content}
-                                        altText={block.altText}
+                                        altText={getText(block.altText || '', block.altText_en)}
                                         className="border-2 border-black shadow-retro-sm"
                                     />
                                 );
                             }
+
+                            const altText = getText(block.altText || "Project Image", block.altText_en);
 
                             return (
                                 <div
@@ -132,11 +143,11 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                         !block.noBorder && "border-2 border-black shadow-retro-sm cursor-zoom-in",
                                         block.noBorder && "bg-transparent p-0"
                                     )}
-                                    onClick={() => !block.noBorder && setSelectedImage({ url: block.content, alt: block.altText })}
+                                    onClick={() => !block.noBorder && setSelectedImage({ url: block.content, alt: altText })}
                                 >
                                     <ImageWithLoader
                                         src={block.content}
-                                        alt={block.altText || "Project Image"}
+                                        alt={altText}
                                         width={block.width}
                                         height={block.height}
                                         className={cn("w-full h-auto", block.pixelate && "pixelated")}
@@ -166,31 +177,36 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                             ) : null;
                         case 'grid':
                             const items = block.items || [];
+                            const itemAlts = (language === 'en' && block.itemAlts_en) ? block.itemAlts_en : block.itemAlts || [];
                             const cols = items.length === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3';
                             return (
                                 <div key={block.id} className={cn("grid gap-4", cols)}>
-                                    {items.map((src, idx) => (
-                                        <div
-                                            key={idx}
-                                            className={cn(
-                                                "p-1 bg-white h-full",
-                                                !block.noBorder && "border-2 border-black hover:shadow-retro-sm transition-shadow cursor-zoom-in",
-                                                block.noBorder && "bg-transparent p-0"
-                                            )}
-                                            onClick={() => !block.noBorder && setSelectedImage({ url: src, alt: block.itemAlts?.[idx] })}
-                                        >
-                                            <ImageWithLoader
-                                                src={src}
-                                                alt={block.itemAlts?.[idx] || `Grid item ${idx}`}
-                                                className={cn("w-full h-full object-cover", block.pixelate && "pixelated")}
-                                            />
-                                        </div>
-                                    ))}
+                                    {items.map((src, idx) => {
+                                        const alt = itemAlts[idx] || `Grid item ${idx}`;
+                                        return (
+                                            <div
+                                                key={idx}
+                                                className={cn(
+                                                    "p-1 bg-white h-full",
+                                                    !block.noBorder && "border-2 border-black hover:shadow-retro-sm transition-shadow cursor-zoom-in",
+                                                    block.noBorder && "bg-transparent p-0"
+                                                )}
+                                                onClick={() => !block.noBorder && setSelectedImage({ url: src, alt: alt })}
+                                            >
+                                                <ImageWithLoader
+                                                    src={src}
+                                                    alt={alt}
+                                                    className={cn("w-full h-full object-cover", block.pixelate && "pixelated")}
+                                                />
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             );
                         case 'link':
                             const buttons = block.buttons && block.buttons.length > 0 ? block.buttons : [{
                                 text: block.linkText || block.content || 'Button',
+                                text_en: block.linkText_en,
                                 url: block.linkUrl || '#',
                                 bgColor: block.bgColor,
                                 textColor: block.textColor,
@@ -207,7 +223,7 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={cn(
-                                                "px-4 py-1 border-2 border-black bg-white shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-black active:text-white font-bold flex items-center gap-2",
+                                                "px-6 py-2 text-lg border-2 border-black bg-white shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-black active:text-white font-bold flex items-center gap-2",
                                             )}
                                             style={{
                                                 backgroundColor: btn.bgColor,
@@ -216,9 +232,9 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                             }}
                                         >
                                             {btn.iconUrl && (
-                                                <img src={btn.iconUrl} alt="icon" className="w-4 h-4" />
+                                                <img src={btn.iconUrl} alt="icon" className="w-5 h-5" />
                                             )}
-                                            {btn.text}
+                                            {getText(btn.text, btn.text_en)}
                                         </a>
                                     ))}
                                 </div>
@@ -229,7 +245,7 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                     key={block.id}
                                     url={block.content}
                                     textureUrl={block.textureUrl}
-                                    altText={block.altText}
+                                    altText={getText(block.altText || '', block.altText_en)}
                                     className="border-2 border-black shadow-retro-sm"
                                 />
                             );

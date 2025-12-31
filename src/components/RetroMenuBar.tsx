@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 const ThemeToggle = () => {
     const { theme, setTheme } = useTheme();
@@ -30,12 +31,13 @@ export const RetroMenuBar = () => {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+    const { t, language, setLanguage } = useLanguage();
 
     const navItems = [
-        { label: "Home", href: "/" },
-        { label: "Portfolio", href: "/portfolio" },
-        { label: "About", href: "/about" },
-        { label: "Admin", href: "/admin" },
+        { label: t("home"), href: "/" },
+        { label: t("portfolio"), href: "/portfolio" },
+        { label: t("about"), href: "/about" },
+        { label: t("admin"), href: "/admin" },
     ];
 
     // Close menu when clicking outside
@@ -143,6 +145,17 @@ export const RetroMenuBar = () => {
                     </Link>
                 ))}
             </div>
+
+            {/* Language Toggle */}
+            <div className="ml-auto h-full flex items-center border-l-2 border-black dark:border-white">
+                <button
+                    onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
+                    className="h-full px-3 font-chicago text-xs hover:bg-black hover:text-white dark:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
+                >
+                    {language === 'es' ? 'EN' : 'ES'}
+                </button>
+            </div>
+
 
             {/* Mobile Dropdown Menu (Solid & Stacked) */}
             <AnimatePresence>

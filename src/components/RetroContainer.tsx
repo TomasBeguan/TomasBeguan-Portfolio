@@ -5,9 +5,11 @@ import { ArrowLeft, X, Square } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { RetroButton } from "./RetroButton";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface RetroContainerProps {
     title: string;
+    title_en?: string;
     children: React.ReactNode;
     className?: string;
     onBack?: () => void;
@@ -21,6 +23,7 @@ interface RetroContainerProps {
 
 export function RetroContainer({
     title,
+    title_en,
     children,
     className,
     onBack,
@@ -33,6 +36,9 @@ export function RetroContainer({
 }: RetroContainerProps) {
     const router = useRouter();
     const scrollRef = useRef<HTMLDivElement>(null);
+    const { language, t } = useLanguage();
+
+    const displayTitle = (language === 'en' && title_en) ? title_en : title;
 
     // Almacenamos el objetivo (a dónde queremos llegar)
     const targetScroll = useRef(0);
@@ -179,7 +185,7 @@ export function RetroContainer({
                             className="px-2 sm:px-3 py-0 text-sm h-full border border-black dark:border-white shadow-none active:translate-x-0 active:translate-y-0 hover:translate-x-0 hover:translate-y-0 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-chicago flex items-center gap-2 bg-white dark:bg-retro-dark-blue dark:text-white transition-colors duration-300"
                         >
                             <ArrowLeft size={14} strokeWidth={3} />
-                            <span className="hidden sm:inline">Back</span>
+                            <span className="hidden sm:inline">{t('back')}</span>
                         </RetroButton>
                     </div>
 
@@ -194,7 +200,7 @@ export function RetroContainer({
 
                         {/* Title Text with white background to cover stripes */}
                         <div className="relative z-10 px-4 bg-white dark:bg-retro-dark-blue border-x-2 border-black dark:border-white transition-colors duration-300">
-                            <h2 className="text-xl font-chicago tracking-normal pt-1 text-retro-text ">{title}</h2>
+                            <h2 className="text-xl font-chicago tracking-normal pt-1 text-retro-text ">{displayTitle}</h2>
                         </div>
                     </div>
                 </div>

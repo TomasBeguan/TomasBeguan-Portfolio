@@ -1,22 +1,24 @@
 [
   {
     "id": "1765920096686",
-    "title": "Apolo Milfo Animation",
-    "slug": "ApoloMilfoAnimation",
+    "title": "Apolo Milfo",
+    "slug": "ApoloMilfo",
     "date": "2025-10-10",
     "thumbnail": "/uploads/1765924930973-Profile01.webp",
     "blocks": [
       {
         "id": "1765923020626",
         "type": "header",
-        "content": "Apolo Milfo Animation para [Milfshakes](https://milfshakes.es/)",
-        "linkColor": "#dd0c19"
+        "content": "Animación Apolo Milfo para [Milfshakes](https://milfshakes.es/)",
+        "linkColor": "#dd0c19",
+        "content_en": "Apolo Milfo Animation for [Milfshakes](https://milfshakes.es/)"
       },
       {
         "id": "1765923237012",
         "type": "subtitle",
-        "content": "Estuve a cargo de la creación del video animado principal para la salida de la figura coleccionable [Apolo Milfo](https://themilfos.com/) por [Milfshakes](https://milfshakes.es/)",
-        "linkColor": "#dd0c19"
+        "content": "Estuve a cargo de la creación del **video animado principal** para la salida de la **figura coleccionable** [*Apolo Milfo*](https://themilfos.com/) por [*Milfshakes*](https://milfshakes.es/)",
+        "linkColor": "#dd0c19",
+        "content_en": "I was in charge of making the **main animated video** for the release of the **collectible figure** [Apollo Milfo](https://themilfos.com/) by [Milfshakes](https://milfshakes.es/)."
       },
       {
         "id": "1765940463557",
@@ -24,15 +26,41 @@
         "content": "https://youtu.be/7iNN3ijybiw"
       },
       {
-        "id": "1765943308026",
-        "type": "text",
-        "content": "Con la idea principal del equipo de [Milfshakes](https://milfshakes.es/) me puse a trabajar en el storyboard de la pieza.",
-        "linkColor": "#dd0c19"
+        "id": "1767140639936",
+        "type": "subtitle",
+        "content": "Échale un vistazo al **post original** del anuncio de la **figura coleccionable** y al **sitio web interactivo** de **las parcelas lunares.**",
+        "content_en": "Check out the **original post** announcing the **collectible figure** and the **interactive website** for the **lunar plots.**"
+      },
+      {
+        "id": "1767140565954",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "POST ORIGINAL",
+            "url": "https://www.instagram.com/p/DR9lH5MjKLg/",
+            "bgColor": "#fe2a3f",
+            "textColor": "#ffffff",
+            "borderColor": "#ffffff",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/p/DR9lH5MjKLg/&sz=64",
+            "text_en": "ORIGINAL POST"
+          },
+          {
+            "text": "WEB INTERACTIVA",
+            "url": "https://themilfos.com/",
+            "bgColor": "#667484",
+            "textColor": "#ffffff",
+            "borderColor": "#ffffff",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://themilfos.com/&sz=64",
+            "text_en": "INTERACTIVE WEB"
+          }
+        ]
       },
       {
         "id": "1765943374921",
         "type": "text",
-        "content": "La idea original era crear una pieza audiovisual para redes con un estilo tráiler cinematográfico de película sci-fi que mostrara la llegada del personaje principal, Apolo Milfo, a la luna, para luego revelar que el aterrizaje es falso y  todo es un montaje televisivo."
+        "content": "La idea original era crear una **pieza audiovisual** para redes con un estilo **tráiler cinematográfico** de película sci-fi que mostrara la llegada del personaje principal, **Apolo Milfo**, a la luna, para luego revelar que el aterrizaje es falso y  todo es un montaje televisivo.\n\nCon la idea principal del equipo de [Milfshakes](https://milfshakes.es/) me puse a trabajar en el **storyboard** de la pieza.",
+        "content_en": "The original idea was to create an **audiovisual piece** for social media with a **sci-fi** movie trailer **style** that would show the arrival of the main character, **Apolo Milfo**, on **the moon**, and then reveal that the landing is fake and  it's all a **television production.**\n\nWith the main idea from the team at [Milfshakes](https://milfshakes.es/), I set to work on the **storyboard** for the piece."
       },
       {
         "id": "1765949769222",
@@ -40,7 +68,8 @@
         "content": "/uploads/1765949772947-storyboard.webp",
         "width": 1200,
         "height": 1141,
-        "altText": "Apolo Milfo animation: storyboard"
+        "altText": "Apolo Milfo animation: storyboard",
+        "altText_en": "Apolo Milfo animation: storyboard"
       },
       {
         "id": "1765953283582",
@@ -51,16 +80,21 @@
           "/uploads/1765953298673-MoonGif.gif"
         ],
         "itemAlts": [
-          "Spaceship 360 gif",
-          "Moon 360 gif"
+          "Nave espacial 360 gif",
+          "Luna 360 gif"
         ],
         "noBorder": true,
-        "pixelate": true
+        "pixelate": true,
+        "itemAlts_en": [
+          "Spaceship 360 gif",
+          "Moon 360 gif"
+        ]
       },
       {
         "id": "1766985459069",
         "type": "subtitle",
-        "content": "Gráficas animadas para algunos props como las pantallas analógicas de la nave."
+        "content": "**Gráficas animadas** para algunos props como las **pantallas analógicas** de la nave.",
+        "content_en": "**Animated graphics** for some props, such as the ship's **analog screens.**"
       },
       {
         "id": "1766984018272",
@@ -70,7 +104,8 @@
         "height": 196,
         "pixelate": true,
         "noBorder": true,
-        "altText": "ship screen interface fuel animation gif"
+        "altText": "Pantalla animada del interior de la nave espacial que muestra la interface del combustible",
+        "altText_en": "ship screen interface fuel animation gif"
       },
       {
         "id": "1766990990015",
@@ -78,24 +113,27 @@
         "content": "/uploads/1766990999213-pantalla2.gif",
         "width": 400,
         "height": 400,
-        "altText": "ship screen console interface animation gif",
+        "altText": "Pantlla animada del interior de la nave espacial que muestra una consola retro",
         "noBorder": true,
-        "pixelate": true
+        "pixelate": true,
+        "altText_en": "ship screen console interface animation gif"
       },
       {
         "id": "1766991497359",
         "type": "image",
-        "content": "/uploads/1766991631480-Pantalla3.gif",
-        "width": 216,
-        "height": 216,
+        "content": "/uploads/1767139880779-Pantalla3_v2.gif",
+        "width": 356,
+        "height": 356,
         "noBorder": true,
         "pixelate": true,
-        "altText": "ship screen ship interface animation gif"
+        "altText": "Pantlla animada del interior de la nave espacial que muestra el proceso de aterrizaje de la nave espacial",
+        "altText_en": "ship screen ship interface animation gif"
       },
       {
         "id": "1766972265749",
         "type": "subtitle",
-        "content": "Shots breakdowns"
+        "content": "**Vista de malla** de las escenas",
+        "content_en": "Shots **breakdowns**"
       },
       {
         "id": "1766972141330",
@@ -106,6 +144,10 @@
           "/uploads/1766972156160-wireframe_02.webp"
         ],
         "itemAlts": [
+          "Escena 01 Vista de malla",
+          "Escena 02 Vista de malla"
+        ],
+        "itemAlts_en": [
           "Shot 01 Wireframe Overlay",
           "Shot 02 Wireframe Overlay"
         ]
@@ -119,6 +161,10 @@
           "/uploads/1766972357243-wireframe_04.webp"
         ],
         "itemAlts": [
+          "Escena 03 Vista de malla",
+          "Escena 04 Vista de malla"
+        ],
+        "itemAlts_en": [
           "Shot 03 Wireframe Overlay",
           "Shot 04 Wireframe Overlay"
         ]
@@ -132,6 +178,10 @@
           "/uploads/1766972367626-wireframe_06.webp"
         ],
         "itemAlts": [
+          "Escena 05 Vista de malla",
+          "Escena 06 Vista de malla"
+        ],
+        "itemAlts_en": [
           "Shot 05 Wireframe Overlay",
           "Shot 06 Wireframe Overlay"
         ]
@@ -145,14 +195,42 @@
           "/uploads/1766972380169-wireframe_08.webp"
         ],
         "itemAlts": [
+          "Escena 07 Vista de malla",
+          "Escena 08 Vista de malla"
+        ],
+        "itemAlts_en": [
           "Shot 07 Wireframe Overlay",
           "Shot 08 Wireframe Overlay"
         ]
+      },
+      {
+        "id": "1767140402863",
+        "type": "subtitle",
+        "content": "**Imágenes de perfil** para **redes** sociales",
+        "content_en": "**Profile pictures** for **social media**"
+      },
+      {
+        "id": "1767140416479",
+        "type": "image",
+        "content": "/uploads/1767140422272-Grid01.webp",
+        "width": 2160,
+        "height": 2160,
+        "altText": "Vista de cuadricula de imágenes de perfil para redes sociales",
+        "altText_en": "Grid of profile pictures for social media"
+      },
+      {
+        "id": "1767140429715",
+        "type": "image",
+        "content": "/uploads/1767140445583-Redes03.webp",
+        "width": 1080,
+        "height": 1920,
+        "altText": "Imagen de presentación para redes sociales.",
+        "altText_en": "social media asset of Astro Milfo"
       }
     ],
     "thumbnailWidth": 1080,
     "thumbnailHeight": 1080,
-    "category": "3D Animation",
+    "category": "Animación 3D",
     "textColor": "#ffffff",
     "order": 1,
     "active": true,
@@ -161,7 +239,9 @@
     "cardTextColor": "#ffffff",
     "backgroundSize": "70%",
     "backgroundMode": "repeat",
-    "pixelateImages": true
+    "pixelateImages": true,
+    "title_en": "Apolo Milfo",
+    "category_en": "3D Animation"
   },
   {
     "id": "1765408026219",
@@ -180,12 +260,13 @@
       }
     ],
     "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
-    "category": "3D Model",
+    "category": "Modelo 3D",
     "order": 1,
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#0d0d0d",
     "thumbnail3dBackgroundColor": "#ff3838",
-    "active": true
+    "active": true,
+    "category_en": "3D Model"
   },
   {
     "id": "1763960726758",
@@ -240,7 +321,7 @@
     "active": true,
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#333333",
-    "category": "Animación 3D",
+    "category": "3D Animation",
     "order": 2,
     "slug": "help-me-exe"
   },

@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 import { RetroMenuBar } from "@/components/RetroMenuBar";
 import { Providers } from "@/components/Providers";
+import { FloatingLanguageSelector } from "@/components/FloatingLanguageSelector";
 
 export default function RootLayout({
     children,
@@ -35,6 +36,7 @@ export default function RootLayout({
                 <Providers>
                     <RetroMenuBar />
                     {children}
+                    <FloatingLanguageSelector />
                 </Providers>
 
 

@@ -5,6 +5,7 @@ import { Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { ImageWithLoader } from "./ImageWithLoader";
 import { Thumbnail3DViewer } from "./Thumbnail3DViewer";
+import { useLanguage } from "@/context/LanguageContext";
 
 import { useRef } from "react";
 
@@ -15,10 +16,12 @@ interface PortfolioGridProps {
 
 export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const { language } = useLanguage();
 
     const getMonthName = (monthStr: string) => {
         const date = new Date(2000, parseInt(monthStr) - 1, 1);
-        return date.toLocaleString('en-US', { month: 'long' });
+        const locale = language === 'es' ? 'es-ES' : 'en-US';
+        return date.toLocaleString(locale, { month: 'long' });
     };
 
     return (
@@ -27,6 +30,8 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                 {posts.map((post) => {
                     const [year, month] = post.date.split('-');
                     const monthName = getMonthName(month);
+                    const title = (language === 'en' && post.title_en) ? post.title_en : post.title;
+                    const category = (language === 'en' && post.category_en) ? post.category_en : post.category;
 
                     return (
                         <Link key={post.id} href={`/portfolio/${post.slug || post.id}`} className="group">
@@ -71,15 +76,15 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                                         ) : post.thumbnail ? (
                                             <ImageWithLoader
                                                 src={post.thumbnail}
-                                                alt={post.title}
-                                                className="w-full h-full object-cover pixelated"
+                                                alt={title}
+                                                className="w-full h-full object-cover"
                                                 containerClassName="w-full h-full"
                                             />
                                         ) : (
                                             <ImageIcon size={48} className="text-gray-400 group-hover:text-black dark:text-gray-500 dark:group-hover:text-white" />
                                         )}
                                     </div>
-                                    <h3 className="font-bold text-lg truncate mb-2">{post.title}</h3>
+                                    <h3 className="font-bold text-lg truncate mb-2">{title}</h3>
 
                                     <div className="flex gap-2 mt-auto items-center justify-between">
                                         {/* Grouped Date Block */}
@@ -93,9 +98,9 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                                         </div>
 
                                         {/* Category Tag */}
-                                        {post.category && (
+                                        {category && (
                                             <div className="border border-black dark:border-white px-2 py-0.5 text-xs bg-black text-white dark:bg-white dark:text-black uppercase">
-                                                {post.category}
+                                                {category}
                                             </div>
                                         )}
                                     </div>
@@ -106,6 +111,5 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                 })}
             </div>
         </div>
-
     );
 };

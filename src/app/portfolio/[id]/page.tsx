@@ -36,6 +36,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
         <main className="h-[100dvh] w-full p-2 sm:p-4 flex flex-col items-center justify-start pt-[32px] overflow-hidden box-border fixed inset-0">
             <RetroContainer
                 title={post.title}
+                title_en={post.title_en}
                 backgroundColor={post.backgroundColor}
                 backgroundImage={post.backgroundImage}
                 backgroundMode={post.backgroundMode}

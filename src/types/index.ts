@@ -2,6 +2,7 @@ export type BlockType = 'header' | 'text' | 'subtitle' | 'image' | 'grid' | 'lin
 
 export interface BlockButton {
     text: string;
+    text_en?: string; // English translation
     url: string;
     bgColor?: string;
     textColor?: string;
@@ -13,13 +14,17 @@ export interface Block {
     id: string;
     type: BlockType;
     content: string; // Text content or Image URL
+    content_en?: string; // English translation for content
     altText?: string; // Alt text for image blocks
+    altText_en?: string; // English translation for altText
     width?: number; // Image width
     height?: number; // Image height
     items?: string[]; // For grids (array of image URLs)
     itemAlts?: string[]; // Alt text for grid items
+    itemAlts_en?: string[]; // English translation for itemAlts
     linkUrl?: string; // For link blocks
     linkText?: string; // For link blocks
+    linkText_en?: string; // English translation for linkText
     linkColor?: string; // Color for inline links in text content
     bgColor?: string; // Background color for button
     textColor?: string; // Text color for button
@@ -34,6 +39,7 @@ export interface Block {
 export interface Post {
     id: string;
     title: string;
+    title_en?: string; // English translation
     slug?: string;
     date: string;
     thumbnail: string;
@@ -50,6 +56,7 @@ export interface Post {
     cardBackgroundColor?: string;
     cardTextColor?: string;
     category?: string;
+    category_en?: string; // English translation
     active?: boolean; // Whether the post is active/visible (default: true)
     order?: number; // Custom sort order
     usePostBackgroundForCard?: boolean; // Use post background for card

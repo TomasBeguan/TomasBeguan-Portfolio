@@ -39,13 +39,6 @@ export default async function Home() {
                 <PortfolioGrid posts={activePosts} />
             </RetroWindow>
 
-            {/* Cursor Graphic (Decorative) */}
-            <div className="absolute bottom-8 right-12 pointer-events-none animate-pulse">
-                <svg width="30" height="40" viewBox="0 0 30 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.5 2L2 28L8.5 26.5L11.5 38L16.5 36.5L13.5 25.5L20 24L9.5 2Z" fill="white" stroke="var(--main-color)" strokeWidth="2" />
-                </svg>
-            </div>
-
             <GlobalCanvas />
         </main>
     );
