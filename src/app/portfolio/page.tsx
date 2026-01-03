@@ -1,7 +1,7 @@
 
 
 import { RetroWindow } from "@/components/RetroWindow";
-import { GlobalCanvas } from "@/components/GlobalCanvas";
+
 import { PortfolioGrid } from "@/components/PortfolioGrid";
 import { Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
@@ -31,7 +31,7 @@ export default async function PortfolioPage() {
             <RetroWindow className="w-full max-w-5xl md:flex-1 md:min-h-0 mb-3 flex flex-col md:mt-8">
                 <PortfolioGrid posts={activePosts} />
             </RetroWindow>
-            <GlobalCanvas />
+
         </main>
     );
 }

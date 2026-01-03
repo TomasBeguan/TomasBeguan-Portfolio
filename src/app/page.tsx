@@ -1,6 +1,6 @@
 import { RetroWindow } from "@/components/RetroWindow";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
-import { GlobalCanvas } from "@/components/GlobalCanvas";
+
 
 import { Post } from "@/types";
 import fs from 'fs';
@@ -39,7 +39,7 @@ export default async function Home() {
                 <PortfolioGrid posts={activePosts} />
             </RetroWindow>
 
-            <GlobalCanvas />
+
         </main>
     );
 }

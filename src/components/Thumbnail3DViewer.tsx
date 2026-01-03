@@ -1,113 +1,10 @@
 "use client";
 
-import { useFrame, useThree } from "@react-three/fiber";
-import { useGLTF, Stage, Html, View, PerspectiveCamera } from "@react-three/drei";
-import { Suspense, useRef, useState, useEffect, useMemo } from "react";
-import { Loader2, AlertTriangle } from "lucide-react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useGLTF, Stage, Html, PerspectiveCamera } from "@react-three/drei";
+import { Suspense, useRef, useState, useEffect } from "react";
+import { Loader2 } from "lucide-react";
 import * as THREE from "three";
-
-
-function ScissorController({ track }: { track: React.RefObject<HTMLElement | null> }) {
-    const { gl, scene } = useThree();
-    const rectRef = useRef<DOMRect | null>(null);
-    const scrollRectRef = useRef<DOMRect | null>(null);
-
-    // 1. Detectar si es móvil
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    useEffect(() => {
-        // Si es móvil, NO hacemos nada. El componente termina aquí.
-        if (isMobile) return;
-
-        const el = track.current;
-        if (!el) return;
-
-        const updateRects = () => {
-            rectRef.current = el.getBoundingClientRect();
-            const scrollContainer = el.closest(".retro-scrollbar") as HTMLElement | null;
-            scrollRectRef.current = scrollContainer
-                ? scrollContainer.getBoundingClientRect()
-                : null;
-        };
-
-        updateRects();
-        // Usamos capture y passive para mejorar el rendimiento del scroll en desktop
-        window.addEventListener("scroll", updateRects, { capture: true, passive: true });
-        window.addEventListener("resize", updateRects);
-
-        const observer = new ResizeObserver(updateRects);
-        observer.observe(el);
-        const scrollNode = el.closest(".retro-scrollbar");
-        if (scrollNode) observer.observe(scrollNode);
-
-        return () => {
-            window.removeEventListener("scroll", updateRects);
-            window.removeEventListener("resize", updateRects);
-            observer.disconnect();
-        };
-    }, [track, isMobile]); // Agregamos isMobile a las dependencias
-
-    useEffect(() => {
-        // 2. Segunda comprobación de seguridad para móvil
-        if (isMobile) return;
-
-        scene.onBeforeRender = () => {
-            const rect = rectRef.current;
-            const scrollRect = scrollRectRef.current;
-
-            if (!rect) {
-                gl.setScissorTest(false);
-                return;
-            }
-
-            const pixelRatio = gl.getPixelRatio();
-
-            let clipRect = rect;
-
-            if (scrollRect) {
-                const top = Math.max(rect.top, scrollRect.top);
-                const bottom = Math.min(rect.bottom, scrollRect.bottom);
-                const left = Math.max(rect.left, scrollRect.left);
-                const right = Math.min(rect.right, scrollRect.right);
-
-                clipRect = {
-                    top,
-                    bottom,
-                    left,
-                    right,
-                    width: Math.max(0, right - left),
-                    height: Math.max(0, bottom - top),
-                } as DOMRect;
-            }
-
-            if (clipRect.width <= 0 || clipRect.height <= 0) {
-                gl.setScissorTest(false);
-                return;
-            }
-
-            gl.setScissorTest(true);
-
-            const canvasHeight = gl.domElement.height / pixelRatio;
-
-            // Cálculo directo sin suavizado (EASE) para desktop
-            const scissorLeft = clipRect.left * pixelRatio;
-            const scissorBottom = (canvasHeight - clipRect.bottom) * pixelRatio;
-            const scissorWidth = clipRect.width * pixelRatio;
-            const scissorHeight = clipRect.height * pixelRatio;
-
-            gl.setScissor(scissorLeft, scissorBottom, scissorWidth, scissorHeight);
-        };
-
-        return () => {
-            scene.onBeforeRender = () => { };
-            gl.setScissorTest(false);
-        };
-    }, [gl, scene, track, isMobile]);
-
-    return null;
-}
-
-export default ScissorController;
 
 
 interface ThumbnailModelProps {
@@ -116,24 +13,16 @@ interface ThumbnailModelProps {
 }
 
 function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
-
-
     const touchRef = useRef({
         startX: 0,
         startY: 0,
-        currentX: 0,
-        currentY: 0,
         dragging: false,
     });
 
-
     const { scene } = useGLTF(url);
     const ref = useRef<THREE.Group>(null);
-
-    const inputRef = useRef({ rotX: 0, rotY: 0 }); // Stores Mouse (Desktop) or Gyro (Mobile) target
+    const inputRef = useRef({ rotX: 0, rotY: 0 });
     const [isMobile, setIsMobile] = useState(false);
-
-
 
     useEffect(() => {
         const checkMobile = () => {
@@ -143,8 +32,6 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
         window.addEventListener('resize', checkMobile);
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
-
-
 
     useEffect(() => {
         if (!isMobile) return;
@@ -163,7 +50,6 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
             const dx = t.clientX - touchRef.current.startX;
             const dy = t.clientY - touchRef.current.startY;
 
-            // Sensibilidad (ajustable)
             const rotY = dx * 0.005;
             const rotX = dy * 0.005;
 
@@ -186,8 +72,6 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
         };
     }, [isMobile]);
 
-
-
     useFrame((state) => {
         if (!ref.current || !isVisible) return;
 
@@ -198,11 +82,9 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
         let targetRotY = 0;
 
         if (isMobile) {
-            // Mobile: Touch drag
             targetRotX = inputRef.current.rotX;
             targetRotY = inputRef.current.rotY;
         } else {
-            // Desktop: Mouse
             targetRotY = state.pointer.x * 0.5;
             targetRotX = -state.pointer.y * 0.5;
         }
@@ -222,9 +104,6 @@ function ThumbnailModel({ url, isVisible }: ThumbnailModelProps) {
         ref.current.position.y = wigglePosY;
     });
 
-
-
-
     return (
         <group ref={ref}>
             <primitive object={scene} />
@@ -241,11 +120,6 @@ export function Thumbnail3DViewer({ url, className }: Thumbnail3DViewerProps) {
     const [isVisible, setIsVisible] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // Monkey patch removed in favor of ScissorController
-    // This allows separating Viewport (placement) from Scissor (clipping)
-    // to prevent distortion when scrolling
-
-
     useEffect(() => {
         const scrollContainer = containerRef.current?.closest('.retro-scrollbar');
 
@@ -256,7 +130,8 @@ export function Thumbnail3DViewer({ url, className }: Thumbnail3DViewerProps) {
             {
                 root: scrollContainer || null,
                 threshold: 0,
-                rootMargin: "-20px 0px -20px 0px" // Hide slightly before edges to prevent spill
+                // Load slightly before entry and keep alive slightly after exit
+                rootMargin: "50px 0px 50px 0px"
             }
         );
 
@@ -274,23 +149,25 @@ export function Thumbnail3DViewer({ url, className }: Thumbnail3DViewerProps) {
                     <Loader2 className="animate-spin text-gray-400" size={24} />
                 </div>
             ) : (
-                <View track={containerRef as any} className="absolute inset-0 w-full h-full overflow-hidden">
+                <Canvas
+                    shadows={false}
+                    dpr={[1, 2]} // This handles high-DPR and zoom correctly automatically
+                    gl={{ alpha: true, antialias: true }}
+                    className="absolute inset-0 w-full h-full"
+                >
                     <Suspense fallback={
                         <Html center>
-                            <div className="flex items-center justify-center">
-                                <Loader2 className="animate-spin text-gray-400" size={24} />
-                            </div>
+                            <Loader2 className="animate-spin text-gray-400" size={24} />
                         </Html>
                     }>
-                        <ScissorController track={containerRef} />
                         <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={15} />
                         <ambientLight intensity={0.5} />
-                        <directionalLight position={[10, 10, 5]} intensity={2} castShadow />
+                        <directionalLight position={[10, 10, 5]} intensity={2} />
                         <Stage environment="city" intensity={0.2} adjustCamera={1.2} shadows={false}>
                             <ThumbnailModel url={url} isVisible={isVisible} />
                         </Stage>
                     </Suspense>
-                </View>
+                </Canvas>
             )}
         </div>
     );
