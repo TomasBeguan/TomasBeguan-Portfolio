@@ -23,7 +23,8 @@
       {
         "id": "1765940463557",
         "type": "video",
-        "content": "https://youtu.be/7iNN3ijybiw"
+        "content": "https://youtu.be/7iNN3ijybiw",
+        "altText": "ApoloMilfo.mov"
       },
       {
         "id": "1767140639936",
@@ -287,7 +288,8 @@
       {
         "id": "1763961033029",
         "type": "video",
-        "content": "https://www.youtube.com/watch?v=hOylRdqeO80"
+        "content": "https://www.youtube.com/watch?v=hOylRdqeO80",
+        "altText": "HELP_ME.exe"
       },
       {
         "id": "1763968064525",
@@ -417,7 +419,9 @@
       {
         "id": "1763969821006",
         "type": "video",
-        "content": "https://www.youtube.com/watch?v=joS5705Q9-U"
+        "content": "https://www.youtube.com/watch?v=joS5705Q9-U",
+        "altText": "Helianthus.gif",
+        "altText_en": "Helianthus.gif"
       },
       {
         "id": "1765940047364",
@@ -427,7 +431,9 @@
       {
         "id": "1763970030962",
         "type": "video",
-        "content": "https://www.youtube.com/watch?v=A198fPu61zU"
+        "content": "https://www.youtube.com/watch?v=A198fPu61zU",
+        "altText": "Ignis.gif",
+        "altText_en": "Ignis.gif"
       },
       {
         "id": "1765940123157",
@@ -437,7 +443,9 @@
       {
         "id": "1763970254452",
         "type": "video",
-        "content": "https://www.youtube.com/watch?v=PfAYiDy1pdw"
+        "content": "https://www.youtube.com/watch?v=PfAYiDy1pdw",
+        "altText": "Osseus.gif",
+        "altText_en": "Osseus.gif"
       },
       {
         "id": "1763970059096",
@@ -851,7 +859,8 @@
       {
         "id": "1765404451755",
         "type": "model3d",
-        "content": "/uploads/1765404456797-Faction03.glb"
+        "content": "/uploads/1765404456797-Faction03.glb",
+        "textureUrl": "/uploads/1767405570967-20240322_163848.webp"
       }
     ],
     "thumbnailWidth": 1920,

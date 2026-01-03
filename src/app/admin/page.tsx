@@ -178,8 +178,8 @@ export default function AdminPage() {
 
     if (editingPost) {
         return (
-            <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-16">
-                <RetroContainer title={`Editing: ${editingPost.title}`} onBack={() => setEditingPost(null)} className="md:flex-1 md:min-h-0 md:mt-8">
+            <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-3">
+                <RetroContainer title={`Editing: ${editingPost.title}`} onBack={() => setEditingPost(null)} className="md:flex-1 md:min-h-0 md:mt-8 mb-3">
                     <div className="flex flex-col gap-4">
                         {/* Language Toggle */}
                         <div className="flex bg-gray-200 border-2 border-black p-1 gap-1 self-start sticky top-0 z-20">
@@ -647,6 +647,13 @@ export default function AdminPage() {
                                                 className="border border-black p-2 font-mono text-sm"
                                                 placeholder="https://www.youtube.com/watch?v=..."
                                             />
+                                            <label className="text-xs font-bold mt-2">Video Title ({editLang.toUpperCase()})</label>
+                                            <input
+                                                value={(editLang === 'en' ? block.altText_en : block.altText) || ''}
+                                                onChange={e => updateBlock(block.id, editLang === 'en' ? { altText_en: e.target.value } : { altText: e.target.value })}
+                                                className="border border-black p-2 font-mono text-sm"
+                                                placeholder="Title for the player bar..."
+                                            />
                                         </div>
                                     ) : block.type === 'grid' ? (
                                         <div className="flex flex-col gap-2">
@@ -943,8 +950,8 @@ export default function AdminPage() {
     }
 
     return (
-        <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-16">
-            <RetroContainer title="CMS Admin" className="md:flex-1 md:min-h-0 md:mt-8">
+        <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-3">
+            <RetroContainer title="CMS Admin" className="md:flex-1 md:min-h-0 md:mt-8 mb-3">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-xl font-bold">Projects</h1>
                     <div className="flex gap-2">

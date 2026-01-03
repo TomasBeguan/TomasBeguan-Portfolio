@@ -8,6 +8,7 @@ import { ImageModal } from "./ImageModal";
 import { ImageWithLoader } from "./ImageWithLoader";
 import { Model3DViewer } from "./Model3DViewer";
 import { useLanguage } from "@/context/LanguageContext";
+import { RetroVideoPlayer } from "./RetroVideoPlayer";
 
 
 interface BlockRendererProps {
@@ -155,26 +156,14 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                 </div>
                             );
                         case 'video':
-                            // Extract YouTube ID
-                            const getYoutubeId = (url: string) => {
-                                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-                                const match = url.match(regExp);
-                                return (match && match[2].length === 11) ? match[2] : null;
-                            };
-                            const videoId = getYoutubeId(block.content);
-                            return videoId ? (
-                                <div key={block.id} className="w-full aspect-video border-2 border-black p-1 bg-white shadow-retro-sm">
-                                    <iframe
-                                        width="100%"
-                                        height="100%"
-                                        src={`https://www.youtube.com/embed/${videoId}`}
-                                        title="YouTube video player"
-                                        frameBorder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                    ></iframe>
+                            return (
+                                <div key={block.id} className="w-full">
+                                    <RetroVideoPlayer
+                                        url={block.content}
+                                        title={getText(block.altText || '', block.altText_en)}
+                                    />
                                 </div>
-                            ) : null;
+                            );
                         case 'grid':
                             const items = block.items || [];
                             const itemAlts = (language === 'en' && block.itemAlts_en) ? block.itemAlts_en : block.itemAlts || [];
@@ -215,7 +204,7 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                             }];
 
                             return (
-                                <div key={block.id} className="flex flex-wrap justify-center gap-4 my-4">
+                                <div key={block.id} className="flex flex-col sm:flex-row justify-center gap-4 my-4 w-full">
                                     {buttons.map((btn, idx) => (
                                         <a
                                             key={idx}
@@ -223,7 +212,7 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className={cn(
-                                                "px-6 py-2 text-lg border-2 border-black bg-white shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-black active:text-white font-bold flex items-center gap-2",
+                                                "flex-1 px-6 py-3 text-lg border-2 border-black bg-white shadow-retro hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:bg-black active:text-white font-bold flex items-center justify-center gap-2 font-space-grotesk tracking-wider text-center",
                                             )}
                                             style={{
                                                 backgroundColor: btn.bgColor,
@@ -232,9 +221,9 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                             }}
                                         >
                                             {btn.iconUrl && (
-                                                <img src={btn.iconUrl} alt="icon" className="w-5 h-5" />
+                                                <img src={btn.iconUrl} alt="icon" className="w-5 h-5 flex-shrink-0" />
                                             )}
-                                            {getText(btn.text, btn.text_en)}
+                                            <span className="truncate">{getText(btn.text, btn.text_en)}</span>
                                         </a>
                                     ))}
                                 </div>

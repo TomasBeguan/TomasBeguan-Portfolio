@@ -10,8 +10,8 @@ export default function AboutPage() {
     const { language } = useLanguage();
 
     return (
-        <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4">
-            <RetroContainer title={language === 'es' ? "Sobre Mí" : "About Me"} className="md:flex-1 md:min-h-0">
+        <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-3">
+            <RetroContainer title={language === 'es' ? "Sobre Mí" : "About Me"} className="md:flex-1 md:min-h-0 md:mt-8 mb-3">
                 <div className="flex flex-col md:flex-row gap-8 items-start">
                     <div className="  border-2 border-black bg-gray-200 shadow-retro-sm">
                         <img src="/uploads/dithered-image.png" alt="Tomas Beguan" />

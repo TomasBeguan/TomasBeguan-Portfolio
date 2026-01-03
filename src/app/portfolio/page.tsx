@@ -27,8 +27,8 @@ export default async function PortfolioPage() {
         .sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
 
     return (
-        <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-16">
-            <RetroWindow className="w-full max-w-5xl md:flex-1 md:min-h-0 mb-8 sm:mb-12 flex flex-col md:mt-8">
+        <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-3">
+            <RetroWindow className="w-full max-w-5xl md:flex-1 md:min-h-0 mb-3 flex flex-col md:mt-8">
                 <PortfolioGrid posts={activePosts} />
             </RetroWindow>
             <GlobalCanvas />
