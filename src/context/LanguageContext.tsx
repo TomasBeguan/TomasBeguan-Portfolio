@@ -19,7 +19,9 @@ export const translations = {
         contact: "Contacto",
         admin: "Admin",
         home: "Inicio",
-        back: "Volver"
+        back: "Volver",
+        diario: "Diario",
+        diario_hint: "CLICK EN LAS PÁGINAS PARA PASAR"
     },
     en: {
         about: "About",
@@ -27,7 +29,9 @@ export const translations = {
         contact: "Contact",
         admin: "Admin",
         home: "Home",
-        back: "Back"
+        back: "Back",
+        diario: "Diary",
+        diario_hint: "CLICK ON PAGES TO FLIP"
     }
 };
 

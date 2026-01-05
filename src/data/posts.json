@@ -502,7 +502,9 @@
       {
         "id": "1763973115622",
         "type": "subtitle",
-        "content": "Galactic Ganger is a prototype multiplayer arena pvp game.\nDeveloped in Unreal Engine 5."
+        "content": "Galactic Ganger es un videojuego en estado de prototipo de genero arena pvp.\nEstá desarrollado en [*Unreal Engine 5*](https://www.unrealengine.com/es-ES/unreal-engine-5)",
+        "content_en": "Galactic Ganger is a prototype multiplayer arena pvp game.\nDeveloped in Unreal Engine 5.",
+        "linkColor": "#ffffff"
       },
       {
         "id": "1763971941975",
@@ -516,6 +518,22 @@
         "type": "image",
         "content": "/uploads/1763972078831-f69365cb-344b-42b6-902b-d1b7ffde99d3_rw_1920.gif",
         "noBorder": true
+      },
+      {
+        "id": "1763972187680",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "DESCARGAR EN ITCH.IO",
+            "url": "https://tomasbeguan.itch.io/galacticganger",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://tomasbeguan.itch.io/galacticganger&sz=64",
+            "textColor": "#ffffff",
+            "bgColor": "#92ca0c",
+            "borderColor": "#ffffff",
+            "text_en": "DOWNLOAD ON ITCH.IO"
+          }
+        ]
       },
       {
         "id": "1763972081552",
@@ -549,19 +567,6 @@
           ""
         ],
         "noBorder": true
-      },
-      {
-        "id": "1763972187680",
-        "type": "link",
-        "content": "",
-        "buttons": [
-          {
-            "text": "Download on Itch.io",
-            "url": "https://tomasbeguan.itch.io/galacticganger",
-            "iconUrl": "https://www.google.com/s2/favicons?domain=https://tomasbeguan.itch.io/galacticganger&sz=64",
-            "textColor": "#292929"
-          }
-        ]
       }
     ],
     "order": 5,
@@ -569,9 +574,10 @@
     "cardBackgroundColor": "#222222",
     "cardTextColor": "#ffffff",
     "backgroundColor": "#222222",
-    "category": "Animación 3D",
+    "category": "Desarrollo de videojuegos",
     "textColor": "#ffffff",
-    "slug": "galactic-ganger"
+    "slug": "galactic-ganger",
+    "category_en": "Game development"
   },
   {
     "id": "1",

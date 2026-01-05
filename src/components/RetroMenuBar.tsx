@@ -36,6 +36,7 @@ export const RetroMenuBar = () => {
     const navItems = [
         { label: t("home"), href: "/" },
         { label: t("portfolio"), href: "/portfolio" },
+        { label: t("diario"), href: "/diario" },
         { label: t("about"), href: "/about" },
         { label: t("admin"), href: "/admin" },
     ];

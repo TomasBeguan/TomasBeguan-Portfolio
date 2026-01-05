@@ -956,6 +956,7 @@ export default function AdminPage() {
                     <h1 className="text-xl font-bold">Projects</h1>
                     <div className="flex gap-2">
                         <RetroButton onClick={handleLogout} className="text-red-600 border-red-600 hover:bg-red-600 hover:text-white"><LogOut size={16} /></RetroButton>
+                        <RetroButton onClick={() => router.push('/admin/diary')} className="bg-yellow-100"><Eye size={16} /> Diary CMS</RetroButton>
                         <RetroButton onClick={handleCreatePost}><Plus size={16} /> New Project</RetroButton>
                     </div>
                 </div>

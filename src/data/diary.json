@@ -1,0 +1,18 @@
+{
+  "cover": "/uploads/1767583327612-00.webp",
+  "backCover": "/uploads/1767583329411-zz.webp",
+  "pages": [
+    {
+      "id": "1",
+      "front": "/uploads/1767584029895-01.webp",
+      "back": "/uploads/1767584032823-02.webp"
+    },
+    {
+      "id": "1767582277042",
+      "front": "/uploads/1767584035593-03.webp",
+      "back": "/uploads/1767584037506-04.webp"
+    }
+  ],
+  "aspectRatio": "cover",
+  "borderRadius": "25px"
+}
