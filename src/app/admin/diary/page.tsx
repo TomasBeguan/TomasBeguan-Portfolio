@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { RetroContainer } from "@/components/RetroContainer";
 import { RetroButton } from "@/components/RetroButton";
 import { cn } from "@/lib/utils";
-import { Plus, Trash, ArrowUp, ArrowDown, Save, LogOut } from "lucide-react";
+import { Plus, Trash, ArrowUp, ArrowDown, Save } from "lucide-react";
 import { ImageUploader } from "@/components/Admin/ImageUploader";
 
 interface DiaryPage {
@@ -20,6 +20,7 @@ interface DiaryData {
     pages: DiaryPage[];
     aspectRatio?: string;
     borderRadius?: string;
+    glossy?: boolean;
 }
 
 const LeafEditor = memo(({
@@ -35,7 +36,6 @@ const LeafEditor = memo(({
     onMove: (index: number, direction: 'up' | 'down') => void;
     onRemove: (id: string) => void;
 }) => {
-    // Stable callbacks for ImageUploader to maintain memoization
     const handleUploadFront = useCallback((url: string) => {
         onUpdate(page.id, { front: url });
     }, [onUpdate, page.id]);
@@ -78,19 +78,24 @@ const LeafEditor = memo(({
 LeafEditor.displayName = 'LeafEditor';
 
 export default function DiaryAdminPage() {
-    const [diary, setDiary] = useState<DiaryData>({ cover: '', backCover: '', pages: [], aspectRatio: '14/10', borderRadius: '4px' });
+    const [diary, setDiary] = useState<DiaryData>({
+        cover: '',
+        backCover: '',
+        pages: [],
+        aspectRatio: '14/10',
+        borderRadius: '4px',
+        glossy: true
+    });
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
-        // Check Auth
         fetch('/api/auth/check')
             .then(res => {
                 if (!res.ok) {
                     router.push('/admin/login');
                 } else {
                     setLoading(false);
-                    // Load diary data
                     fetch('/api/diary')
                         .then(res => res.json())
                         .then(data => {
@@ -98,7 +103,8 @@ export default function DiaryAdminPage() {
                                 setDiary({
                                     ...data,
                                     aspectRatio: data.aspectRatio || '14/10',
-                                    borderRadius: data.borderRadius || '4px'
+                                    borderRadius: data.borderRadius || '4px',
+                                    glossy: data.glossy !== undefined ? data.glossy : true
                                 });
                             }
                         });
@@ -112,20 +118,12 @@ export default function DiaryAdminPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(diary)
         });
-
-        if (res.ok) {
-            alert('Diary saved!');
-        } else {
-            alert('Error saving diary');
-        }
+        if (res.ok) alert('Diary saved!');
+        else alert('Error saving diary');
     };
 
     const addPage = useCallback(() => {
-        const newPage: DiaryPage = {
-            id: Date.now().toString(),
-            front: '',
-            back: ''
-        };
+        const newPage: DiaryPage = { id: Date.now().toString(), front: '', back: '' };
         setDiary(prev => ({ ...prev, pages: [...prev.pages, newPage] }));
     }, []);
 
@@ -158,18 +156,14 @@ export default function DiaryAdminPage() {
         <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-16">
             <RetroContainer title="DIARY CMS" onBack={() => router.push('/admin')} className="md:flex-1 md:min-h-0 mb-3 max-w-4xl w-full">
                 <div className="flex flex-col gap-8 p-4">
-
                     <div className="flex justify-between items-center bg-gray-100 p-4 border-2 border-dashed border-black">
                         <h2 className="font-chicago text-xl">DIARY CONFIGURATION</h2>
-                        <div className="flex gap-2">
-                            <RetroButton onClick={handleSave} className="flex items-center gap-2 bg-black text-white hover:bg-gray-800">
-                                <Save size={16} /> SAVE DIARY
-                            </RetroButton>
-                        </div>
+                        <RetroButton onClick={handleSave} className="flex items-center gap-2 bg-black text-white hover:bg-gray-800">
+                            <Save size={16} /> SAVE DIARY
+                        </RetroButton>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* Book Proportions */}
                         <div className="bg-white border-2 border-black p-4 flex flex-col gap-4">
                             <div className="flex justify-between items-center">
                                 <label className="font-chicago text-[10px] uppercase">Book Proportions</label>
@@ -179,7 +173,6 @@ export default function DiaryAdminPage() {
                                         type="text"
                                         value={diary.aspectRatio}
                                         onChange={(e) => setDiary({ ...diary, aspectRatio: e.target.value })}
-                                        placeholder="14/10"
                                         className="border-2 border-black px-1 py-0.5 text-[10px] font-chicago w-16 outline-none"
                                     />
                                 </div>
@@ -200,7 +193,7 @@ export default function DiaryAdminPage() {
                                 <button
                                     onClick={() => setDiary({ ...diary, aspectRatio: 'cover' })}
                                     className={cn(
-                                        "px-2 py-1 border-2 text-[10px] font-chicago transition-all bg-retro-green/10",
+                                        "px-2 py-1 border-2 text-[10px] font-chicago transition-all",
                                         diary.aspectRatio === 'cover' ? "bg-black text-retro-green border-black" : "text-retro-green border-retro-green/30 hover:border-retro-green"
                                     )}
                                 >
@@ -209,60 +202,65 @@ export default function DiaryAdminPage() {
                             </div>
                         </div>
 
-                        {/* Page Rounding */}
                         <div className="bg-white border-2 border-black p-4 flex flex-col gap-4">
-                            <div className="flex justify-between items-center">
-                                <label className="font-chicago text-[10px] uppercase">Page Rounding</label>
-                                <div className="flex items-center gap-1">
-                                    <span className="text-[8px] font-chicago text-gray-400">CUSTOM:</span>
-                                    <input
-                                        type="text"
-                                        value={diary.borderRadius}
-                                        onChange={(e) => setDiary({ ...diary, borderRadius: e.target.value })}
-                                        placeholder="4px"
-                                        className="border-2 border-black px-1 py-0.5 text-[10px] font-chicago w-16 outline-none"
-                                    />
-                                </div>
+                            <label className="font-chicago text-[10px] uppercase">Page Finish</label>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setDiary({ ...diary, glossy: true })}
+                                    className={cn(
+                                        "flex-1 px-3 py-2 border-2 text-[10px] font-chicago transition-all",
+                                        diary.glossy ? "bg-black text-white border-black" : "bg-white text-black border-gray-200 hover:border-black"
+                                    )}
+                                >
+                                    GLOSSY
+                                </button>
+                                <button
+                                    onClick={() => setDiary({ ...diary, glossy: false })}
+                                    className={cn(
+                                        "flex-1 px-3 py-2 border-2 text-[10px] font-chicago transition-all",
+                                        !diary.glossy ? "bg-black text-white border-black" : "bg-white text-black border-gray-200 hover:border-black"
+                                    )}
+                                >
+                                    MATTE
+                                </button>
                             </div>
-                            <div className="flex flex-wrap gap-2">
-                                {[
-                                    { label: 'Sharp', value: '0px' },
-                                    { label: 'Soft', value: '4px' },
-                                    { label: 'Round', value: '15px' },
-                                    { label: 'Oval', value: '40px' },
-                                    { label: 'Full', value: '100px' },
-                                ].map((opt) => (
-                                    <button
-                                        key={opt.value}
-                                        onClick={() => setDiary({ ...diary, borderRadius: opt.value })}
-                                        className={cn(
-                                            "px-2 py-1 border-2 text-[10px] font-chicago transition-all",
-                                            diary.borderRadius === opt.value ? "bg-black text-white border-black" : "bg-white text-black border-gray-200 hover:border-black"
-                                        )}
-                                    >
-                                        {opt.label}
-                                    </button>
-                                ))}
-                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white border-2 border-black p-4 flex flex-col gap-4">
+                        <div className="flex justify-between items-center">
+                            <label className="font-chicago text-[10px] uppercase">Page Rounding</label>
+                            <input
+                                type="text"
+                                value={diary.borderRadius}
+                                onChange={(e) => setDiary({ ...diary, borderRadius: e.target.value })}
+                                className="border-2 border-black px-1 py-0.5 text-[10px] font-chicago w-16 outline-none"
+                            />
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                            {['0px', '4px', '15px', '40px'].map(v => (
+                                <button
+                                    key={v}
+                                    onClick={() => setDiary({ ...diary, borderRadius: v })}
+                                    className={cn(
+                                        "px-2 py-1 border-2 text-[10px] font-chicago transition-all",
+                                        diary.borderRadius === v ? "bg-black text-white border-black" : "bg-white text-black border-gray-200 hover:border-black"
+                                    )}
+                                >
+                                    {v}
+                                </button>
+                            ))}
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="flex flex-col gap-2">
                             <label className="font-bold uppercase text-sm">Main Cover</label>
-                            <ImageUploader
-                                currentValue={diary.cover}
-                                onUpload={(url) => setDiary({ ...diary, cover: url })}
-                            />
-                            {diary.cover && <img src={diary.cover} className="h-40 object-contain border-2 border-black mt-2 self-center" alt="Cover preview" />}
+                            <ImageUploader currentValue={diary.cover} onUpload={(url) => setDiary({ ...diary, cover: url })} />
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="font-bold uppercase text-sm">Back Cover</label>
-                            <ImageUploader
-                                currentValue={diary.backCover}
-                                onUpload={(url) => setDiary({ ...diary, backCover: url })}
-                            />
-                            {diary.backCover && <img src={diary.backCover} className="h-40 object-contain border-2 border-black mt-2 self-center" alt="Back cover preview" />}
+                            <ImageUploader currentValue={diary.backCover} onUpload={(url) => setDiary({ ...diary, backCover: url })} />
                         </div>
                     </div>
 
@@ -273,24 +271,10 @@ export default function DiaryAdminPage() {
                                 <Plus size={14} /> ADD NEW LEAF
                             </RetroButton>
                         </div>
-
                         <div className="flex flex-col gap-6">
                             {diary.pages.map((page, index) => (
-                                <LeafEditor
-                                    key={page.id}
-                                    page={page}
-                                    index={index}
-                                    onUpdate={updatePage}
-                                    onMove={movePage}
-                                    onRemove={removePage}
-                                />
+                                <LeafEditor key={page.id} page={page} index={index} onUpdate={updatePage} onMove={movePage} onRemove={removePage} />
                             ))}
-
-                            {diary.pages.length === 0 && (
-                                <div className="text-center py-12 border-2 border-dashed border-gray-300 text-gray-400 font-chicago italic">
-                                    NO INTERIOR PAGES ADDED YET
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>

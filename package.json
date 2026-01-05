@@ -14,6 +14,7 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^24.10.1",
+    "@types/page-flip": "^2.0.4",
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.22",
@@ -35,8 +36,10 @@
     "next": "^16.0.8",
     "next-themes": "^0.4.6",
     "nodemailer": "^7.0.11",
+    "page-flip": "^2.0.7",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "react-pageflip": "^2.0.3",
     "resend": "^6.6.0",
     "tailwind-merge": "^3.4.0",
     "three": "^0.181.2"

@@ -104,5 +104,6 @@
     }
   ],
   "aspectRatio": "cover",
-  "borderRadius": "5%"
+  "borderRadius": "5%",
+  "glossy": false
 }
