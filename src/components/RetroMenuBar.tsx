@@ -39,7 +39,12 @@ export const RetroMenuBar = () => {
         { label: t("diario"), href: "/diario" },
         { label: t("about"), href: "/about" },
         { label: t("admin"), href: "/admin" },
-    ];
+    ].filter(item => {
+        if (item.href === "/admin") {
+            return process.env.NODE_ENV === "development";
+        }
+        return true;
+    });
 
     // Close menu when clicking outside
     useEffect(() => {

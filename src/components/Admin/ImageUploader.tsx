@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { RetroButton } from "@/components/RetroButton";
 import { Upload, Loader2 } from "lucide-react";
 import { compressImage } from "@/lib/imageCompression";
@@ -12,8 +12,14 @@ interface ImageUploaderProps {
     quality?: number;
 }
 
-export function ImageUploader({ onUpload, currentValue, maxWidth, quality }: ImageUploaderProps) {
+export const ImageUploader = memo(({ onUpload, currentValue, maxWidth, quality }: ImageUploaderProps) => {
     const [uploading, setUploading] = useState(false);
+    const [inputValue, setInputValue] = useState(currentValue || '');
+
+    // Sync local state with prop if prop changes externally
+    useEffect(() => {
+        setInputValue(currentValue || '');
+    }, [currentValue]);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const originalFile = e.target.files?.[0];
@@ -59,8 +65,20 @@ export function ImageUploader({ onUpload, currentValue, maxWidth, quality }: Ima
         <div className="flex flex-col gap-2">
             <div className="flex gap-2 items-center">
                 <input
-                    value={currentValue || ''}
-                    onChange={(e) => onUpload(e.target.value)}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onBlur={() => {
+                        if (inputValue !== currentValue) {
+                            onUpload(inputValue);
+                        }
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            if (inputValue !== currentValue) {
+                                onUpload(inputValue);
+                            }
+                        }
+                    }}
                     placeholder="Image URL or Upload ->"
                     className="flex-1 border border-black p-1 font-mono text-sm"
                 />
@@ -74,9 +92,16 @@ export function ImageUploader({ onUpload, currentValue, maxWidth, quality }: Ima
             </div>
             {currentValue && (
                 <div className="border border-black p-1 bg-gray-100 w-24 h-24 flex items-center justify-center overflow-hidden">
-                    <img src={currentValue} alt="Preview" className="max-w-full max-h-full object-contain pixelated" />
+                    <img
+                        src={currentValue}
+                        alt="Preview"
+                        loading="lazy"
+                        className="max-w-full max-h-full object-contain pixelated"
+                    />
                 </div>
             )}
         </div>
     );
-}
+});
+
+ImageUploader.displayName = 'ImageUploader';

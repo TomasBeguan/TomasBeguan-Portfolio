@@ -24,6 +24,11 @@ export const DiaryBook = ({
 }: DiaryBookProps) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [computedRatio, setComputedRatio] = useState<string>('14/10');
+    const [isZoomed, setIsZoomed] = useState(false);
+    const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+    const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         if (aspectRatio === 'cover' && cover) {
@@ -80,7 +85,71 @@ export const DiaryBook = ({
         }
     };
 
-    // Calculate dynamic aspect ratio class if it's a standard one or use style
+    const handlePageClick = (isFlipped: boolean) => {
+        if (!isZoomed) {
+            if (isFlipped) flipPrev(); else flipNext();
+        }
+    };
+
+    const handlePageDoubleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (isZoomed) {
+            setIsZoomed(false);
+            setPanOffset({ x: 0, y: 0 });
+        } else {
+            const rect = e.currentTarget.closest('.book-container')?.getBoundingClientRect();
+            if (rect) {
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                setZoomOrigin({ x, y });
+                setIsZoomed(true);
+            }
+        }
+    };
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (isZoomed) {
+            setIsDragging(true);
+            setDragStart({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
+        }
+    };
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (isZoomed && isDragging) {
+            setPanOffset({
+                x: e.clientX - dragStart.x,
+                y: e.clientY - dragStart.y
+            });
+        }
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    // Calculate corrected border radius for circular corners if percentage is used
+    const correctedRadius = useMemo(() => {
+        if (!borderRadius || !borderRadius.includes('%') || borderRadius.includes('/') || borderRadius.includes(' ')) return borderRadius;
+
+        const percent = parseFloat(borderRadius);
+        if (isNaN(percent)) return borderRadius;
+
+        const ratioValue = (() => {
+            if (computedRatio.includes('/')) {
+                const [w, h] = computedRatio.split('/');
+                return parseFloat(w) / parseFloat(h);
+            }
+            return parseFloat(computedRatio) || 1.4;
+        })();
+
+        // For a single page (w-1/2), the aspect ratio is ratioValue / 2
+        const pageAspectRatio = ratioValue / 2;
+        // Vertical radius = Horizontal radius * (Width / Height)
+        const verticalPercent = percent * pageAspectRatio;
+        // Use space for individual corner properties, not slash
+        return `${borderRadius} ${verticalPercent}%`;
+    }, [borderRadius, computedRatio]);
+
     const getAspectRatioStyle = () => {
         if (computedRatio.includes('/')) {
             const [w, h] = computedRatio.split('/');
@@ -94,29 +163,36 @@ export const DiaryBook = ({
     };
 
     return (
-        <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12 overflow-hidden perspective-[3500px]">
+        <div
+            className="relative w-full h-full flex items-center justify-center p-4 md:p-8 overflow-hidden perspective-[3500px]"
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+        >
             {/* Book Container */}
             <div
-                className="relative w-full max-w-[1000px] preserve-3d transition-all duration-[1.2s] cubic-bezier(0.645, 0.045, 0.355, 1)"
+                className={`book-container relative w-full max-w-[1000px] preserve-3d transition-all duration-[1.2s] cubic-bezier(0.645, 0.045, 0.355, 1) ${isZoomed ? 'z-50' : 'z-10'} ${isDragging ? 'cursor-grabbing' : isZoomed ? 'cursor-grab' : ''}`}
+                onMouseDown={handleMouseDown}
                 style={{
                     ...getAspectRatioStyle(),
-                    transform: currentIndex === 0
-                        ? 'translateX(-25%)'
-                        : currentIndex === bookLeaves.length
-                            ? 'translateX(25%)'
-                            : 'translateX(0)'
+                    transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+                    transform: `
+                        ${currentIndex === 0 ? 'translateX(-25%)' : currentIndex === bookLeaves.length ? 'translateX(25%)' : 'translateX(0)'}
+                        ${isZoomed ? `scale(2.5) translate(${panOffset.x / 2.5}px, ${panOffset.y / 2.5}px)` : 'scale(1)'}
+                    `,
+                    transition: isDragging ? 'none' : 'transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)'
                 }}
             >
 
                 {/* Book Base (Static Back) */}
                 <div className={`absolute inset-0 flex transition-all duration-700 ${currentIndex === 0 || currentIndex === bookLeaves.length ? '' : 'shadow-3xl'}`}>
                     <div
-                        className={`flex-1 bg-[#fdfaf3] transition-all duration-700 ${currentIndex === 0 ? 'opacity-0' : 'opacity-100'} ${currentIndex === bookLeaves.length ? 'border border-black/10 shadow-2xl' : ''}`}
-                        style={{ borderTopLeftRadius: borderRadius, borderBottomLeftRadius: borderRadius }}
+                        className={`flex-1 bg-[#fdfaf3] transition-all duration-700 border border-black/30 ${currentIndex === 0 ? 'opacity-0' : 'opacity-100'}`}
+                        style={{ borderTopLeftRadius: correctedRadius, borderBottomLeftRadius: correctedRadius, transform: 'translateZ(0)' }}
                     />
                     <div
-                        className={`flex-1 bg-[#fdfaf3] transition-all duration-700 ${currentIndex === bookLeaves.length ? 'opacity-0' : 'opacity-100'} ${currentIndex === 0 ? 'border border-black/10 shadow-2xl' : ''}`}
-                        style={{ borderTopRightRadius: borderRadius, borderBottomRightRadius: borderRadius }}
+                        className={`flex-1 bg-[#fdfaf3] transition-all duration-700 border border-black/30 ${currentIndex === bookLeaves.length ? 'opacity-0' : 'opacity-100'}`}
+                        style={{ borderTopRightRadius: correctedRadius, borderBottomRightRadius: correctedRadius, transform: 'translateZ(0)' }}
                     />
                 </div>
 
@@ -135,7 +211,7 @@ export const DiaryBook = ({
                     return (
                         <div
                             key={index}
-                            className={`absolute top-0 right-0 w-1/2 h-full preserve-3d origin-left transition-all cursor-pointer select-none`}
+                            className={`absolute top-0 right-0 w-1/2 h-full preserve-3d origin-left transition-all select-none`}
                             style={{
                                 zIndex: zIndex,
                                 transform: isFlipped
@@ -143,17 +219,19 @@ export const DiaryBook = ({
                                     : 'rotateY(0deg) scale(1)',
                                 transitionDuration: '1.2s',
                                 transitionTimingFunction: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-                                visibility: (index >= currentIndex - 2 && index <= currentIndex + 1) ? 'visible' : 'hidden'
+                                visibility: (index >= currentIndex - 2 && index <= currentIndex + 1) ? 'visible' : 'hidden',
+                                cursor: isZoomed ? 'zoom-out' : 'zoom-in'
                             }}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                if (isFlipped) flipPrev(); else flipNext();
+                                handlePageClick(isFlipped);
                             }}
+                            onDoubleClick={handlePageDoubleClick}
                         >
                             {/* Front Side */}
                             <div
-                                className={`absolute inset-0 border-l border-black/5 backface-hidden overflow-hidden flex flex-col items-center justify-between bg-[#fdfaf3] ${isFirstLeaf ? 'shadow-2xl' : ''}`}
-                                style={{ borderTopRightRadius: borderRadius, borderBottomRightRadius: borderRadius }}
+                                className={`absolute inset-0 border border-black/30 backface-hidden overflow-hidden flex flex-col items-center justify-between bg-[#fdfaf3] ${isFirstLeaf ? 'shadow-2xl' : ''}`}
+                                style={{ borderTopRightRadius: correctedRadius, borderBottomRightRadius: correctedRadius, transform: 'translateZ(0)' }}
                             >
                                 <div className="flex-1 w-full h-full flex items-center justify-center relative">
                                     {leaf.front ? (
@@ -164,28 +242,16 @@ export const DiaryBook = ({
                                         />
                                     ) : null}
 
-                                    {/* Page Number (Right side = Even numbers 2, 4...) */}
-                                    {!isFirstLeaf && !isLastLeaf && (
-                                        <div className="absolute bottom-2 right-2 font-chicago text-[10px] text-black/40 bg-white/60 backdrop-blur-sm px-1.5 py-0.5 rounded-sm z-10 border border-black/5">
-                                            {index * 2}
-                                        </div>
-                                    )}
                                 </div>
-                                {/* Visual indicator for cover */}
-                                {isFirstLeaf && !isFlipped && (
-                                    <div className="absolute top-4 right-4 font-chicago text-[10px] uppercase text-black/30 bg-white/20 backdrop-blur-md px-2 py-1 rounded-sm border border-black/5 z-10">
-                                        Front Cover
-                                    </div>
-                                )}
                             </div>
 
                             {/* Back Side */}
                             <div
-                                className={`absolute inset-0 border-r border-black/5 backface-hidden overflow-hidden flex flex-col items-center justify-between bg-[#fdfaf3] ${isLastLeaf ? 'shadow-2xl' : ''}`}
+                                className={`absolute inset-0 border border-black/30 backface-hidden overflow-hidden flex flex-col items-center justify-between bg-[#fdfaf3] ${isLastLeaf ? 'shadow-2xl' : ''}`}
                                 style={{
-                                    transform: 'rotateY(180deg)',
-                                    borderTopLeftRadius: borderRadius,
-                                    borderBottomLeftRadius: borderRadius
+                                    transform: 'rotateY(180deg) translateZ(0)',
+                                    borderTopLeftRadius: correctedRadius,
+                                    borderBottomLeftRadius: correctedRadius
                                 }}
                             >
                                 <div className="flex-1 w-full h-full flex items-center justify-center relative">
@@ -197,20 +263,7 @@ export const DiaryBook = ({
                                         />
                                     ) : null}
 
-                                    {/* Page Number (Left side = Odd numbers 1, 3, 5...) */}
-                                    {!isLastLeaf && (
-                                        <div className="absolute bottom-2 left-2 font-chicago text-[10px] text-black/40 bg-white/60 backdrop-blur-sm px-1.5 py-0.5 rounded-sm z-10 border border-black/5">
-                                            {index * 2 + 1}
-                                        </div>
-                                    )}
                                 </div>
-
-                                {/* Visual indicator for back cover */}
-                                {isLastLeaf && isFlipped && (
-                                    <div className="absolute top-4 left-4 font-chicago text-[10px] uppercase text-black/30 bg-white/20 backdrop-blur-md px-2 py-1 rounded-sm border border-black/5 z-10">
-                                        Back Cover
-                                    </div>
-                                )}
                             </div>
                         </div>
                     );

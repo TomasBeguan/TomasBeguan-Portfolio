@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import { useRouter } from "next/navigation";
 import { RetroContainer } from "@/components/RetroContainer";
 import { RetroButton } from "@/components/RetroButton";
@@ -21,6 +21,61 @@ interface DiaryData {
     aspectRatio?: string;
     borderRadius?: string;
 }
+
+const LeafEditor = memo(({
+    page,
+    index,
+    onUpdate,
+    onMove,
+    onRemove
+}: {
+    page: DiaryPage;
+    index: number;
+    onUpdate: (id: string, updates: Partial<DiaryPage>) => void;
+    onMove: (index: number, direction: 'up' | 'down') => void;
+    onRemove: (id: string) => void;
+}) => {
+    // Stable callbacks for ImageUploader to maintain memoization
+    const handleUploadFront = useCallback((url: string) => {
+        onUpdate(page.id, { front: url });
+    }, [onUpdate, page.id]);
+
+    const handleUploadBack = useCallback((url: string) => {
+        onUpdate(page.id, { back: url });
+    }, [onUpdate, page.id]);
+
+    return (
+        <div className="border-2 border-black bg-white p-4 relative group shadow-retro transition-all hover:-translate-y-1">
+            <div className="absolute -left-3 top-1/2 -translate-y-1/2 bg-black text-white font-chicago px-2 py-1 text-xs border-2 border-white">
+                LEAF {index + 1}
+            </div>
+
+            <div className="absolute right-2 top-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <button onClick={() => onMove(index, 'up')} className="hover:bg-gray-200 p-1"><ArrowUp size={16} /></button>
+                <button onClick={() => onMove(index, 'down')} className="hover:bg-gray-200 p-1"><ArrowDown size={16} /></button>
+                <button onClick={() => onRemove(page.id)} className="text-red-500 hover:bg-red-50 p-1"><Trash size={16} /></button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-bold uppercase text-gray-400">Front (Right Side)</label>
+                    <ImageUploader
+                        currentValue={page.front}
+                        onUpload={handleUploadFront}
+                    />
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label className="text-[10px] font-bold uppercase text-gray-400">Back (Left Side)</label>
+                    <ImageUploader
+                        currentValue={page.back}
+                        onUpload={handleUploadBack}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+});
+LeafEditor.displayName = 'LeafEditor';
 
 export default function DiaryAdminPage() {
     const [diary, setDiary] = useState<DiaryData>({ cover: '', backCover: '', pages: [], aspectRatio: '14/10', borderRadius: '4px' });
@@ -65,35 +120,37 @@ export default function DiaryAdminPage() {
         }
     };
 
-    const addPage = () => {
+    const addPage = useCallback(() => {
         const newPage: DiaryPage = {
             id: Date.now().toString(),
             front: '',
             back: ''
         };
-        setDiary({ ...diary, pages: [...diary.pages, newPage] });
-    };
+        setDiary(prev => ({ ...prev, pages: [...prev.pages, newPage] }));
+    }, []);
 
-    const removePage = (id: string) => {
-        setDiary({ ...diary, pages: diary.pages.filter(p => p.id !== id) });
-    };
+    const removePage = useCallback((id: string) => {
+        setDiary(prev => ({ ...prev, pages: prev.pages.filter(p => p.id !== id) }));
+    }, []);
 
-    const movePage = (index: number, direction: 'up' | 'down') => {
-        const newPages = [...diary.pages];
-        if (direction === 'up' && index > 0) {
-            [newPages[index], newPages[index - 1]] = [newPages[index - 1], newPages[index]];
-        } else if (direction === 'down' && index < newPages.length - 1) {
-            [newPages[index], newPages[index + 1]] = [newPages[index + 1], newPages[index]];
-        }
-        setDiary({ ...diary, pages: newPages });
-    };
-
-    const updatePage = (id: string, updates: Partial<DiaryPage>) => {
-        setDiary({
-            ...diary,
-            pages: diary.pages.map(p => p.id === id ? { ...p, ...updates } : p)
+    const movePage = useCallback((index: number, direction: 'up' | 'down') => {
+        setDiary(prev => {
+            const newPages = [...prev.pages];
+            if (direction === 'up' && index > 0) {
+                [newPages[index], newPages[index - 1]] = [newPages[index - 1], newPages[index]];
+            } else if (direction === 'down' && index < newPages.length - 1) {
+                [newPages[index], newPages[index + 1]] = [newPages[index + 1], newPages[index]];
+            }
+            return { ...prev, pages: newPages };
         });
-    };
+    }, []);
+
+    const updatePage = useCallback((id: string, updates: Partial<DiaryPage>) => {
+        setDiary(prev => ({
+            ...prev,
+            pages: prev.pages.map(p => p.id === id ? { ...p, ...updates } : p)
+        }));
+    }, []);
 
     if (loading) return <div className="min-h-screen flex items-center justify-center font-bold">LOADING SYSTEM...</div>;
 
@@ -219,34 +276,14 @@ export default function DiaryAdminPage() {
 
                         <div className="flex flex-col gap-6">
                             {diary.pages.map((page, index) => (
-                                <div key={page.id} className="border-2 border-black bg-white p-4 relative group shadow-retro transition-all hover:-translate-y-1">
-                                    <div className="absolute -left-3 top-1/2 -translate-y-1/2 bg-black text-white font-chicago px-2 py-1 text-xs border-2 border-white">
-                                        LEAF {index + 1}
-                                    </div>
-
-                                    <div className="absolute right-2 top-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                        <button onClick={() => movePage(index, 'up')} className="hover:bg-gray-200 p-1"><ArrowUp size={16} /></button>
-                                        <button onClick={() => movePage(index, 'down')} className="hover:bg-gray-200 p-1"><ArrowDown size={16} /></button>
-                                        <button onClick={() => removePage(page.id)} className="text-red-500 hover:bg-red-50 p-1"><Trash size={16} /></button>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                                        <div className="flex flex-col gap-1">
-                                            <label className="text-[10px] font-bold uppercase text-gray-400">Front (Right Side)</label>
-                                            <ImageUploader
-                                                currentValue={page.front}
-                                                onUpload={(url) => updatePage(page.id, { front: url })}
-                                            />
-                                        </div>
-                                        <div className="flex flex-col gap-1">
-                                            <label className="text-[10px] font-bold uppercase text-gray-400">Back (Left Side)</label>
-                                            <ImageUploader
-                                                currentValue={page.back}
-                                                onUpload={(url) => updatePage(page.id, { back: url })}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                                <LeafEditor
+                                    key={page.id}
+                                    page={page}
+                                    index={index}
+                                    onUpdate={updatePage}
+                                    onMove={movePage}
+                                    onRemove={removePage}
+                                />
                             ))}
 
                             {diary.pages.length === 0 && (

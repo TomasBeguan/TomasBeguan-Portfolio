@@ -11,8 +11,98 @@
       "id": "1767582277042",
       "front": "/uploads/1767584035593-03.webp",
       "back": "/uploads/1767584037506-04.webp"
+    },
+    {
+      "id": "1767600573790",
+      "front": "/uploads/1767600631263-05.webp",
+      "back": "/uploads/1767600633326-06.webp"
+    },
+    {
+      "id": "1767600635290",
+      "front": "/uploads/1767600638871-07.webp",
+      "back": "/uploads/1767600641391-08.webp"
+    },
+    {
+      "id": "1767600635447",
+      "front": "/uploads/1767600644042-09.webp",
+      "back": "/uploads/1767600646648-10.webp"
+    },
+    {
+      "id": "1767600635483",
+      "front": "/uploads/1767600649160-11.webp",
+      "back": "/uploads/1767600651578-12.webp"
+    },
+    {
+      "id": "1767600635643",
+      "front": "/uploads/1767600655366-13.webp",
+      "back": "/uploads/1767600657777-14.webp"
+    },
+    {
+      "id": "1767600659728",
+      "front": "/uploads/1767600664474-15.webp",
+      "back": "/uploads/1767600667969-16.webp"
+    },
+    {
+      "id": "1767600659887",
+      "front": "/uploads/1767600670847-17.webp",
+      "back": "/uploads/1767600673077-18.webp"
+    },
+    {
+      "id": "1767600659918",
+      "front": "/uploads/1767600675894-19.webp",
+      "back": "/uploads/1767600678275-20.webp"
+    },
+    {
+      "id": "1767600660071",
+      "front": "/uploads/1767600681438-21.webp",
+      "back": "/uploads/1767600683583-22.webp"
+    },
+    {
+      "id": "1767600660225",
+      "front": "/uploads/1767600685990-23.webp",
+      "back": "/uploads/1767600688380-24.webp"
+    },
+    {
+      "id": "1767600660370",
+      "front": "/uploads/1767600694569-25.webp",
+      "back": "/uploads/1767600697095-26.webp"
+    },
+    {
+      "id": "1767600700133",
+      "front": "/uploads/1767600713831-29.webp",
+      "back": "/uploads/1767600716449-30.webp"
+    },
+    {
+      "id": "1767600700529",
+      "front": "/uploads/1767600722455-31.webp",
+      "back": "/uploads/1767600726121-32.webp"
+    },
+    {
+      "id": "1767600700851",
+      "front": "/uploads/1767600728713-33.webp",
+      "back": "/uploads/1767600731098-34.webp"
+    },
+    {
+      "id": "1767600733234",
+      "front": "/uploads/1767600741478-35.webp",
+      "back": "/uploads/1767600744401-36.webp"
+    },
+    {
+      "id": "1767600733666",
+      "front": "/uploads/1767600746912-37.webp",
+      "back": "/uploads/1767600749278-38.webp"
+    },
+    {
+      "id": "1767600734181",
+      "front": "/uploads/1767600751885-39.webp",
+      "back": "/uploads/1767600754218-40.webp"
+    },
+    {
+      "id": "1767600734723",
+      "front": "/uploads/1767600759630-41.webp",
+      "back": "/uploads/1767600762296-42.webp"
     }
   ],
   "aspectRatio": "cover",
-  "borderRadius": "25px"
+  "borderRadius": "5%"
 }
