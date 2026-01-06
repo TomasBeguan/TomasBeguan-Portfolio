@@ -9,9 +9,12 @@ interface DiaryData {
     cover: string;
     backCover: string;
     pages: { front: string, back: string }[];
-    aspectRatio?: string;
+    width?: number;
+    height?: number;
     borderRadius?: string;
     glossy?: boolean;
+    staticLeft?: string;
+    staticRight?: string;
 }
 
 export default function DiarioPage() {
@@ -42,9 +45,12 @@ export default function DiarioPage() {
                         cover={diaryData.cover}
                         backCover={diaryData.backCover}
                         pages={diaryData.pages}
-                        aspectRatio={diaryData.aspectRatio}
+                        width={diaryData.width}
+                        height={diaryData.height}
                         borderRadius={diaryData.borderRadius}
                         glossy={diaryData.glossy}
+                        staticLeft={diaryData.staticLeft}
+                        staticRight={diaryData.staticRight}
                     />
                 </div>
             )}

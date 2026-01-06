@@ -18,9 +18,12 @@ interface DiaryData {
     cover: string;
     backCover: string;
     pages: DiaryPage[];
-    aspectRatio?: string;
+    width?: number;
+    height?: number;
     borderRadius?: string;
     glossy?: boolean;
+    staticLeft?: string;
+    staticRight?: string;
 }
 
 const LeafEditor = memo(({
@@ -82,10 +85,14 @@ export default function DiaryAdminPage() {
         cover: '',
         backCover: '',
         pages: [],
-        aspectRatio: '14/10',
+        width: 10,
+        height: 14,
         borderRadius: '4px',
-        glossy: true
+        glossy: true,
+        staticLeft: '',
+        staticRight: ''
     });
+
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -102,9 +109,12 @@ export default function DiaryAdminPage() {
                             if (data && !data.error) {
                                 setDiary({
                                     ...data,
-                                    aspectRatio: data.aspectRatio || '14/10',
+                                    width: data.width || 10,
+                                    height: data.height || 14,
                                     borderRadius: data.borderRadius || '4px',
-                                    glossy: data.glossy !== undefined ? data.glossy : true
+                                    glossy: data.glossy !== undefined ? data.glossy : true,
+                                    staticLeft: data.staticLeft || '',
+                                    staticRight: data.staticRight || ''
                                 });
                             }
                         });
@@ -166,40 +176,33 @@ export default function DiaryAdminPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="bg-white border-2 border-black p-4 flex flex-col gap-4">
                             <div className="flex justify-between items-center">
-                                <label className="font-chicago text-[10px] uppercase">Book Proportions</label>
-                                <div className="flex items-center gap-1">
-                                    <span className="text-[8px] font-chicago text-gray-400">CUSTOM:</span>
+                                <label className="font-chicago text-[10px] uppercase text-retro-green">Internal Proportions (W/H)</label>
+                                <span className="text-[10px] font-chicago text-gray-400">DETECTED FROM COVER</span>
+                            </div>
+                            <div className="flex gap-4 items-center">
+                                <div className="flex flex-col gap-1 flex-1">
+                                    <label className="text-[8px] font-chicago text-gray-400">WIDTH</label>
                                     <input
-                                        type="text"
-                                        value={diary.aspectRatio}
-                                        onChange={(e) => setDiary({ ...diary, aspectRatio: e.target.value })}
-                                        className="border-2 border-black px-1 py-0.5 text-[10px] font-chicago w-16 outline-none"
+                                        type="number"
+                                        value={diary.width}
+                                        onChange={(e) => setDiary({ ...diary, width: parseFloat(e.target.value) })}
+                                        className="border-2 border-black px-2 py-1 text-xs font-chicago w-full outline-none"
+                                    />
+                                </div>
+                                <div className="text-xl font-bold mt-4">/</div>
+                                <div className="flex flex-col gap-1 flex-1">
+                                    <label className="text-[8px] font-chicago text-gray-400">HEIGHT</label>
+                                    <input
+                                        type="number"
+                                        value={diary.height}
+                                        onChange={(e) => setDiary({ ...diary, height: parseFloat(e.target.value) })}
+                                        className="border-2 border-black px-2 py-1 text-xs font-chicago w-full outline-none"
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-wrap gap-2">
-                                {['1/1', '4/3', '14/10', '16/9', '10/14'].map((v) => (
-                                    <button
-                                        key={v}
-                                        onClick={() => setDiary({ ...diary, aspectRatio: v })}
-                                        className={cn(
-                                            "px-2 py-1 border-2 text-[10px] font-chicago transition-all",
-                                            diary.aspectRatio === v ? "bg-black text-white border-black" : "bg-white text-black border-gray-200 hover:border-black"
-                                        )}
-                                    >
-                                        {v}
-                                    </button>
-                                ))}
-                                <button
-                                    onClick={() => setDiary({ ...diary, aspectRatio: 'cover' })}
-                                    className={cn(
-                                        "px-2 py-1 border-2 text-[10px] font-chicago transition-all",
-                                        diary.aspectRatio === 'cover' ? "bg-black text-retro-green border-black" : "text-retro-green border-retro-green/30 hover:border-retro-green"
-                                    )}
-                                >
-                                    AUTO (COVER)
-                                </button>
-                            </div>
+                            <p className="text-[9px] text-gray-500 italic mt-1">
+                                * Se actualizan automáticamente cuando subes una portada, pero puedes ajustarlos.
+                            </p>
                         </div>
 
                         <div className="bg-white border-2 border-black p-4 flex flex-col gap-4">
@@ -256,11 +259,24 @@ export default function DiaryAdminPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="flex flex-col gap-2">
                             <label className="font-bold uppercase text-sm">Main Cover</label>
-                            <ImageUploader currentValue={diary.cover} onUpload={(url) => setDiary({ ...diary, cover: url })} />
+                            <ImageUploader
+                                currentValue={diary.cover}
+                                onUpload={(url, w, h) => setDiary({ ...diary, cover: url, width: w || diary.width, height: h || diary.height })}
+                            />
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="font-bold uppercase text-sm">Back Cover</label>
                             <ImageUploader currentValue={diary.backCover} onUpload={(url) => setDiary({ ...diary, backCover: url })} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="font-bold uppercase text-sm text-retro-green">Static Background (Left)</label>
+                            <p className="text-[9px] text-gray-500">Visible under transparent pages on the left side.</p>
+                            <ImageUploader currentValue={diary.staticLeft || ''} onUpload={(url) => setDiary({ ...diary, staticLeft: url })} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label className="font-bold uppercase text-sm text-retro-green">Static Background (Right)</label>
+                            <p className="text-[9px] text-gray-500">Visible under transparent pages on the right side.</p>
+                            <ImageUploader currentValue={diary.staticRight || ''} onUpload={(url) => setDiary({ ...diary, staticRight: url })} />
                         </div>
                     </div>
 

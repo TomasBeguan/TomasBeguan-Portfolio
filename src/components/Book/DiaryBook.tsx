@@ -12,15 +12,18 @@ interface DiaryBookProps {
     cover: string;
     backCover: string;
     pages: PageData[];
-    aspectRatio?: string;
+    width?: number;
+    height?: number;
     borderRadius?: string;
     glossy?: boolean;
+    staticLeft?: string;
+    staticRight?: string;
 }
 
 // Separate component for each page to satisfy react-pageflip requirements
 const Page = React.forwardRef<HTMLDivElement, { children: React.ReactNode, index: number, borderRadius?: string }>(
     (props, ref) => {
-        const isLeftPage = props.index % 2 !== 0; // In standard book, odd index (0-indexed) is Left
+        const isLeftPage = props.index % 2 !== 0;
 
         const pageStyle: React.CSSProperties = {
             borderTopRightRadius: isLeftPage ? '0' : props.borderRadius,
@@ -32,7 +35,7 @@ const Page = React.forwardRef<HTMLDivElement, { children: React.ReactNode, index
         return (
             <div className="page" ref={ref}>
                 <div
-                    className="page-content w-full h-full bg-[#fdfaf3] relative border border-black/10 overflow-hidden"
+                    className="page-content w-full h-full relative overflow-hidden"
                     style={pageStyle}
                 >
                     {props.children}
@@ -43,65 +46,33 @@ const Page = React.forwardRef<HTMLDivElement, { children: React.ReactNode, index
 );
 Page.displayName = 'Page';
 
+import { Maximize2, Minimize2 } from 'lucide-react';
+
 export const DiaryBook = ({
     cover,
     backCover,
     pages,
-    aspectRatio = "14/10",
-    borderRadius = "4px",
-    glossy = true
+    width = 2000,
+    height = 3230,
+    borderRadius = "0px",
+    glossy = true,
+    staticLeft,
+    staticRight
 }: DiaryBookProps) => {
     const bookRef = useRef<any>(null);
-    const [dimensions, setDimensions] = useState({ width: 450, height: 630 });
     const [isMounted, setIsMounted] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
+    const [isZoomed, setIsZoomed] = useState(false);
+    const [isPortrait, setIsPortrait] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
-        const updateSize = async () => {
-            const container = document.querySelector('.book-wrapper');
-            if (container) {
-                const rect = container.getBoundingClientRect();
-                const availableHeight = rect.height;
-                const availableWidth = rect.width;
-
-                // Parse Aspect Ratio
-                let singlePageRatio = 0.714; // Default 10/14
-                if (aspectRatio === 'cover' && cover) {
-                    await new Promise((resolve) => {
-                        const img = new Image();
-                        img.src = cover;
-                        img.onload = () => {
-                            singlePageRatio = img.naturalWidth / img.naturalHeight;
-                            resolve(null);
-                        };
-                        img.onerror = () => resolve(null);
-                    });
-                } else if (aspectRatio.includes('/')) {
-                    const [w, h] = aspectRatio.split('/');
-                    // aspectRatio is for TWO pages spread. One page is (W/2) / H
-                    singlePageRatio = (parseFloat(w) / 2) / parseFloat(h);
-                } else if (!isNaN(parseFloat(aspectRatio))) {
-                    singlePageRatio = parseFloat(aspectRatio) / 2;
-                }
-
-                // Size calculation
-                let h = availableHeight * 0.9;
-                let w = h * singlePageRatio;
-
-                if (w * 2 > availableWidth * 0.95) {
-                    w = (availableWidth * 0.95) / 2;
-                    h = w / singlePageRatio;
-                }
-
-                setDimensions({ width: Math.floor(w), height: Math.floor(h) });
-            }
-        };
-
-        updateSize();
-        window.addEventListener('resize', updateSize);
-        return () => window.removeEventListener('resize', updateSize);
-    }, [aspectRatio, cover]);
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        const handleResize = (e: MediaQueryListEvent | MediaQueryList) => setIsPortrait(e.matches);
+        handleResize(mediaQuery);
+        mediaQuery.addEventListener('change', handleResize);
+        return () => mediaQuery.removeEventListener('change', handleResize);
+    }, []);
 
     const onFlip = (e: any) => {
         setCurrentPage(e.data);
@@ -119,40 +90,126 @@ export const DiaryBook = ({
         return result;
     }, [cover, backCover, pages]);
 
-    if (!isMounted) return <div className="animate-pulse bg-stone-100 rounded-lg w-[450px] h-[630px]" />;
+    if (!isMounted) return <div className="animate-pulse bg-stone-100 rounded-lg w-full max-w-md aspect-[14/10]" />;
+
+    const w = Number(width);
+    const h = Number(height);
+    const spreadRatio = (w * 2) / h;
+    const singleRatio = w / h;
+
+    // On Mobile (Portrait), the limiting factor is usually WIDTH, not height.
+    // So we want to fill the Width (e.g. 95% or 100%).
+    // On Desktop (Landscape), limiting factor is usually HEIGHT.
+
+    // Zoom Logic:
+    // Mobile: 100% Width (Zoomed) vs 90% Width (Normal)
+    // Desktop: 95vh Height (Zoomed) vs 82vh Height (Normal)
+
+    // Base height for the book relative to viewport
+    // Zoomed: almost full height, Normal: comfortable reading height
+    // We adjust this based on orientation to avoid the book becoming tiny on mobile
+    const baseHeight = isZoomed ? '95vh' : '82vh';
+
+    // Static Background Logic
+    // Only active if defined in CMS. If empty, we don't show any background layer (transparency shows main bg).
+    const hasStaticBackgrounds = Boolean(staticLeft || staticRight);
+
+    // Visibility Logic
+    // Left Background: Hidden on Start (Cover & First Page/BackOfCover) -> Indices 0 and 1
+    const showLeftBg = currentPage > 1;
+
+    // Right Background: Hidden on End (Back Cover & Inside Back Cover)
+    // Last Page Index is flatPages.length - 1. 
+    // If we are at the end, we are viewing spread [Length-2, Length-1]. 
+    // We want to hide the Right background (behind the Back Cover) when it's the only thing left.
+    const showRightBg = currentPage < flatPages.length - 2;
+
+    const containerStyle = {
+        height: baseHeight,
+        width: `calc(${baseHeight} * ${spreadRatio})`,
+        maxWidth: '95vw', // Never exceed screen width
+        aspectRatio: `${spreadRatio}`,
+        transform: currentPage === 0
+            ? 'translateX(-25%)'
+            : currentPage === flatPages.length - 1
+                ? 'translateX(25%)'
+                : 'translateX(0)',
+        zIndex: isZoomed ? 100 : 1
+    };
 
     return (
-        <div className="book-wrapper w-full h-full flex flex-col items-center justify-center overflow-visible">
+        <div className={`book-wrapper w-full h-full flex flex-col items-center justify-center overflow-hidden relative ${isPortrait ? '' : 'p-4'}`}>
+            {/* Zoom Toggle Button */}
+            <button
+                onClick={() => setIsZoomed(!isZoomed)}
+                className="fixed bottom-24 right-8 z-[110] bg-white border-2 border-black p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all flex items-center justify-center"
+                title={isZoomed ? "Zoom Out" : "Zoom In"}
+            >
+                {isZoomed ? <Minimize2 size={24} /> : <Maximize2 size={24} />}
+            </button>
+
             {flatPages.length > 0 && (
                 <div
-                    className="transition-transform duration-[800ms] ease-in-out will-change-transform"
-                    style={{
-                        transform: currentPage === 0
-                            ? `translateX(${-dimensions.width / 2}px)`
-                            : currentPage === flatPages.length - 1
-                                ? `translateX(${dimensions.width / 2}px)`
-                                : 'translateX(0)'
-                    }}
+                    className="transition-all duration-500 ease-out will-change-transform relative shadow-book-real"
+                    style={containerStyle}
                 >
+                    {/* Static Background Layer - Only if CMS fields present */}
+                    {hasStaticBackgrounds && (
+                        <div className="absolute inset-0 w-full h-full flex z-0 pointer-events-none">
+                            {/* Desktop: Spread Background */}
+                            <>
+                                {/* Left Side Background */}
+                                <div
+                                    className={`w-1/2 h-full relative overflow-hidden transition-opacity duration-300 ${!showLeftBg ? 'opacity-0' : 'opacity-100'}`}
+                                    style={{ willChange: 'opacity' }}
+                                >
+                                    {staticLeft && (
+                                        <img
+                                            src={staticLeft}
+                                            alt="Left Background"
+                                            className="w-full h-full object-cover"
+                                            decoding="async"
+                                        />
+                                    )}
+                                </div>
+                                {/* Right Side Background */}
+                                <div
+                                    className={`w-1/2 h-full relative overflow-hidden transition-opacity duration-300 ${!showRightBg ? 'opacity-0' : 'opacity-100'}`}
+                                    style={{ willChange: 'opacity' }}
+                                >
+                                    {staticRight && (
+                                        <img
+                                            src={staticRight}
+                                            alt="Right Background"
+                                            className="w-full h-full object-cover"
+                                            decoding="async"
+                                        />
+                                    )}
+                                </div>
+                            </>
+                        </div>
+                    )}
+
                     <HTMLFlipBook
-                        width={dimensions.width}
-                        height={dimensions.height}
-                        size="fixed"
+                        key={`desktop-${isZoomed ? 'zoomed' : 'normal'}`}
+                        width={w}
+                        height={h}
+                        size="stretch"
                         minWidth={100}
-                        maxWidth={2000}
+                        maxWidth={4000}
                         minHeight={100}
-                        maxHeight={2000}
+                        maxHeight={4000}
                         maxShadowOpacity={glossy ? 0.4 : 0.2}
                         showCover={true}
                         mobileScrollSupport={true}
-                        className="diary-flipbook shadow-book-real"
-                        style={{ background: 'transparent' }}
-                        startPage={0}
+                        className="diary-flipbook"
+                        style={{ background: 'transparent', width: '100%', height: '100%' }}
+                        startPage={currentPage}
                         drawShadow={true}
-                        flippingTime={1000}
+                        flippingTime={500}
                         usePortrait={false}
                         startZIndex={0}
-                        autoSize={true}
+                        autoSize={false}
                         clickEventForward={true}
                         useMouseEvents={true}
                         swipeDistance={30}
@@ -167,12 +224,15 @@ export const DiaryBook = ({
                                     src={url}
                                     alt={`Page ${index}`}
                                     className="w-full h-full object-cover select-none pointer-events-none"
+                                    decoding="async"
+                                    loading={index < 2 || index > flatPages.length - 3 ? "eager" : "lazy"}
                                 />
                             </Page>
                         ))}
                     </HTMLFlipBook>
                 </div>
-            )}
+            )
+            }
 
             <style jsx global>{`
                 .book-wrapper {
@@ -180,9 +240,12 @@ export const DiaryBook = ({
                 }
                 .shadow-book-real {
                     filter: drop-shadow(0 25px 50px rgba(0,0,0,0.3));
+                    will-change: width, height, transform; 
                 }
                 .page {
-                    background-color: #fdfaf3;
+                    background-color: transparent;
+                    backface-visibility: hidden;
+                    will-change: transform;
                 }
                 /* Glossy vs Matte Styles */
                 .stf__outer-shadow {
@@ -206,6 +269,6 @@ export const DiaryBook = ({
                     overflow: visible !important;
                 }
             `}</style>
-        </div>
+        </div >
     );
 };
