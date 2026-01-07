@@ -33,7 +33,7 @@ export default function DiarioPage() {
     }, []);
 
     return (
-        <main className="w-full h-screen overflow-hidden flex flex-col items-center justify-center relative p-4 transition-colors duration-300">
+        <main className="w-full h-[calc(100vh-2rem)] overflow-hidden flex flex-col items-center justify-center relative p-4 transition-colors duration-300">
             {loading ? (
                 <div className="flex flex-col items-center gap-4 z-10">
                     <Loader2 className="animate-spin text-gray-400" size={32} />

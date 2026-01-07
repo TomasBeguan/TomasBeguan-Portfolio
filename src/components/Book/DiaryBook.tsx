@@ -46,8 +46,6 @@ const Page = React.forwardRef<HTMLDivElement, { children: React.ReactNode, index
 );
 Page.displayName = 'Page';
 
-import { Maximize2, Minimize2 } from 'lucide-react';
-
 export const DiaryBook = ({
     cover,
     backCover,
@@ -62,8 +60,9 @@ export const DiaryBook = ({
     const bookRef = useRef<any>(null);
     const [isMounted, setIsMounted] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
-    const [isZoomed, setIsZoomed] = useState(false);
     const [isPortrait, setIsPortrait] = useState(false);
+    const [forceShowLeft, setForceShowLeft] = useState(false);
+    const [forceHideRight, setForceHideRight] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
@@ -76,6 +75,28 @@ export const DiaryBook = ({
 
     const onFlip = (e: any) => {
         setCurrentPage(e.data);
+        setForceShowLeft(false);
+        setForceHideRight(false);
+    };
+
+    const onStateChange = (e: any) => {
+        if (e.data === 'flipping') {
+            const flip = bookRef.current?.pageFlip();
+            if (flip) {
+                const dest = flip.getDestPageIndex();
+                // If moving towards page 3 or further, show left bg early
+                if (dest >= 3) setForceShowLeft(true);
+                // If moving towards cover, ensure left bg is hidden
+                if (dest <= 1) setForceShowLeft(false);
+
+                // Symmetrical logic for the back cover: Hide right bg when reaching the last spread
+                if (dest >= flatPages.length - 3) {
+                    setForceHideRight(true);
+                } else {
+                    setForceHideRight(false);
+                }
+            }
+        }
     };
 
     // Flatten pages: [Cover, P1F, P1B, P2F, P2B, ..., BackCover]
@@ -95,103 +116,75 @@ export const DiaryBook = ({
     const w = Number(width);
     const h = Number(height);
     const spreadRatio = (w * 2) / h;
-    const singleRatio = w / h;
 
-    // On Mobile (Portrait), the limiting factor is usually WIDTH, not height.
-    // So we want to fill the Width (e.g. 95% or 100%).
-    // On Desktop (Landscape), limiting factor is usually HEIGHT.
-
-    // Zoom Logic:
-    // Mobile: 100% Width (Zoomed) vs 90% Width (Normal)
-    // Desktop: 95vh Height (Zoomed) vs 82vh Height (Normal)
-
-    // Base height for the book relative to viewport
-    // Zoomed: almost full height, Normal: comfortable reading height
-    // We adjust this based on orientation to avoid the book becoming tiny on mobile
-    const baseHeight = isZoomed ? '95vh' : '82vh';
-
-    // Static Background Logic
-    // Only active if defined in CMS. If empty, we don't show any background layer (transparency shows main bg).
+    const baseHeight = '82vh';
     const hasStaticBackgrounds = Boolean(staticLeft || staticRight);
 
-    // Visibility Logic
-    // Left Background: Hidden on Start (Cover & First Page/BackOfCover) -> Indices 0 and 1
-    const showLeftBg = currentPage > 1;
+    // Left Background Logic:
+    // Visible if we are ALREADY on spread 2+ (index 3)
+    // OR if we are on spread 1 (index 1) and currently flipping forward
+    const showLeftBg = (currentPage >= 3) || (currentPage === 1 && forceShowLeft);
 
-    // Right Background: Hidden on End (Back Cover & Inside Back Cover)
-    // Last Page Index is flatPages.length - 1. 
-    // If we are at the end, we are viewing spread [Length-2, Length-1]. 
-    // We want to hide the Right background (behind the Back Cover) when it's the only thing left.
-    const showRightBg = currentPage < flatPages.length - 2;
+    // Right Background Logic:
+    // Visible if we are NOT on the last spreads (last page and back cover)
+    // AND we are not currently flipping to close the book
+    const showRightBg = (currentPage < flatPages.length - 3) && !forceHideRight;
 
-    const containerStyle = {
-        height: baseHeight,
-        width: `calc(${baseHeight} * ${spreadRatio})`,
-        maxWidth: '95vw', // Never exceed screen width
+    const containerStyle: React.CSSProperties = {
+        width: isPortrait
+            ? '94vw'
+            : `calc(${baseHeight} * ${spreadRatio})`,
+        maxWidth: isPortrait ? 'none' : `calc(${baseHeight} * ${spreadRatio})`,
         aspectRatio: `${spreadRatio}`,
+        height: 'auto',
+        maxHeight: baseHeight,
         transform: currentPage === 0
             ? 'translateX(-25%)'
             : currentPage === flatPages.length - 1
                 ? 'translateX(25%)'
                 : 'translateX(0)',
-        zIndex: isZoomed ? 100 : 1
+        zIndex: 1
     };
 
     return (
         <div className={`book-wrapper w-full h-full flex flex-col items-center justify-center overflow-hidden relative ${isPortrait ? '' : 'p-4'}`}>
-            {/* Zoom Toggle Button */}
-            <button
-                onClick={() => setIsZoomed(!isZoomed)}
-                className="fixed bottom-24 right-8 z-[110] bg-white border-2 border-black p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all flex items-center justify-center"
-                title={isZoomed ? "Zoom Out" : "Zoom In"}
-            >
-                {isZoomed ? <Minimize2 size={24} /> : <Maximize2 size={24} />}
-            </button>
-
             {flatPages.length > 0 && (
                 <div
                     className="transition-all duration-500 ease-out will-change-transform relative shadow-book-real"
                     style={containerStyle}
                 >
-                    {/* Static Background Layer - Only if CMS fields present */}
                     {hasStaticBackgrounds && (
                         <div className="absolute inset-0 w-full h-full flex z-0 pointer-events-none">
-                            {/* Desktop: Spread Background */}
-                            <>
-                                {/* Left Side Background */}
-                                <div
-                                    className={`w-1/2 h-full relative overflow-hidden transition-opacity duration-300 ${!showLeftBg ? 'opacity-0' : 'opacity-100'}`}
-                                    style={{ willChange: 'opacity' }}
-                                >
-                                    {staticLeft && (
-                                        <img
-                                            src={staticLeft}
-                                            alt="Left Background"
-                                            className="w-full h-full object-cover"
-                                            decoding="async"
-                                        />
-                                    )}
-                                </div>
-                                {/* Right Side Background */}
-                                <div
-                                    className={`w-1/2 h-full relative overflow-hidden transition-opacity duration-300 ${!showRightBg ? 'opacity-0' : 'opacity-100'}`}
-                                    style={{ willChange: 'opacity' }}
-                                >
-                                    {staticRight && (
-                                        <img
-                                            src={staticRight}
-                                            alt="Right Background"
-                                            className="w-full h-full object-cover"
-                                            decoding="async"
-                                        />
-                                    )}
-                                </div>
-                            </>
+                            <div
+                                className={`w-1/2 h-full relative overflow-hidden transition-opacity duration-0 ${!showLeftBg ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
+                                style={{ transform: 'translateZ(0)', willChange: 'opacity' }}
+                            >
+                                {staticLeft && (
+                                    <img
+                                        src={staticLeft}
+                                        alt="Left Background"
+                                        className="w-full h-full object-cover"
+                                        decoding="async"
+                                    />
+                                )}
+                            </div>
+                            <div
+                                className={`w-1/2 h-full relative overflow-hidden transition-opacity duration-0 ${!showRightBg ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
+                                style={{ transform: 'translateZ(0)', willChange: 'opacity' }}
+                            >
+                                {staticRight && (
+                                    <img
+                                        src={staticRight}
+                                        alt="Right Background"
+                                        className="w-full h-full object-cover"
+                                        decoding="async"
+                                    />
+                                )}
+                            </div>
                         </div>
                     )}
 
                     <HTMLFlipBook
-                        key={`desktop-${isZoomed ? 'zoomed' : 'normal'}`}
                         width={w}
                         height={h}
                         size="stretch"
@@ -199,13 +192,13 @@ export const DiaryBook = ({
                         maxWidth={4000}
                         minHeight={100}
                         maxHeight={4000}
-                        maxShadowOpacity={glossy ? 0.4 : 0.2}
+                        maxShadowOpacity={glossy ? 0.4 : 0}
                         showCover={true}
                         mobileScrollSupport={true}
                         className="diary-flipbook"
                         style={{ background: 'transparent', width: '100%', height: '100%' }}
                         startPage={currentPage}
-                        drawShadow={true}
+                        drawShadow={glossy}
                         flippingTime={500}
                         usePortrait={false}
                         startZIndex={0}
@@ -215,6 +208,7 @@ export const DiaryBook = ({
                         swipeDistance={30}
                         showPageCorners={false}
                         onFlip={onFlip}
+                        onChangeState={onStateChange}
                         disableFlipByClick={false}
                         ref={bookRef}
                     >
@@ -231,8 +225,7 @@ export const DiaryBook = ({
                         ))}
                     </HTMLFlipBook>
                 </div>
-            )
-            }
+            )}
 
             <style jsx global>{`
                 .book-wrapper {
@@ -247,20 +240,14 @@ export const DiaryBook = ({
                     backface-visibility: hidden;
                     will-change: transform;
                 }
-                /* Glossy vs Matte Styles */
                 .stf__outer-shadow {
-                    background: ${glossy
-                    ? 'linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.2))'
-                    : 'rgba(0,0,0,0.05)'} !important;
-                    opacity: ${glossy ? 0.3 : 0.1} !important;
+                    display: ${glossy ? 'block' : 'none'} !important;
                 }
                 .stf__inner-shadow {
-                    background: ${glossy
-                    ? 'linear-gradient(to right, rgba(0,0,0,0.15), transparent)'
-                    : 'transparent'} !important;
-                    opacity: ${glossy ? 0.2 : 0} !important;
+                    display: ${glossy ? 'block' : 'none'} !important;
                 }
                 .page-content {
+                    background-color: transparent;
                     box-shadow: ${glossy
                     ? 'inset 0 0 20px rgba(0,0,0,0.03)'
                     : 'none'};
@@ -269,6 +256,6 @@ export const DiaryBook = ({
                     overflow: visible !important;
                 }
             `}</style>
-        </div >
+        </div>
     );
 };
