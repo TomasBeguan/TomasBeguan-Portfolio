@@ -6,6 +6,8 @@ import fs from 'fs';
 import path from 'path';
 import { notFound } from "next/navigation";
 
+export const revalidate = 3600;
+
 // This is a Server Component
 async function getPost(slugOrId: string): Promise<Post | undefined> {
     const filePath = path.join(process.cwd(), 'src/data/posts.json');

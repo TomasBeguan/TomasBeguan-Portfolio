@@ -139,7 +139,7 @@ export default function AdminPage() {
             id: Date.now().toString(),
             type,
             content: "",
-            items: type === 'grid' ? [] : undefined
+            items: (type === 'grid' || type === 'carousel') ? [] : undefined
         };
         setEditingPost({
             ...editingPost,
@@ -364,7 +364,7 @@ export default function AdminPage() {
                                         <div className="flex gap-2 items-center">
                                             <input
                                                 type="color"
-                                                value={editingPost.textColor || '#000000'}
+                                                value={editingPost.textColor || '#333333'}
                                                 onChange={e => setEditingPost({ ...editingPost, textColor: e.target.value })}
                                                 className="h-8 w-12 cursor-pointer border border-black"
                                             />
@@ -552,8 +552,12 @@ export default function AdminPage() {
                                                             const end = textarea.selectionEnd;
                                                             const text = textarea.value;
                                                             const selected = text.substring(start, end);
-                                                            const newText = text.substring(0, start) + `[${selected || 'text'}](${block.linkColor || '#7c3aed'})` + text.substring(end);
-                                                            updateBlock(block.id, editLang === 'en' ? { content_en: newText } : { content: newText });
+                                                            const url = window.prompt("Enter URL:", "https://");
+
+                                                            if (url) {
+                                                                const newText = text.substring(0, start) + `[${selected || 'text'}](${url})` + text.substring(end);
+                                                                updateBlock(block.id, editLang === 'en' ? { content_en: newText } : { content: newText });
+                                                            }
                                                         }
                                                     }}
                                                 >
@@ -628,6 +632,15 @@ export default function AdminPage() {
                                                 />
                                                 No Border
                                             </label>
+                                            <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={block.allowModal !== false} // Default to true if undefined
+                                                    onChange={e => updateBlock(block.id, { allowModal: e.target.checked })}
+                                                    className="accent-black"
+                                                />
+                                                Clickable (Modal)
+                                            </label>
                                             <label className="flex items-center gap-2 text-xs cursor-pointer select-none mt-1">
                                                 <input
                                                     type="checkbox"
@@ -659,6 +672,15 @@ export default function AdminPage() {
                                         <div className="flex flex-col gap-2">
                                             <div className="flex justify-between items-center">
                                                 <label className="text-xs font-bold">Grid Images</label>
+                                                <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={block.allowModal !== false}
+                                                        onChange={e => updateBlock(block.id, { allowModal: e.target.checked })}
+                                                        className="accent-black"
+                                                    />
+                                                    Clickable
+                                                </label>
                                                 <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
                                                     <input
                                                         type="checkbox"
@@ -917,6 +939,100 @@ export default function AdminPage() {
                                                 placeholder="Description..."
                                             />
                                         </div>
+                                    ) : block.type === 'carousel' ? (
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex justify-between items-center">
+                                                <label className="text-xs font-bold">Carousel Images</label>
+                                                <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={block.allowModal !== false}
+                                                        onChange={e => updateBlock(block.id, { allowModal: e.target.checked })}
+                                                        className="accent-black"
+                                                    />
+                                                    Clickable
+                                                </label>
+                                                <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={block.noBorder || false}
+                                                        onChange={e => updateBlock(block.id, { noBorder: e.target.checked })}
+                                                        className="accent-black"
+                                                    />
+                                                    No Border
+                                                </label>
+                                                <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={block.pixelate || false}
+                                                        onChange={e => updateBlock(block.id, { pixelate: e.target.checked })}
+                                                        className="accent-black"
+                                                    />
+                                                    Pixelate
+                                                </label>
+                                            </div>
+
+                                            <div className="flex flex-col gap-1 mb-2">
+                                                <label className="text-xs font-bold">Delay (seconds)</label>
+                                                <input
+                                                    type="number"
+                                                    min="0.5"
+                                                    step="0.5"
+                                                    value={block.delay || 3}
+                                                    onChange={e => updateBlock(block.id, { delay: parseFloat(e.target.value) })}
+                                                    className="border border-black p-2 font-mono text-sm w-24"
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col gap-4">
+                                                {block.items?.map((item, i) => (
+                                                    <div key={i} className="flex gap-2 items-start border border-gray-300 p-2 relative group">
+                                                        <div className="h-24 min-w-[3rem] max-w-[12rem] flex-shrink-0 border border-gray-200 bg-gray-50 flex items-center justify-center">
+                                                            <img src={item} alt="" className="h-full w-auto object-contain" />
+                                                        </div>
+                                                        <div className="flex flex-col gap-1 flex-1">
+                                                            <label className="text-xs font-bold">Alt Text ({editLang.toUpperCase()})</label>
+                                                            <input
+                                                                value={((editLang === 'en' ? block.itemAlts_en : block.itemAlts) || [])[i] || ''}
+                                                                onChange={e => {
+                                                                    const currentAlts = editLang === 'en' ? (block.itemAlts_en || []) : (block.itemAlts || []);
+                                                                    const newAlts = [...currentAlts];
+                                                                    // Ensure array is long enough
+                                                                    while (newAlts.length <= i) newAlts.push('');
+                                                                    newAlts[i] = e.target.value;
+                                                                    updateBlock(block.id, editLang === 'en' ? { itemAlts_en: newAlts } : { itemAlts: newAlts });
+                                                                }}
+                                                                className="border border-black p-1 font-mono text-xs w-full"
+                                                                placeholder="Caption..."
+                                                            />
+                                                        </div>
+                                                        <button
+                                                            onClick={() => {
+                                                                const newItems = block.items?.filter((_, idx) => idx !== i);
+                                                                const newAlts = block.itemAlts?.filter((_, idx) => idx !== i);
+                                                                updateBlock(block.id, { items: newItems, itemAlts: newAlts });
+                                                            }}
+                                                            className="text-red-500 hover:bg-red-50 p-1 rounded"
+                                                        >
+                                                            <Trash size={16} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                                <div className="w-full h-24 border-2 border-dashed border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors">
+                                                    <div className="flex flex-col items-center gap-2">
+                                                        <span className="text-xs text-gray-400 font-bold">ADD IMAGE</span>
+                                                        <ImageUploader
+                                                            currentValue=""
+                                                            onUpload={(url) => {
+                                                                const newItems = [...(block.items || []), url];
+                                                                const newAlts = [...(block.itemAlts || []), ''];
+                                                                updateBlock(block.id, { items: newItems, itemAlts: newAlts });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     ) : null}
                                 </div>
                             ))}
@@ -934,6 +1050,7 @@ export default function AdminPage() {
                                 <RetroButton onClick={() => addBlock('grid')} className="text-xs">Grid</RetroButton>
                                 <RetroButton onClick={() => addBlock('link')} className="text-xs">Button</RetroButton>
                                 <RetroButton onClick={() => addBlock('model3d')} className="text-xs">3D Model</RetroButton>
+                                <RetroButton onClick={() => addBlock('carousel')} className="text-xs">Carousel</RetroButton>
                             </div>
                         </div>
 

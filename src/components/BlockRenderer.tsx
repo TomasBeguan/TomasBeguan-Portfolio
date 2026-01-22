@@ -9,6 +9,7 @@ import { ImageWithLoader } from "./ImageWithLoader";
 import { Model3DViewer } from "./Model3DViewer";
 import { useLanguage } from "@/context/LanguageContext";
 import { RetroVideoPlayer } from "./RetroVideoPlayer";
+import { RetroCarousel } from "./RetroCarousel";
 
 
 interface BlockRendererProps {
@@ -16,8 +17,8 @@ interface BlockRendererProps {
     textColor?: string;
 }
 
-export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
-    const [selectedImage, setSelectedImage] = useState<{ url: string; alt?: string } | null>(null);
+export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererProps) {
+    const [selectedImage, setSelectedImage] = useState<{ url: string; alt?: string; transparent?: boolean } | null>(null);
     const { language } = useLanguage();
 
     // Helper to get localized content
@@ -105,13 +106,13 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                     switch (block.type) {
                         case 'header':
                             return (
-                                <h1 key={block.id} className="text-2xl md:text-4xl font-bold border-b-2 border-black pb-2 font-space-grotesk tracking-tight text-center " style={{ borderColor: textColor }}>
+                                <h1 key={block.id} className="text-2xl md:text-4xl font-bold border-b-2 border-black pb-2 font-space-grotesk tracking-tight text-center whitespace-pre-wrap" style={{ borderColor: textColor }}>
                                     {parseRichText(content, block.linkColor)}
                                 </h1>
                             );
                         case 'subtitle':
                             return (
-                                <h2 key={block.id} className="text-xl md:text-2xl mt-4 font-space-grotesk text-left leading-none">
+                                <h2 key={block.id} className="text-xl md:text-2xl mt-4 font-space-grotesk text-left leading-none whitespace-pre-wrap">
                                     {parseRichText(content, block.linkColor)}
                                 </h2>
                             );
@@ -141,16 +142,18 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                     key={block.id}
                                     className={cn(
                                         "w-full p-1 bg-white",
-                                        !block.noBorder && "border-2 border-black shadow-retro-sm cursor-zoom-in",
+                                        !block.noBorder && "border-2 border-black shadow-retro-sm",
+                                        block.allowModal !== false && "cursor-zoom-in",
                                         block.noBorder && "bg-transparent p-0"
                                     )}
-                                    onClick={() => !block.noBorder && setSelectedImage({ url: block.content, alt: altText })}
+                                    onClick={() => block.allowModal !== false && setSelectedImage({ url: block.content, alt: altText, transparent: block.noBorder })}
                                 >
                                     <ImageWithLoader
                                         src={block.content}
                                         alt={altText}
                                         width={block.width}
                                         height={block.height}
+                                        sizes="100vw"
                                         className={cn("w-full h-auto", block.pixelate && "pixelated")}
                                     />
                                 </div>
@@ -176,15 +179,17 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                             <div
                                                 key={idx}
                                                 className={cn(
-                                                    "p-1 bg-white h-full",
-                                                    !block.noBorder && "border-2 border-black hover:shadow-retro-sm transition-shadow cursor-zoom-in",
+                                                    "p-1 bg-white h-full aspect-square",
+                                                    !block.noBorder && "border-2 border-black hover:shadow-retro-sm transition-shadow",
+                                                    block.allowModal !== false && "cursor-zoom-in",
                                                     block.noBorder && "bg-transparent p-0"
                                                 )}
-                                                onClick={() => !block.noBorder && setSelectedImage({ url: src, alt: alt })}
+                                                onClick={() => block.allowModal !== false && setSelectedImage({ url: src, alt: alt, transparent: block.noBorder })}
                                             >
                                                 <ImageWithLoader
                                                     src={src}
                                                     alt={alt}
+                                                    containerClassName="w-full h-full"
                                                     className={cn("w-full h-full object-cover", block.pixelate && "pixelated")}
                                                 />
                                             </div>
@@ -238,6 +243,20 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                                     className="border-2 border-black shadow-retro-sm"
                                 />
                             );
+                        case 'carousel':
+                            return (
+                                <div key={block.id} className="w-full">
+                                    <RetroCarousel
+                                        items={block.items || []}
+                                        itemAlts={(language === 'en' && block.itemAlts_en) ? block.itemAlts_en : block.itemAlts || []}
+                                        noBorder={block.noBorder}
+                                        pixelate={block.pixelate}
+                                        delay={block.delay}
+                                        allowModal={block.allowModal !== false}
+                                        onImageClick={(url, alt) => setSelectedImage({ url, alt, transparent: block.noBorder })}
+                                    />
+                                </div>
+                            );
                         default:
                             return null;
                     }
@@ -248,6 +267,7 @@ export function BlockRenderer({ blocks, textColor }: BlockRendererProps) {
                 isOpen={!!selectedImage}
                 imageUrl={selectedImage?.url || ""}
                 altText={selectedImage?.alt}
+                transparent={selectedImage?.transparent}
                 onClose={() => setSelectedImage(null)}
             />
         </>

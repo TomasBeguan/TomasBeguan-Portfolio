@@ -131,7 +131,7 @@ export function Thumbnail3DViewer({ url, className }: Thumbnail3DViewerProps) {
                 root: scrollContainer || null,
                 threshold: 0,
                 // Load slightly before entry and keep alive slightly after exit
-                rootMargin: "50px 0px 50px 0px"
+                rootMargin: "0px 0px -10% 0px"
             }
         );
 

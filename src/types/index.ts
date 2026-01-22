@@ -1,4 +1,4 @@
-export type BlockType = 'header' | 'text' | 'subtitle' | 'image' | 'grid' | 'link' | 'video' | 'model3d';
+export type BlockType = 'header' | 'text' | 'subtitle' | 'image' | 'grid' | 'link' | 'video' | 'model3d' | 'carousel';
 
 export interface BlockButton {
     text: string;
@@ -34,6 +34,8 @@ export interface Block {
     buttons?: BlockButton[]; // For multiple buttons
     noBorder?: boolean; // Option to remove border from images/grids
     pixelate?: boolean; // Whether to use nearest neighbor interpolation
+    delay?: number; // Delay for carousel (seconds)
+    allowModal?: boolean; // Whether images can be opened in a modal
 }
 
 export interface Post {

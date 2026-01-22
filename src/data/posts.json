@@ -233,7 +233,7 @@
     "thumbnailHeight": 1080,
     "category": "Animación 3D",
     "textColor": "#ffffff",
-    "order": 1,
+    "order": 0,
     "active": true,
     "backgroundImage": "/uploads/1765927557495-Stars03.webp",
     "usePostBackgroundForCard": true,
@@ -243,6 +243,137 @@
     "pixelateImages": true,
     "title_en": "Apolo Milfo",
     "category_en": "3D Animation"
+  },
+  {
+    "id": "1769035300192",
+    "title": "Parcelas Lunares",
+    "slug": "ParcelasLunares",
+    "date": "2025-12-11",
+    "thumbnail": "/uploads/1769044468794-Thumbnail.webp",
+    "blocks": [
+      {
+        "id": "1769038916680",
+        "type": "header",
+        "content": "Parcelas Lunares para Apolo Milfo",
+        "content_en": "Lunar plots for Apolo Milfo"
+      },
+      {
+        "id": "1769038956320",
+        "type": "subtitle",
+        "content": "El equipo de [Milfshakes](https://milfshakes.es/) estuvo trabajando en una [**web interactiva**](https://themilfos.com/) para el lanzamiento del **Apolo Milfo.**\nestuve a cargo de el desarrollo de los **modelos 3D** para la web.",
+        "content_en": "The team at [Milfshakes](https://milfshakes.es/) was working on an [interactive website](https://themilfos.com/) for the launch of **Apolo Milfo.**\nI was in charge of developing the **3D models** for the website.",
+        "linkColor": "#dd0c19"
+      },
+      {
+        "id": "1769046838291",
+        "type": "subtitle",
+        "content": "El proyecto consta de **5 parcelas** principales con **3 estados** cada una."
+      },
+      {
+        "id": "1769049985885",
+        "type": "subtitle",
+        "content": "- Helion Extraction Mines -"
+      },
+      {
+        "id": "1769035718932",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1769045900312-01_Mina01.webp",
+          "/uploads/1769045902549-01_Mina02.webp",
+          "/uploads/1769046493865-01_Mina03.webp"
+        ],
+        "itemAlts": [
+          "",
+          "",
+          ""
+        ],
+        "delay": 1.5,
+        "noBorder": true
+      },
+      {
+        "id": "1769048380286",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1769048385606-02_Mifowood01.webp",
+          "/uploads/1769049005107-02_Mifowood02.webp",
+          "/uploads/1769049007814-02_Mifowood03.webp"
+        ],
+        "itemAlts": [
+          "",
+          "",
+          ""
+        ],
+        "delay": 1.5,
+        "noBorder": true
+      },
+      {
+        "id": "1769047844447",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1769047847980-03_Biodomo01.webp",
+          "/uploads/1769047850236-03_Biodomo02.webp",
+          "/uploads/1769047852511-03_Biodomo03.webp"
+        ],
+        "itemAlts": [
+          "",
+          "",
+          ""
+        ],
+        "noBorder": true,
+        "delay": 1.5
+      },
+      {
+        "id": "1769050013917",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1769050021846-04_Residencial01.webp",
+          "/uploads/1769050024056-04_Residencial02.webp",
+          "/uploads/1769050026538-04_Residencial03.webp"
+        ],
+        "noBorder": true,
+        "delay": 1.5,
+        "itemAlts": [
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "id": "1769050048917",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1769050054816-05_Residencial01.webp",
+          "/uploads/1769050056852-05_Residencial02.webp",
+          "/uploads/1769050059123-05_Residencial03.webp"
+        ],
+        "delay": 1.5,
+        "noBorder": true,
+        "itemAlts": [
+          "",
+          "",
+          ""
+        ]
+      }
+    ],
+    "thumbnailWidth": 1080,
+    "thumbnailHeight": 1080,
+    "order": 1,
+    "active": true,
+    "title_en": "Lunar plots",
+    "category": "Modelo 3D",
+    "category_en": "3D Model",
+    "backgroundImage": "/uploads/1769044811763-Fondo.webp",
+    "backgroundSize": "",
+    "backgroundMode": "cover",
+    "backgroundOpacity": 20,
+    "usePostBackgroundForCard": true,
+    "backgroundColor": "#d6dbe1",
+    "backgroundBlendMode": "normal"
   },
   {
     "id": "1765408026219",
@@ -262,7 +393,7 @@
     ],
     "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
     "category": "Modelo 3D",
-    "order": 1,
+    "order": 2,
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#0d0d0d",
     "thumbnail3dBackgroundColor": "#ff3838",
@@ -324,7 +455,7 @@
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#333333",
     "category": "3D Animation",
-    "order": 2,
+    "order": 3,
     "slug": "help-me-exe"
   },
   {
@@ -389,7 +520,7 @@
         "linkText": "Instagram post"
       }
     ],
-    "order": 3,
+    "order": 4,
     "active": true,
     "category": "Animación 3D",
     "slug": "pencil-oceans"
@@ -487,7 +618,7 @@
     "cardBackgroundColor": "#1e1f25",
     "cardTextColor": "#ffffff",
     "category": "Animación 3D",
-    "order": 4,
+    "order": 5,
     "active": true,
     "usePostBackgroundForCard": false,
     "slug": "SpookyCollection",
@@ -569,7 +700,7 @@
         "noBorder": true
       }
     ],
-    "order": 5,
+    "order": 6,
     "active": true,
     "cardBackgroundColor": "#222222",
     "cardTextColor": "#ffffff",
@@ -615,8 +746,8 @@
         ]
       }
     ],
-    "active": true,
-    "order": 6,
+    "active": false,
+    "order": 7,
     "slug": "zoombie-berry-cade"
   },
   {
@@ -641,8 +772,8 @@
         "content": "https://placehold.co/800x600/111111/FFFFFF/png?text=Retro+Computer"
       }
     ],
-    "active": true,
-    "order": 7,
+    "active": false,
+    "order": 8,
     "slug": "retro-computer"
   },
   {
@@ -668,8 +799,8 @@
         "content": "/uploads/1763786508623-0067.png"
       }
     ],
-    "active": true,
-    "order": 8,
+    "active": false,
+    "order": 9,
     "slug": "nuevo-proyecto-de-prueba"
   },
   {
@@ -712,8 +843,8 @@
         "borderColor": "#ff3333"
       }
     ],
-    "active": true,
-    "order": 9,
+    "active": false,
+    "order": 10,
     "slug": "new-project"
   },
   {
@@ -768,7 +899,7 @@
     "category": "Dibujo",
     "backgroundBlendMode": "overlay",
     "active": false,
-    "order": 10,
+    "order": 11,
     "slug": "cumple-hui"
   },
   {
@@ -793,8 +924,8 @@
     "backgroundImage": "/uploads/1763924088314-Gm73vn3bYAAsysm.jpg",
     "backgroundBlendMode": "multiply",
     "cardTextColor": "#ffffff",
-    "active": true,
-    "order": 11,
+    "active": false,
+    "order": 12,
     "slug": "test-de-prueba"
   },
   {
@@ -826,8 +957,8 @@
       }
     ],
     "category": "Textura",
-    "active": true,
-    "order": 12,
+    "active": false,
+    "order": 13,
     "slug": "prueba-de-compresi-n"
   },
   {
@@ -853,8 +984,9 @@
     ],
     "thumbnailWidth": 656,
     "thumbnailHeight": 414,
-    "order": 13,
-    "slug": "prueba-imagen-loader"
+    "order": 14,
+    "slug": "prueba-imagen-loader",
+    "active": false
   },
   {
     "id": "1765403395709",
@@ -873,7 +1005,7 @@
     "thumbnailHeight": 1080,
     "category": "Modelado",
     "order": 14,
-    "active": true,
+    "active": false,
     "slug": "prueba-de-modelo-3d"
   },
   {
@@ -885,7 +1017,7 @@
     "blocks": [],
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
-    "order": 15,
+    "order": 16,
     "active": false
   },
   {
@@ -896,7 +1028,7 @@
     "thumbnail": "",
     "blocks": [],
     "thumbnailModel": "/uploads/1765412829156-Lucas_web2.glb",
-    "order": 16,
+    "order": 17,
     "active": false
   }
 ]

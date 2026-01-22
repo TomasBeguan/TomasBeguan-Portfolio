@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { RetroButton } from './RetroButton';
+import { cn } from '@/lib/utils';
 
 interface ImageModalProps {
     isOpen: boolean;
     imageUrl: string;
     altText?: string;
     onClose: () => void;
+    transparent?: boolean;
 }
 
-export const ImageModal = ({ isOpen, imageUrl, altText, onClose }: ImageModalProps) => {
+export const ImageModal = ({ isOpen, imageUrl, altText, onClose, transparent }: ImageModalProps) => {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -38,7 +40,10 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose }: ImageModalPro
                 </div>
 
                 {/* Image Container */}
-                <div className="bg-white p-2 border-2 border-white shadow-retro-lg w-fit h-fit max-w-[95vw] max-h-[90vh] overflow-hidden flex flex-col items-center">
+                <div className={cn(
+                    "p-2 w-fit h-fit max-w-[95vw] max-h-[90vh] overflow-hidden flex flex-col items-center",
+                    transparent ? "bg-transparent shadow-none border-none" : "bg-white border-2 border-white shadow-retro-lg"
+                )}>
                     <img
                         src={imageUrl}
                         alt={altText || "Full size view"}
@@ -47,7 +52,10 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose }: ImageModalPro
 
                     {/* Alt Text Caption */}
                     {altText && (
-                        <div className="mt-2 pt-2 border-t-2 border-black text-center">
+                        <div className={cn(
+                            "mt-2 pt-2 border-t-2 text-center",
+                            transparent ? "border-white text-white" : "border-black text-black"
+                        )}>
                             <p className="font-mono text-sm md:text-base">{altText}</p>
                         </div>
                     )}

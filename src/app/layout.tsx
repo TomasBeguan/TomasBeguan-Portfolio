@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${spaceGrotesk.variable} ${inter.variable} ${ultra.variable} ${libreBaskerville.variable} ${silkscreen.variable} font-sans antialiased bg-gray-100 pt-8 dark:bg-gray-900 transition-colors duration-300`}>
+            <body className={`${spaceGrotesk.variable} ${inter.variable} ${ultra.variable} ${libreBaskerville.variable} ${silkscreen.variable} font-sans antialiased bg-gray-100 pt-8 dark:bg-gray-900 transition-colors duration-300`} suppressHydrationWarning>
 
                 {/* 2. Envolver todo el contenido dentro del body con ReactLenis */}
                 {/* 'root' indica que Lenis controla el scroll de la ventana (html/window) */}

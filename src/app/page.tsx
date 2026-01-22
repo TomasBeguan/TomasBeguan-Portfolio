@@ -7,9 +7,8 @@ import fs from 'fs';
 import path from 'path';
 
 
-// Force dynamic rendering to always get fresh data
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Revalidate every hour
+export const revalidate = 3600;
 
 async function getPosts(): Promise<Post[]> {
     const filePath = path.join(process.cwd(), 'src/data/posts.json');
@@ -43,3 +42,4 @@ export default async function Home() {
         </main>
     );
 }
+
