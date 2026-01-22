@@ -63,7 +63,7 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                                 {/* Content */}
                                 <div className="relative z-10 flex flex-col h-full">
                                     <div
-                                        className="aspect-square border border-black dark:border-white flex items-center justify-center mb-2 transition-colors overflow-hidden relative"
+                                        className="aspect-square flex items-center justify-center mb-2 transition-colors overflow-hidden relative"
                                         style={{ backgroundColor: post.thumbnailModel ? (post.thumbnail3dBackgroundColor || 'transparent') : 'transparent' }}
                                     >
                                         {post.thumbnailModel ? (

@@ -166,7 +166,7 @@ export const RetroMenuBar = () => {
             {/* Mobile Dropdown Menu (Solid & Stacked) */}
             {isOpen && (
                 <div
-                    className="md:hidden absolute top-8 left-2 w-48 bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] origin-top-left z-[60]"
+                    className="md:hidden absolute top-8 w-48 bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] origin-top-left z-[60]"
                 >
                     {navItems.map((item) => (
                         <div

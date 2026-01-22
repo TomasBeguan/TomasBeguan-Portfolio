@@ -106,13 +106,17 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                     switch (block.type) {
                         case 'header':
                             return (
-                                <h1 key={block.id} className="text-2xl md:text-4xl font-bold border-b-2 border-black pb-2 font-space-grotesk tracking-tight text-center whitespace-pre-wrap" style={{ borderColor: textColor }}>
+                                <h1
+                                    key={block.id}
+                                    className="text-2xl md:text-2xl p-4 border font-chicago text-center uppercase whitespace-pre-wrap "
+                                    style={{ borderColor: textColor }}
+                                >
                                     {parseRichText(content, block.linkColor)}
                                 </h1>
                             );
                         case 'subtitle':
                             return (
-                                <h2 key={block.id} className="text-xl md:text-2xl mt-4 font-space-grotesk text-left leading-none whitespace-pre-wrap">
+                                <h2 key={block.id} className="text-2xl md:text-2xl font-bold font-space-grotesk text-left leading-none whitespace-pre-wrap">
                                     {parseRichText(content, block.linkColor)}
                                 </h2>
                             );

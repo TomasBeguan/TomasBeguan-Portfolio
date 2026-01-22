@@ -258,21 +258,37 @@
         "content_en": "Lunar plots for Apolo Milfo"
       },
       {
-        "id": "1769038956320",
-        "type": "subtitle",
+        "id": "1769113981542",
+        "type": "text",
         "content": "El equipo de [Milfshakes](https://milfshakes.es/) estuvo trabajando en una [**web interactiva**](https://themilfos.com/) para el lanzamiento del **Apolo Milfo.**\nestuve a cargo de el desarrollo de los **modelos 3D** para la web.",
         "content_en": "The team at [Milfshakes](https://milfshakes.es/) was working on an [interactive website](https://themilfos.com/) for the launch of **Apolo Milfo.**\nI was in charge of developing the **3D models** for the website.",
         "linkColor": "#dd0c19"
       },
       {
-        "id": "1769046838291",
-        "type": "subtitle",
+        "id": "1769115291668",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "WEB INTERACTIVA",
+            "text_en": "INTERACTIVE WEBSITE",
+            "url": "https://themilfos.com/",
+            "bgColor": "#667484",
+            "textColor": "#ffffff",
+            "borderColor": "#ffffff",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://themilfos.com/&sz=64"
+          }
+        ]
+      },
+      {
+        "id": "1769114009301",
+        "type": "text",
         "content": "El proyecto consta de **5 parcelas** principales con **3 estados** cada una."
       },
       {
         "id": "1769049985885",
         "type": "subtitle",
-        "content": "- Helion Extraction Mines -"
+        "content": "HELION EXTRATION MINES"
       },
       {
         "id": "1769035718932",
@@ -292,6 +308,11 @@
         "noBorder": true
       },
       {
+        "id": "1769115616475",
+        "type": "subtitle",
+        "content": "MILFOWOOD\n"
+      },
+      {
         "id": "1769048380286",
         "type": "carousel",
         "content": "",
@@ -307,6 +328,11 @@
         ],
         "delay": 1.5,
         "noBorder": true
+      },
+      {
+        "id": "1769115618525",
+        "type": "subtitle",
+        "content": "ECOSPHERE 069"
       },
       {
         "id": "1769047844447",
@@ -326,6 +352,11 @@
         "delay": 1.5
       },
       {
+        "id": "1769115619784",
+        "type": "subtitle",
+        "content": "RESIDENTIAL SECTOR"
+      },
+      {
         "id": "1769050013917",
         "type": "carousel",
         "content": "",
@@ -341,6 +372,11 @@
           "",
           ""
         ]
+      },
+      {
+        "id": "1769115620883",
+        "type": "subtitle",
+        "content": "DEEP CRATER INSTITUTE\n"
       },
       {
         "id": "1769050048917",
@@ -394,8 +430,8 @@
     "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
     "category": "Modelo 3D",
     "order": 2,
-    "cardBackgroundColor": "#ffffff",
-    "cardTextColor": "#0d0d0d",
+    "cardBackgroundColor": "#ff3838",
+    "cardTextColor": "#ffffff",
     "thumbnail3dBackgroundColor": "#ff3838",
     "active": true,
     "category_en": "3D Model"
