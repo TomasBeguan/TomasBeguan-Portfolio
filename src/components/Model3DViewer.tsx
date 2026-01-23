@@ -97,9 +97,9 @@ export function Model3DViewer({ url, textureUrl, altText, className }: Model3DVi
     }
 
     return (
-        <div ref={containerRef} className={`relative w-full aspect-square bg-gray-100 overflow-hidden ${className}`}>
+        <div ref={containerRef} className={`relative w-full aspect-square bg-transparent overflow-hidden ${className}`}>
             {!isVisible ? (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+                <div className="absolute inset-0 flex items-center justify-center bg-transparent">
                     <Loader2 className="animate-spin text-gray-400" size={24} />
                     <span className="ml-2 text-xs text-gray-500 font-mono">Waiting for view...</span>
                 </div>

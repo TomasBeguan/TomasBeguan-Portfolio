@@ -36,6 +36,7 @@ export interface Block {
     pixelate?: boolean; // Whether to use nearest neighbor interpolation
     delay?: number; // Delay for carousel (seconds)
     allowModal?: boolean; // Whether images can be opened in a modal
+    showAltText?: boolean; // Whether to show alt text in carousel
 }
 
 export interface Post {

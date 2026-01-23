@@ -44,11 +44,11 @@ export function ImageWithLoader({
         <div
             className={cn(
                 "relative overflow-hidden flex items-center justify-center transition-colors duration-500",
-                isLoading ? "bg-gray-50/50" : "bg-transparent",
+                "bg-transparent",
                 containerClassName
             )}
             style={{
-                aspectRatio: aspectRatio ? `${aspectRatio}` : undefined,
+                aspectRatio: aspectRatio ? `${aspectRatio}` : (isLoading ? "1/1" : undefined),
                 ...style
             }}
             onClick={onClick}
@@ -72,7 +72,13 @@ export function ImageWithLoader({
                     isLoading ? "opacity-0" : "opacity-100",
                     className
                 )}
-                onLoad={() => setIsLoading(false)}
+                onLoad={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    if (!width && !height && img.naturalWidth && img.naturalHeight) {
+                        setAspectRatio(img.naturalWidth / img.naturalHeight);
+                    }
+                    setIsLoading(false);
+                }}
                 // We use any because ImgHTMLAttributes includes things next/image doesn't like
                 {...(props as any)}
             />

@@ -183,7 +183,7 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                             <div
                                                 key={idx}
                                                 className={cn(
-                                                    "p-1 bg-white h-full aspect-square",
+                                                    "p-1 bg-white",
                                                     !block.noBorder && "border-2 border-black hover:shadow-retro-sm transition-shadow",
                                                     block.allowModal !== false && "cursor-zoom-in",
                                                     block.noBorder && "bg-transparent p-0"
@@ -193,8 +193,8 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                                 <ImageWithLoader
                                                     src={src}
                                                     alt={alt}
-                                                    containerClassName="w-full h-full"
-                                                    className={cn("w-full h-full object-cover", block.pixelate && "pixelated")}
+                                                    containerClassName="w-full"
+                                                    className={cn("w-full h-full object-contain", block.pixelate && "pixelated")}
                                                 />
                                             </div>
                                         );
@@ -257,6 +257,7 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                         pixelate={block.pixelate}
                                         delay={block.delay}
                                         allowModal={block.allowModal !== false}
+                                        showAltText={block.showAltText}
                                         onImageClick={(url, alt) => setSelectedImage({ url, alt, transparent: block.noBorder })}
                                     />
                                 </div>

@@ -13,6 +13,7 @@ interface RetroCarouselProps {
     pixelate?: boolean;
     delay?: number; // Delay in seconds
     allowModal?: boolean;
+    showAltText?: boolean;
     onImageClick?: (url: string, alt: string) => void;
 }
 
@@ -23,6 +24,7 @@ export function RetroCarousel({
     pixelate = false,
     delay = 3,
     allowModal = true,
+    showAltText = false,
     onImageClick,
 }: RetroCarouselProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -87,6 +89,13 @@ export function RetroCarousel({
                                 quality={100}
                                 priority={idx === 0}
                             />
+                            {showAltText && itemAlts[idx] && (
+                                <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-3 py-1 bg-white border-2 border-black shadow-retro-sm max-w-[80%]">
+                                    <p className="text-xs font-bold text-black text-center truncate pointer-events-none">
+                                        {itemAlts[idx]}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

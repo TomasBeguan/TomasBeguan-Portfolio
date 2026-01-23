@@ -98,17 +98,6 @@
         "content_en": "**Animated graphics** for some props, such as the ship's **analog screens.**"
       },
       {
-        "id": "1766984018272",
-        "type": "image",
-        "content": "/uploads/1766984023777-Pantlla.gif",
-        "width": 263,
-        "height": 196,
-        "pixelate": true,
-        "noBorder": true,
-        "altText": "Pantalla animada del interior de la nave espacial que muestra la interface del combustible",
-        "altText_en": "ship screen interface fuel animation gif"
-      },
-      {
         "id": "1766990990015",
         "type": "image",
         "content": "/uploads/1766990999213-pantalla2.gif",
@@ -118,6 +107,17 @@
         "noBorder": true,
         "pixelate": true,
         "altText_en": "ship screen console interface animation gif"
+      },
+      {
+        "id": "1766984018272",
+        "type": "image",
+        "content": "/uploads/1766984023777-Pantlla.gif",
+        "width": 263,
+        "height": 196,
+        "pixelate": true,
+        "noBorder": true,
+        "altText": "Pantalla animada del interior de la nave espacial que muestra la interface del combustible",
+        "altText_en": "ship screen interface fuel animation gif"
       },
       {
         "id": "1766991497359",
@@ -286,11 +286,6 @@
         "content": "El proyecto consta de **5 parcelas** principales con **3 estados** cada una."
       },
       {
-        "id": "1769049985885",
-        "type": "subtitle",
-        "content": "HELION EXTRATION MINES"
-      },
-      {
         "id": "1769035718932",
         "type": "carousel",
         "content": "",
@@ -300,17 +295,13 @@
           "/uploads/1769046493865-01_Mina03.webp"
         ],
         "itemAlts": [
-          "",
-          "",
-          ""
+          "HELION EXTRATION MINES 01",
+          "HELION EXTRATION MINES 02",
+          "HELION EXTRATION MINES 03"
         ],
         "delay": 1.5,
-        "noBorder": true
-      },
-      {
-        "id": "1769115616475",
-        "type": "subtitle",
-        "content": "MILFOWOOD\n"
+        "noBorder": true,
+        "showAltText": true
       },
       {
         "id": "1769048380286",
@@ -322,17 +313,13 @@
           "/uploads/1769049007814-02_Mifowood03.webp"
         ],
         "itemAlts": [
-          "",
-          "",
-          ""
+          "MILFOWOOD 01",
+          "MILFOWOOD 02",
+          "MILFOWOOD 03"
         ],
         "delay": 1.5,
-        "noBorder": true
-      },
-      {
-        "id": "1769115618525",
-        "type": "subtitle",
-        "content": "ECOSPHERE 069"
+        "noBorder": true,
+        "showAltText": true
       },
       {
         "id": "1769047844447",
@@ -344,17 +331,13 @@
           "/uploads/1769047852511-03_Biodomo03.webp"
         ],
         "itemAlts": [
-          "",
-          "",
-          ""
+          "ECOSPHERE_069 01",
+          "ECOSPHERE_069 02",
+          "ECOSPHERE_069 03"
         ],
         "noBorder": true,
-        "delay": 1.5
-      },
-      {
-        "id": "1769115619784",
-        "type": "subtitle",
-        "content": "RESIDENTIAL SECTOR"
+        "delay": 1.5,
+        "showAltText": true
       },
       {
         "id": "1769050013917",
@@ -368,15 +351,11 @@
         "noBorder": true,
         "delay": 1.5,
         "itemAlts": [
-          "",
-          "",
-          ""
-        ]
-      },
-      {
-        "id": "1769115620883",
-        "type": "subtitle",
-        "content": "DEEP CRATER INSTITUTE\n"
+          "RESIDENTIAL SECTOR 01",
+          "RESIDENTIAL SECTOR 02",
+          "RESIDENTIAL SECTOR 03"
+        ],
+        "showAltText": true
       },
       {
         "id": "1769050048917",
@@ -390,9 +369,86 @@
         "delay": 1.5,
         "noBorder": true,
         "itemAlts": [
-          "",
-          "",
-          ""
+          "DEEP CRATER INSTITUTE 01",
+          "DEEP CRATER INSTITUTE 02",
+          "DEEP CRATER INSTITUTE 03"
+        ],
+        "showAltText": true
+      },
+      {
+        "id": "1769130068805",
+        "type": "text",
+        "content": "Los modelos están optimizados para [threejs](https://threejs.org/), por lo que los modelos no exceden los **2-3k de triángulos**.\nLas texturas finales están **bakeadas** para evitar renderizar sombras desde la web de manera innecesaria.",
+        "content_en": "The models are optimized for [threejs](https://threejs.org/), so the models do not exceed **2-3k triangles**.\nThe final textures are **baked** to avoid rendering shadows from the web unnecessarily.",
+        "linkColor": "#7a7a7a"
+      },
+      {
+        "id": "1769125408582",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1769125415352-01_Caja.gif",
+          "/uploads/1769125545640-02_Barril.gif",
+          "/uploads/1769126011082-03_luces.gif",
+          "/uploads/1769126021984-04_Contenedor.gif",
+          "/uploads/1769126024009-05_Panel.gif",
+          "/uploads/1769126025900-06_Antena.gif"
+        ],
+        "itemAlts": [
+          "Caja de metal - 1.1k tris",
+          "Barril de metal - 1.5k tris",
+          "Luces - 2.4k tris",
+          "Contenedor - 2k tris",
+          "Panel solar - 450 tris",
+          "Antena - 1.3k tris"
+        ],
+        "noBorder": true,
+        "itemAlts_en": [
+          "Metal box - 1.1k tris",
+          "Metal barrel - 1.5k tris",
+          "Lights - 2.4k tris",
+          "Container - 2k tris",
+          "Solar Panel - 450 tris",
+          "Antenna - 1.3k tris"
+        ]
+      },
+      {
+        "id": "1769128163844",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1769128175427-ezgif-7dd753d352a71391.gif",
+          "/uploads/1769128177853-ezgif-7ea215177a24f613.gif",
+          "/uploads/1769128180493-ezgif-7259fcbbae3988e3.gif",
+          "/uploads/1769128184016-ezgif-7a2b67be308f5b59.gif",
+          "/uploads/1769128187310-08_Telescopio.gif",
+          "/uploads/1769128190071-07_Tanque.gif",
+          "/uploads/1769128192698-ezgif-77c73d4dfc3ac597.gif",
+          "/uploads/1769128194545-ezgif-7438a6cc6745639a.gif",
+          "/uploads/1769129129280-ezgif-7110f683afa88991.gif"
+        ],
+        "noBorder": true,
+        "itemAlts": [
+          "Carrito - 2k tris",
+          "Silla del director - 1.2k tris",
+          "Camara - 3k tris",
+          "Letra cartel - 320 tris",
+          "Telescopio - 1.5k tris ",
+          "Tanque de M*** - 1.5k tris",
+          "Observatorio - 20k tris",
+          "Abono Lunar - 200 tris",
+          "Bio capsula - 1k tris"
+        ],
+        "itemAlts_en": [
+          "Cart - 2k tris",
+          "Director chair's - 1.2k tris",
+          "Camera - 3k tris",
+          "sign lettering - 320 tris",
+          "telescope - 1.5k tris",
+          "M*** Tank - 1.5k tris",
+          "Observatory - 20k tris",
+          "Lunar soil - 200 tris",
+          "Bio capsule - 1k tris"
         ]
       }
     ],

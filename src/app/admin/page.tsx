@@ -970,6 +970,15 @@ export default function AdminPage() {
                                                     />
                                                     Pixelate
                                                 </label>
+                                                <label className="flex items-center gap-2 text-xs cursor-pointer select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={block.showAltText || false}
+                                                        onChange={e => updateBlock(block.id, { showAltText: e.target.checked })}
+                                                        className="accent-black"
+                                                    />
+                                                    Show Alt Text
+                                                </label>
                                             </div>
 
                                             <div className="flex flex-col gap-1 mb-2">
@@ -1054,10 +1063,14 @@ export default function AdminPage() {
                             </div>
                         </div>
 
-                        {/* Save Button - Always Visible */}
-                        <div className="flex justify-end mt-4 pb-8">
-                            <RetroButton onClick={handleSavePost} className="bg-green-600 text-white hover:bg-green-500 hover:text-white border-green-700 flex gap-2 w-full justify-center py-3 shadow-[4px_4px_0px_0px_#14532d] hover:shadow-[2px_2px_0px_0px_#14532d]">
-                                <Save size={16} /> Save Post
+                        {/* Save Button - Floating Fixed */}
+                        <div className="fixed bottom-8 right-8 z-[100]">
+                            <RetroButton
+                                onClick={handleSavePost}
+                                className="bg-green-600 text-white hover:bg-green-500 hover:text-white border-green-700 flex gap-2 items-center justify-center py-3 px-6 shadow-retro hover:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+                            >
+                                <Save size={20} />
+                                <span className="font-bold">Save Post</span>
                             </RetroButton>
                         </div>
                     </div>
