@@ -295,9 +295,9 @@
           "/uploads/1769046493865-01_Mina03.webp"
         ],
         "itemAlts": [
-          "HELION EXTRATION MINES 01",
-          "HELION EXTRATION MINES 02",
-          "HELION EXTRATION MINES 03"
+          "HELION EXTRACTION MINES 01",
+          "HELION EXTRACTION MINES 02",
+          "HELION EXTRACTION MINES 03"
         ],
         "delay": 1.5,
         "noBorder": true,
@@ -468,6 +468,148 @@
     "backgroundBlendMode": "normal"
   },
   {
+    "id": "1769202911292",
+    "title": "Zombie Berrycades",
+    "slug": "ZombieBerrycades",
+    "date": "2025-12-04",
+    "thumbnail": "/uploads/1769203719189-Thumbnail.webp",
+    "blocks": [
+      {
+        "id": "1769203826374",
+        "type": "header",
+        "content": "Zombie Berrycades animación en blucle",
+        "content_en": "Zombie Berrycades stream loop animation"
+      },
+      {
+        "id": "1769207526419",
+        "type": "image",
+        "content": "/uploads/1769207530023-portada.gif",
+        "width": 384,
+        "height": 216,
+        "noBorder": true,
+        "allowModal": false,
+        "pixelate": true,
+        "altText": "Portada animada",
+        "altText_en": "Animated thumbnail."
+      },
+      {
+        "id": "1769203872882",
+        "type": "text",
+        "content": "Este trabajo es una **introducción animada** en bucle para las **transmisiones** de [ZombieBarricades](https://x.com/ZB_TV).",
+        "linkColor": "#8ae500",
+        "content_en": "This work is a **looped animation** intro for the **streams** of [ZombieBarricades](https://x.com/ZB_TV)."
+      },
+      {
+        "id": "1769204204879",
+        "type": "video",
+        "content": "https://youtu.be/7ybLys7XtNo",
+        "altText": "ZombieBerryCades_animation.mov",
+        "altText_en": "ZombieBerryCades_animation.mov"
+      },
+      {
+        "id": "1769204507804",
+        "type": "text",
+        "content": "Visita la transmisión de ZombieBarricades ⬎",
+        "content_en": "Check out the ZombieBarricades livestream ⬎"
+      },
+      {
+        "id": "1769204532229",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "Canal de Twitch",
+            "url": "https://www.twitch.tv/zombie_barricades?lang=es",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.twitch.tv/zombie_barricades?lang=es&sz=64",
+            "textColor": "#a970ff",
+            "borderColor": "#a970ff",
+            "text_en": "Twitch channel"
+          },
+          {
+            "text": "Canal de Kick",
+            "url": "https://kick.com/zombiebarricades/videos",
+            "bgColor": "#53fc18",
+            "textColor": "#212121",
+            "borderColor": "#212121",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://kick.com/zombiebarricades/videos&sz=64",
+            "text_en": "Kick channel"
+          }
+        ]
+      },
+      {
+        "id": "1769204715875",
+        "type": "text",
+        "content": "La animación fue un **regalo de cumpleaños** de su hermano, [ToyBlocks](https://www.instagram.com/toy.blocks/).\nsu pedido fue una introducción para la transmisión pero con un estilo muy particular.\nQuería que fuera como un **videojuego retro,** en particular, la **referencia** era [Teenage Mutant Ninja Turtles: Turtles in Time.](https://en.wikipedia.org/wiki/Teenage_Mutant_Ninja_Turtles:_Turtles_in_Time)",
+        "linkColor": "#8ae500",
+        "content_en": "The animation was a **birthday gift** from his brother, [ToyBlocks](https://www.instagram.com/toy.blocks/).\nHis request was for an intro for the stream, but with a very particular style.\nHe wanted it to be like a **retro video game,** specifically, the **reference** was [Teenage Mutant Ninja Turtles: Turtles in Time.](https://en.wikipedia.org/wiki/Teenage_Mutant_Ninja_Turtles:_Turtles_in_Time)"
+      },
+      {
+        "id": "1769205319414",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1769205321548-Personaje_front.gif",
+          "/uploads/1769205323443-Personaje.gif"
+        ],
+        "itemAlts": [
+          "Personaje de frente, animación en loop.",
+          "Personaje de lado, animación en loop."
+        ],
+        "noBorder": true,
+        "pixelate": true,
+        "allowModal": false,
+        "itemAlts_en": [
+          "Front-facing character, looped animation.",
+          "Side character, looped animation."
+        ]
+      },
+      {
+        "id": "1769204969500",
+        "type": "text",
+        "content": "Para la animación utilicé [Blender](https://www.blender.org/) como **herramienta principal.**",
+        "linkColor": "#f4792b",
+        "content_en": "For the animation, I used [Blender](https://www.blender.org/) as my **main tool.**"
+      },
+      {
+        "id": "1769205011012",
+        "type": "text",
+        "content": "Con conocimiento en **shading** y **postprocesado** logré que los modelos 3D se vieran como si fueran sprites de un **videojuego retro**.",
+        "content_en": "With knowledge on **shading** and **post-processing**, I managed to make the 3D models look like sprites from a **retro video game**."
+      },
+      {
+        "id": "1769206302101",
+        "type": "image",
+        "content": "/uploads/1769206313298-Wireframe.webp",
+        "width": 1920,
+        "height": 1080,
+        "altText": "3D viewport",
+        "altText_en": "3D viewport"
+      },
+      {
+        "id": "1769206368416",
+        "type": "text",
+        "content": "Agradecimientos especiales a [ToyBlocks](https://www.instagram.com/toy.blocks/) por confiar en mi trabajo.",
+        "linkColor": "#8ae500",
+        "content_en": "Special thanks to [ToyBlocks](https://www.instagram.com/toy.blocks/) for trusting in my work."
+      }
+    ],
+    "thumbnailWidth": 1080,
+    "thumbnailHeight": 1080,
+    "order": 2,
+    "active": true,
+    "category": "Animación 3D",
+    "category_en": "3D Animation",
+    "backgroundImage": "/uploads/1769203086254-macro-shot-lcd-tv-matrix_92242-2664.webp",
+    "backgroundColor": "#28232a",
+    "backgroundBlendMode": "overlay",
+    "backgroundOpacity": 64,
+    "usePostBackgroundForCard": true,
+    "cardTextColor": "#ffffff",
+    "backgroundMode": "stretch",
+    "textColor": "#ffffff",
+    "title_en": "Zombie Berrycades"
+  },
+  {
     "id": "1765408026219",
     "title": "The Anger Price",
     "slug": "the-anger-price",
@@ -485,7 +627,7 @@
     ],
     "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
     "category": "Modelo 3D",
-    "order": 2,
+    "order": 3,
     "cardBackgroundColor": "#ff3838",
     "cardTextColor": "#ffffff",
     "thumbnail3dBackgroundColor": "#ff3838",
@@ -547,7 +689,7 @@
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#333333",
     "category": "3D Animation",
-    "order": 3,
+    "order": 4,
     "slug": "help-me-exe"
   },
   {
@@ -612,7 +754,7 @@
         "linkText": "Instagram post"
       }
     ],
-    "order": 4,
+    "order": 5,
     "active": true,
     "category": "Animación 3D",
     "slug": "pencil-oceans"
@@ -710,7 +852,7 @@
     "cardBackgroundColor": "#1e1f25",
     "cardTextColor": "#ffffff",
     "category": "Animación 3D",
-    "order": 5,
+    "order": 6,
     "active": true,
     "usePostBackgroundForCard": false,
     "slug": "SpookyCollection",
@@ -792,7 +934,7 @@
         "noBorder": true
       }
     ],
-    "order": 6,
+    "order": 7,
     "active": true,
     "cardBackgroundColor": "#222222",
     "cardTextColor": "#ffffff",
@@ -839,7 +981,7 @@
       }
     ],
     "active": false,
-    "order": 7,
+    "order": 8,
     "slug": "zoombie-berry-cade"
   },
   {
@@ -865,7 +1007,7 @@
       }
     ],
     "active": false,
-    "order": 8,
+    "order": 9,
     "slug": "retro-computer"
   },
   {
@@ -892,7 +1034,7 @@
       }
     ],
     "active": false,
-    "order": 9,
+    "order": 10,
     "slug": "nuevo-proyecto-de-prueba"
   },
   {
@@ -936,7 +1078,7 @@
       }
     ],
     "active": false,
-    "order": 10,
+    "order": 11,
     "slug": "new-project"
   },
   {
@@ -991,7 +1133,7 @@
     "category": "Dibujo",
     "backgroundBlendMode": "overlay",
     "active": false,
-    "order": 11,
+    "order": 12,
     "slug": "cumple-hui"
   },
   {
@@ -1017,7 +1159,7 @@
     "backgroundBlendMode": "multiply",
     "cardTextColor": "#ffffff",
     "active": false,
-    "order": 12,
+    "order": 13,
     "slug": "test-de-prueba"
   },
   {
@@ -1050,7 +1192,7 @@
     ],
     "category": "Textura",
     "active": false,
-    "order": 13,
+    "order": 14,
     "slug": "prueba-de-compresi-n"
   },
   {
@@ -1076,7 +1218,7 @@
     ],
     "thumbnailWidth": 656,
     "thumbnailHeight": 414,
-    "order": 14,
+    "order": 15,
     "slug": "prueba-imagen-loader",
     "active": false
   },
@@ -1096,7 +1238,7 @@
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
     "category": "Modelado",
-    "order": 14,
+    "order": 16,
     "active": false,
     "slug": "prueba-de-modelo-3d"
   },
@@ -1109,7 +1251,7 @@
     "blocks": [],
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
-    "order": 16,
+    "order": 17,
     "active": false
   },
   {
@@ -1120,7 +1262,7 @@
     "thumbnail": "",
     "blocks": [],
     "thumbnailModel": "/uploads/1765412829156-Lucas_web2.glb",
-    "order": 17,
+    "order": 18,
     "active": false
   }
 ]

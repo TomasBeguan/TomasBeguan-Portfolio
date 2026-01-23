@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import { ArrowLeft, X, Square } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { RetroButton } from "./RetroButton";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -35,6 +35,7 @@ export function RetroContainer({
     backgroundBlendMode
 }: RetroContainerProps) {
     const router = useRouter();
+    const pathname = usePathname();
     const scrollRef = useRef<HTMLDivElement>(null);
     const { language, t } = useLanguage();
 
@@ -148,11 +149,30 @@ export function RetroContainer({
         };
     }, []);
 
+    // Track navigation history within the session
+    useEffect(() => {
+        const currentPath = window.location.pathname;
+        const storedPath = sessionStorage.getItem('current_path');
+
+        if (storedPath && storedPath !== currentPath) {
+            sessionStorage.setItem('previous_path', storedPath);
+        }
+        sessionStorage.setItem('current_path', currentPath);
+    }, [pathname]);
+
     const handleClose = () => {
         if (onBack) {
             onBack();
         } else {
-            router.back();
+            // Check if we have a previous path stored in this session
+            const hasPreviousPath = typeof window !== 'undefined' &&
+                sessionStorage.getItem('previous_path');
+
+            if (hasPreviousPath) {
+                router.back();
+            } else {
+                router.push('/');
+            }
         }
     };
 

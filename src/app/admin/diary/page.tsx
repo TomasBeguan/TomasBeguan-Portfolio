@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { RetroContainer } from "@/components/RetroContainer";
 import { RetroButton } from "@/components/RetroButton";
 import { cn } from "@/lib/utils";
-import { Plus, Trash, ArrowUp, ArrowDown, Save } from "lucide-react";
+import { Plus, Trash, ArrowUp, ArrowDown, Save, GripVertical } from "lucide-react";
+import { Reorder } from "framer-motion";
 import { ImageUploader } from "@/components/Admin/ImageUploader";
 
 interface DiaryPage {
@@ -53,10 +54,13 @@ const LeafEditor = memo(({
                 LEAF {index + 1}
             </div>
 
-            <div className="absolute right-2 top-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                <button onClick={() => onMove(index, 'up')} className="hover:bg-gray-200 p-1"><ArrowUp size={16} /></button>
-                <button onClick={() => onMove(index, 'down')} className="hover:bg-gray-200 p-1"><ArrowDown size={16} /></button>
-                <button onClick={() => onRemove(page.id)} className="text-red-500 hover:bg-red-50 p-1"><Trash size={16} /></button>
+            <div className="absolute right-2 top-2 flex gap-1 group-hover:opacity-100 transition-opacity z-10">
+                <div className="flex items-center text-gray-400 cursor-grab active:cursor-grabbing mr-2">
+                    <GripVertical size={20} />
+                </div>
+                <button onClick={() => onMove(index, 'up')} className="hover:bg-gray-200 p-1 opacity-50 group-hover:opacity-100"><ArrowUp size={16} /></button>
+                <button onClick={() => onMove(index, 'down')} className="hover:bg-gray-200 p-1 opacity-50 group-hover:opacity-100"><ArrowDown size={16} /></button>
+                <button onClick={() => onRemove(page.id)} className="text-red-500 hover:bg-red-50 p-1 opacity-50 group-hover:opacity-100"><Trash size={16} /></button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
@@ -287,11 +291,13 @@ export default function DiaryAdminPage() {
                                 <Plus size={14} /> ADD NEW LEAF
                             </RetroButton>
                         </div>
-                        <div className="flex flex-col gap-6">
+                        <Reorder.Group axis="y" values={diary.pages} onReorder={(newPages) => setDiary(prev => ({ ...prev, pages: newPages }))} className="flex flex-col gap-6">
                             {diary.pages.map((page, index) => (
-                                <LeafEditor key={page.id} page={page} index={index} onUpdate={updatePage} onMove={movePage} onRemove={removePage} />
+                                <Reorder.Item key={page.id} value={page}>
+                                    <LeafEditor page={page} index={index} onUpdate={updatePage} onMove={movePage} onRemove={removePage} />
+                                </Reorder.Item>
                             ))}
-                        </div>
+                        </Reorder.Group>
                     </div>
                 </div>
             </RetroContainer>

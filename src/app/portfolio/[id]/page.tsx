@@ -26,6 +26,8 @@ export async function generateStaticParams() {
     }));
 }
 
+import { PostFooter } from "@/components/PostFooter";
+
 export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params; // 'id' here will contain the slug from the URL
     const post = await getPost(id);
@@ -47,7 +49,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
                 backgroundBlendMode={post.backgroundBlendMode}
                 className="md:mt-8 mb-3"
             >
-                <BlockRenderer blocks={post.blocks} textColor={post.textColor} />
+                <div className="flex flex-col min-h-full">
+                    <div className="flex-1">
+                        <BlockRenderer blocks={post.blocks} textColor={post.textColor} />
+                    </div>
+                    <PostFooter post={post} textColor={post.textColor} />
+                </div>
             </RetroContainer>
         </main>
     );

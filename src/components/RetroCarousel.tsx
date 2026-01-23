@@ -81,6 +81,7 @@ export function RetroCarousel({
                                 src={src}
                                 alt={itemAlts[idx] || `Carousel item ${idx + 1}`}
                                 containerClassName="w-full h-full"
+                                unoptimized={src.toLowerCase().endsWith('.gif')}
                                 className={cn(
                                     "w-full h-full object-contain",
                                     pixelate && "pixelated"

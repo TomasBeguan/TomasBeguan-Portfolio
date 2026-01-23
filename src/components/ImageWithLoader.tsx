@@ -11,6 +11,7 @@ interface ImageWithLoaderProps extends React.ImgHTMLAttributes<HTMLImageElement>
     containerClassName?: string;
     priority?: boolean;
     quality?: number;
+    unoptimized?: boolean;
 }
 
 export function ImageWithLoader({
@@ -24,6 +25,7 @@ export function ImageWithLoader({
     style,
     priority = false,
     quality,
+    unoptimized,
     ...props
 }: ImageWithLoaderProps) {
     const [isLoading, setIsLoading] = useState(true);
@@ -66,6 +68,7 @@ export function ImageWithLoader({
                 height={height}
                 priority={priority}
                 quality={quality}
+                unoptimized={unoptimized ?? (typeof src === 'string' && src.toLowerCase().endsWith('.gif'))}
                 sizes={props.sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
                 className={cn(
                     "transition-none",

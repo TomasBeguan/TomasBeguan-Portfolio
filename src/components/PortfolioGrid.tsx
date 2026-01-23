@@ -77,6 +77,7 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                                             <ImageWithLoader
                                                 src={post.thumbnail}
                                                 alt={title}
+                                                unoptimized={post.thumbnail.toLowerCase().endsWith('.gif')}
                                                 className="w-full h-full object-cover"
                                                 containerClassName="w-full h-full"
                                             />
