@@ -30,8 +30,8 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose, transparent, ha
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(0,0,0,0.8)] p-4" onClick={onClose}>
             {/* Navigation Buttons - Left */}
             {hasPrev && onPrev && (
-                <div className="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 pointer-events-auto z-50">
-                    <RetroButton onClick={(e) => { e.stopPropagation(); onPrev(); }} className="p-2 sm:p-3 bg-white/90 hover:bg-black hover:text-white border-black shadow-retro-sm">
+                <div className="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 pointer-events-auto z-50" onClick={(e) => e.stopPropagation()}>
+                    <RetroButton onClick={onPrev} className="p-2 sm:p-3 bg-white/90 hover:bg-black hover:text-white border-black shadow-retro-sm">
                         <ChevronLeft size={30} />
                     </RetroButton>
                 </div>
@@ -39,8 +39,8 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose, transparent, ha
 
             {/* Navigation Buttons - Right */}
             {hasNext && onNext && (
-                <div className="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 pointer-events-auto z-50">
-                    <RetroButton onClick={(e) => { e.stopPropagation(); onNext(); }} className="p-2 sm:p-3 bg-white/90 hover:bg-black hover:text-white border-black shadow-retro-sm">
+                <div className="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 pointer-events-auto z-50" onClick={(e) => e.stopPropagation()}>
+                    <RetroButton onClick={onNext} className="p-2 sm:p-3 bg-white/90 hover:bg-black hover:text-white border-black shadow-retro-sm">
                         <ChevronRight size={30} />
                     </RetroButton>
                 </div>
