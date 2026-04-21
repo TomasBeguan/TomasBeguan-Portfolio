@@ -733,6 +733,145 @@
     "title_en": "Zombie Berrycades"
   },
   {
+    "id": "1776805331958",
+    "title": "The Milfos Show - Alarma ⏰😫",
+    "slug": "TheMilfosShow-Alarma",
+    "date": "2025-01-26",
+    "thumbnail": "/uploads/1776806891018-Thumbnail02.webp",
+    "blocks": [
+      {
+        "id": "1776805782353",
+        "type": "header",
+        "content": "Alarma - The Milfos Show"
+      },
+      {
+        "id": "1776805380901",
+        "type": "video",
+        "content": "https://youtu.be/_w70In0VojU",
+        "altText": "TheMilfosShow_02_Alarma.mp4"
+      },
+      {
+        "id": "1776805750428",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "Publicación Original",
+            "url": "https://www.instagram.com/reel/DFSRHXdNEXe/",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/reel/DFSRHXdNEXe/&sz=64"
+          }
+        ]
+      },
+      {
+        "id": "1776805791705",
+        "type": "text",
+        "content": "En este episodio queríamos referenciar un famoso video de [Nil Ojeda](https://www.instagram.com/nil/), pero con el Milfo y la casa de [**Bob Esponja**]{#ffda24}.",
+        "linkColor": "#cb292e"
+      },
+      {
+        "id": "1776807304874",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1776807308698-Media01.webp",
+          "/uploads/1776807314859-Media01_wire.webp"
+        ],
+        "itemAlts": [
+          "Habitación render",
+          "Habitación wireframe"
+        ]
+      },
+      {
+        "id": "1776807361328",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1776807365048-Media02.webp",
+          "/uploads/1776807367236-Media02_Wire.webp"
+        ],
+        "itemAlts": [
+          "Camara render",
+          "Camara wireframe"
+        ]
+      },
+      {
+        "id": "1776806089521",
+        "type": "video",
+        "content": "https://youtube.com/shorts/czDN-4HVuFQ",
+        "altText": "animation_Test01.mp4"
+      }
+    ],
+    "thumbnailWidth": 1080,
+    "thumbnailHeight": 1080,
+    "order": 4,
+    "active": true,
+    "category": "Animación 3D",
+    "category_en": "3D Animation"
+  },
+  {
+    "id": "1776802398155",
+    "title": "The Milfos Show - Piloto 🪫❤️🔋",
+    "slug": "the-milfos-show-piloto",
+    "date": "2025-01-19",
+    "thumbnail": "/uploads/1776803686475-Thumb01.webp",
+    "blocks": [
+      {
+        "id": "1776803886443",
+        "type": "header",
+        "content": "Animación piloto - The Milfos Show"
+      },
+      {
+        "id": "1776802407524",
+        "type": "video",
+        "content": "https://youtu.be/BeQNOuRREXI",
+        "altText": "TheMilfosShow_Piloto01.wav"
+      },
+      {
+        "id": "1776803900987",
+        "type": "text",
+        "content": "Esta fue la primera **animación** de una serie de **videos cortos** que me encargaron para redes sociales.\nEl episodio piloto fue la prueba para asentar las bases del **estilo y formato.**"
+      },
+      {
+        "id": "1776803980906",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "Publicación Original",
+            "url": "https://www.instagram.com/reel/DFAR5J_t1G9/",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/reel/DFAR5J_t1G9/&sz=64"
+          }
+        ]
+      },
+      {
+        "id": "1776804213183",
+        "type": "subtitle",
+        "content": "Pruebas de estilo"
+      },
+      {
+        "id": "1776804201255",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1776804204978-Estilo01_1.11.1.webp",
+          "/uploads/1776804207402-Estilo02_1.12.1.webp",
+          "/uploads/1776804209722-Estilo03_1.13.1.webp"
+        ],
+        "itemAlts": [
+          "Estilo 1",
+          "Estilo 2",
+          "Estilo 3"
+        ]
+      }
+    ],
+    "order": 5,
+    "active": true,
+    "thumbnailWidth": 1080,
+    "thumbnailHeight": 1080,
+    "category": "Animación 3D",
+    "category_en": "3D Animation"
+  },
+  {
     "id": "1765408026219",
     "title": "The Anger Price",
     "slug": "the-anger-price",
@@ -750,7 +889,7 @@
     ],
     "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
     "category": "Modelo 3D",
-    "order": 4,
+    "order": 6,
     "cardBackgroundColor": "#ff3838",
     "cardTextColor": "#ffffff",
     "thumbnail3dBackgroundColor": "#ff3838",
@@ -812,7 +951,7 @@
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#333333",
     "category": "3D Animation",
-    "order": 5,
+    "order": 7,
     "slug": "help-me-exe"
   },
   {
@@ -877,7 +1016,7 @@
         "linkText": "Instagram post"
       }
     ],
-    "order": 6,
+    "order": 8,
     "active": true,
     "category": "Animación 3D",
     "slug": "pencil-oceans"
@@ -975,7 +1114,7 @@
     "cardBackgroundColor": "#1e1f25",
     "cardTextColor": "#ffffff",
     "category": "Animación 3D",
-    "order": 7,
+    "order": 9,
     "active": true,
     "usePostBackgroundForCard": false,
     "slug": "SpookyCollection",
@@ -1057,7 +1196,7 @@
         "noBorder": true
       }
     ],
-    "order": 8,
+    "order": 10,
     "active": true,
     "cardBackgroundColor": "#222222",
     "cardTextColor": "#ffffff",
@@ -1104,7 +1243,7 @@
       }
     ],
     "active": false,
-    "order": 9,
+    "order": 11,
     "slug": "zoombie-berry-cade"
   },
   {
@@ -1130,7 +1269,7 @@
       }
     ],
     "active": false,
-    "order": 10,
+    "order": 12,
     "slug": "retro-computer"
   },
   {
@@ -1157,7 +1296,7 @@
       }
     ],
     "active": false,
-    "order": 11,
+    "order": 13,
     "slug": "nuevo-proyecto-de-prueba"
   },
   {
@@ -1201,7 +1340,7 @@
       }
     ],
     "active": false,
-    "order": 12,
+    "order": 14,
     "slug": "new-project"
   },
   {
@@ -1256,7 +1395,7 @@
     "category": "Dibujo",
     "backgroundBlendMode": "overlay",
     "active": false,
-    "order": 13,
+    "order": 15,
     "slug": "cumple-hui"
   },
   {
@@ -1282,7 +1421,7 @@
     "backgroundBlendMode": "multiply",
     "cardTextColor": "#ffffff",
     "active": false,
-    "order": 14,
+    "order": 16,
     "slug": "test-de-prueba"
   },
   {
@@ -1315,7 +1454,7 @@
     ],
     "category": "Textura",
     "active": false,
-    "order": 15,
+    "order": 17,
     "slug": "prueba-de-compresi-n"
   },
   {
@@ -1341,7 +1480,7 @@
     ],
     "thumbnailWidth": 656,
     "thumbnailHeight": 414,
-    "order": 16,
+    "order": 18,
     "slug": "prueba-imagen-loader",
     "active": false
   },
@@ -1361,7 +1500,7 @@
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
     "category": "Modelado",
-    "order": 17,
+    "order": 19,
     "active": false,
     "slug": "prueba-de-modelo-3d"
   },
@@ -1374,7 +1513,7 @@
     "blocks": [],
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
-    "order": 18,
+    "order": 20,
     "active": false
   },
   {
@@ -1385,7 +1524,7 @@
     "thumbnail": "",
     "blocks": [],
     "thumbnailModel": "/uploads/1765412829156-Lucas_web2.glb",
-    "order": 19,
+    "order": 21,
     "active": false
   }
 ]

@@ -32,7 +32,7 @@ export const RetroVideoPlayer = ({ url, title = "Movie Player" }: RetroVideoPlay
         // If it's already an ID
         if (url.length === 11 && !url.includes('/') && !url.includes('.')) return url;
 
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
         const match = url.match(regExp);
         return (match && match[2].length === 11) ? match[2] : null;
     };

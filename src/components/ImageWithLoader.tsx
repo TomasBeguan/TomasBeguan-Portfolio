@@ -68,7 +68,7 @@ export function ImageWithLoader({
                 height={height}
                 priority={priority}
                 quality={quality}
-                unoptimized={unoptimized ?? (typeof src === 'string' && src.toLowerCase().endsWith('.gif'))}
+                unoptimized={unoptimized ?? true}
                 sizes={props.sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
                 className={cn(
                     "transition-none",

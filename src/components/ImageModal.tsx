@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { RetroButton } from './RetroButton';
 import { cn } from '@/lib/utils';
 
@@ -10,9 +10,13 @@ interface ImageModalProps {
     altText?: string;
     onClose: () => void;
     transparent?: boolean;
+    hasPrev?: boolean;
+    hasNext?: boolean;
+    onPrev?: () => void;
+    onNext?: () => void;
 }
 
-export const ImageModal = ({ isOpen, imageUrl, altText, onClose, transparent }: ImageModalProps) => {
+export const ImageModal = ({ isOpen, imageUrl, altText, onClose, transparent, hasPrev, hasNext, onPrev, onNext }: ImageModalProps) => {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -24,6 +28,24 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose, transparent }: 
 
     return createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(0,0,0,0.8)] p-4" onClick={onClose}>
+            {/* Navigation Buttons - Left */}
+            {hasPrev && onPrev && (
+                <div className="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 pointer-events-auto z-50">
+                    <RetroButton onClick={(e) => { e.stopPropagation(); onPrev(); }} className="p-2 sm:p-3 bg-white/90 hover:bg-black hover:text-white border-black shadow-retro-sm">
+                        <ChevronLeft size={30} />
+                    </RetroButton>
+                </div>
+            )}
+
+            {/* Navigation Buttons - Right */}
+            {hasNext && onNext && (
+                <div className="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 pointer-events-auto z-50">
+                    <RetroButton onClick={(e) => { e.stopPropagation(); onNext(); }} className="p-2 sm:p-3 bg-white/90 hover:bg-black hover:text-white border-black shadow-retro-sm">
+                        <ChevronRight size={30} />
+                    </RetroButton>
+                </div>
+            )}
+
             <div className="relative max-w-5xl w-fit max-h-[90vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
                 {/* Close Button - Desktop (Outside Right) */}
                 <div className="hidden sm:block absolute left-full top-0 ml-2 pointer-events-auto z-50">

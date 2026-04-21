@@ -18,7 +18,14 @@ interface BlockRendererProps {
 }
 
 export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererProps) {
-    const [selectedImage, setSelectedImage] = useState<{ url: string; alt?: string; transparent?: boolean } | null>(null);
+    const [selectedImage, setSelectedImage] = useState<{ 
+        url: string; 
+        alt?: string; 
+        transparent?: boolean;
+        items?: string[];
+        itemAlts?: string[];
+        currentIndex?: number;
+    } | null>(null);
     const { language } = useLanguage();
 
     // Helper to get localized content
@@ -189,7 +196,14 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                                     block.allowModal !== false && "cursor-zoom-in",
                                                     block.noBorder && "bg-transparent p-0"
                                                 )}
-                                                onClick={() => block.allowModal !== false && setSelectedImage({ url: src, alt: alt, transparent: block.noBorder })}
+                                                onClick={() => block.allowModal !== false && setSelectedImage({ 
+                                                    url: src, 
+                                                    alt: alt, 
+                                                    transparent: block.noBorder,
+                                                    items: items,
+                                                    itemAlts: itemAlts,
+                                                    currentIndex: idx
+                                                })}
                                             >
                                                 <ImageWithLoader
                                                     src={src}
@@ -260,7 +274,18 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                         delay={block.delay}
                                         allowModal={block.allowModal !== false}
                                         showAltText={block.showAltText}
-                                        onImageClick={(url, alt) => setSelectedImage({ url, alt, transparent: block.noBorder })}
+                                        onImageClick={(url, alt) => {
+                                            const items = block.items || [];
+                                            const alts = (language === 'en' && block.itemAlts_en) ? block.itemAlts_en : block.itemAlts || [];
+                                            setSelectedImage({ 
+                                                url, 
+                                                alt, 
+                                                transparent: block.noBorder,
+                                                items: items,
+                                                itemAlts: alts,
+                                                currentIndex: items.indexOf(url)
+                                            });
+                                        }}
                                     />
                                 </div>
                             );
@@ -276,6 +301,30 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                 altText={selectedImage?.alt}
                 transparent={selectedImage?.transparent}
                 onClose={() => setSelectedImage(null)}
+                hasPrev={(selectedImage?.items?.length || 0) > 1}
+                hasNext={(selectedImage?.items?.length || 0) > 1}
+                onPrev={() => {
+                    if (selectedImage?.items && selectedImage.currentIndex !== undefined) {
+                        const newIdx = selectedImage.currentIndex > 0 ? selectedImage.currentIndex - 1 : selectedImage.items.length - 1;
+                        setSelectedImage({
+                            ...selectedImage,
+                            url: selectedImage.items[newIdx],
+                            alt: selectedImage.itemAlts?.[newIdx],
+                            currentIndex: newIdx
+                        });
+                    }
+                }}
+                onNext={() => {
+                    if (selectedImage?.items && selectedImage.currentIndex !== undefined) {
+                        const newIdx = selectedImage.currentIndex < selectedImage.items.length - 1 ? selectedImage.currentIndex + 1 : 0;
+                        setSelectedImage({
+                            ...selectedImage,
+                            url: selectedImage.items[newIdx],
+                            alt: selectedImage.itemAlts?.[newIdx],
+                            currentIndex: newIdx
+                        });
+                    }
+                }}
             />
         </>
     );
