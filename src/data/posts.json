@@ -242,7 +242,130 @@
     "backgroundMode": "repeat",
     "pixelateImages": true,
     "title_en": "Apolo Milfo",
-    "category_en": "3D Animation"
+    "category_en": "3D Animation",
+    "backgroundColor": "#4ebbfe"
+  },
+  {
+    "id": "1776746717785",
+    "title": "Psycho Milfo",
+    "slug": "PsychoMilfo",
+    "date": "2024-12-08",
+    "thumbnail": "/uploads/1776749594572-Thumbnail03.webp",
+    "blocks": [
+      {
+        "id": "1776749710333",
+        "type": "header",
+        "content": "Animación Psycho Milfo para [*Milfshakes*](https://milfshakes.es/)",
+        "linkColor": "#fe2a3f"
+      },
+      {
+        "id": "1776748756272",
+        "type": "video",
+        "content": "https://youtu.be/mh3fRjNQx9k",
+        "altText": "psychomilfo.mp4"
+      },
+      {
+        "id": "1776749855738",
+        "type": "subtitle",
+        "content": "El equipo de [*Milfshakes*](https://milfshakes.es) me encargó una **pieza audiovisual animada** para redes sociales por la salida de la primera figura coleccionable [*“The Milfos”*]{#fe2a3f}, el [*“001 Psycho Milfo”*]{#fe2a3f}",
+        "linkColor": "#fe2a3f"
+      },
+      {
+        "id": "1776750121401",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "Post original",
+            "url": "https://www.instagram.com/p/DDUN8hns_37/",
+            "textColor": "#40afff",
+            "borderColor": "#40afff",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/p/DDUN8hns_37/&sz=64"
+          }
+        ]
+      },
+      {
+        "id": "1776755039310",
+        "type": "image",
+        "content": "/uploads/1776755159429-Milfo360_02.gif",
+        "width": 540,
+        "height": 540,
+        "noBorder": true,
+        "allowModal": false,
+        "pixelate": false,
+        "altText": "Milfo360"
+      },
+      {
+        "id": "1776755821475",
+        "type": "text",
+        "content": "El mayor reto del proyecto fue la **dirección de arte**, no quería que se sintiera como una animación 3D tradicional, quería que fuera una **pieza única**, como la misma figura coleccionable."
+      },
+      {
+        "id": "1776755848298",
+        "type": "text",
+        "content": "Elegí un estilo bastante particular, un estilo que combina los colores planos del estilo *“toon”* con sombras y gradientes sutiles.\nIdee un sistema de **shading** en **Blender** para poder controlar las luces y sombras a mi antojo, es un sistema que sigo perfeccionando para mis **proyectos actuales.**"
+      },
+      {
+        "id": "1776751153659",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1776751165164-01.webp",
+          "/uploads/1776751167703-02.webp",
+          "/uploads/1776751172175-05.webp",
+          "/uploads/1776751177474-07.webp",
+          "/uploads/1776751180765-08.webp",
+          "/uploads/1776751183547-09.webp",
+          "/uploads/1776751192789-11.webp",
+          "/uploads/1776751196971-14.webp",
+          "/uploads/1776751200811-16.webp",
+          "/uploads/1776751215555-23.webp",
+          "/uploads/1776751224978-29.webp",
+          "/uploads/1776751228889-30.webp"
+        ],
+        "itemAlts": [
+          "Título",
+          "Fábrica",
+          "Dispensador",
+          "Milfo",
+          "Pure Gold Milfo",
+          "Exp.013 Milfo",
+          "Psycho Milfo",
+          "Caída",
+          "Seguridad",
+          "Trulfo show",
+          "Realidad",
+          "Packaging"
+        ],
+        "delay": 2,
+        "noBorder": false,
+        "showAltText": false
+      },
+      {
+        "id": "1776756166587",
+        "type": "grid",
+        "content": "",
+        "items": [
+          "/uploads/1776756170266-Render01.webp",
+          "/uploads/1776756172733-Render02.webp"
+        ],
+        "itemAlts": [
+          "",
+          ""
+        ],
+        "noBorder": false
+      }
+    ],
+    "order": 1,
+    "active": true,
+    "thumbnailWidth": 1080,
+    "thumbnailHeight": 1080,
+    "usePostBackgroundForCard": true,
+    "backgroundColor": "#67bffe",
+    "cardTextColor": "#ffffff",
+    "category": "Animación 3D",
+    "category_en": "3D Animation",
+    "textColor": "#ffffff"
   },
   {
     "id": "1769035300192",
@@ -454,12 +577,12 @@
     ],
     "thumbnailWidth": 1080,
     "thumbnailHeight": 1080,
-    "order": 1,
+    "order": 2,
     "active": true,
     "title_en": "Lunar plots",
     "category": "Modelo 3D",
     "category_en": "3D Model",
-    "backgroundImage": "/uploads/1769044811763-Fondo.webp",
+    "backgroundImage": "",
     "backgroundSize": "",
     "backgroundMode": "cover",
     "backgroundOpacity": 20,
@@ -595,7 +718,7 @@
     ],
     "thumbnailWidth": 1080,
     "thumbnailHeight": 1080,
-    "order": 2,
+    "order": 3,
     "active": true,
     "category": "Animación 3D",
     "category_en": "3D Animation",
@@ -627,7 +750,7 @@
     ],
     "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
     "category": "Modelo 3D",
-    "order": 3,
+    "order": 4,
     "cardBackgroundColor": "#ff3838",
     "cardTextColor": "#ffffff",
     "thumbnail3dBackgroundColor": "#ff3838",
@@ -689,7 +812,7 @@
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#333333",
     "category": "3D Animation",
-    "order": 4,
+    "order": 5,
     "slug": "help-me-exe"
   },
   {
@@ -754,7 +877,7 @@
         "linkText": "Instagram post"
       }
     ],
-    "order": 5,
+    "order": 6,
     "active": true,
     "category": "Animación 3D",
     "slug": "pencil-oceans"
@@ -852,7 +975,7 @@
     "cardBackgroundColor": "#1e1f25",
     "cardTextColor": "#ffffff",
     "category": "Animación 3D",
-    "order": 6,
+    "order": 7,
     "active": true,
     "usePostBackgroundForCard": false,
     "slug": "SpookyCollection",
@@ -934,7 +1057,7 @@
         "noBorder": true
       }
     ],
-    "order": 7,
+    "order": 8,
     "active": true,
     "cardBackgroundColor": "#222222",
     "cardTextColor": "#ffffff",
@@ -981,7 +1104,7 @@
       }
     ],
     "active": false,
-    "order": 8,
+    "order": 9,
     "slug": "zoombie-berry-cade"
   },
   {
@@ -1007,7 +1130,7 @@
       }
     ],
     "active": false,
-    "order": 9,
+    "order": 10,
     "slug": "retro-computer"
   },
   {
@@ -1034,7 +1157,7 @@
       }
     ],
     "active": false,
-    "order": 10,
+    "order": 11,
     "slug": "nuevo-proyecto-de-prueba"
   },
   {
@@ -1078,7 +1201,7 @@
       }
     ],
     "active": false,
-    "order": 11,
+    "order": 12,
     "slug": "new-project"
   },
   {
@@ -1133,7 +1256,7 @@
     "category": "Dibujo",
     "backgroundBlendMode": "overlay",
     "active": false,
-    "order": 12,
+    "order": 13,
     "slug": "cumple-hui"
   },
   {
@@ -1159,7 +1282,7 @@
     "backgroundBlendMode": "multiply",
     "cardTextColor": "#ffffff",
     "active": false,
-    "order": 13,
+    "order": 14,
     "slug": "test-de-prueba"
   },
   {
@@ -1192,7 +1315,7 @@
     ],
     "category": "Textura",
     "active": false,
-    "order": 14,
+    "order": 15,
     "slug": "prueba-de-compresi-n"
   },
   {
@@ -1218,7 +1341,7 @@
     ],
     "thumbnailWidth": 656,
     "thumbnailHeight": 414,
-    "order": 15,
+    "order": 16,
     "slug": "prueba-imagen-loader",
     "active": false
   },
@@ -1238,7 +1361,7 @@
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
     "category": "Modelado",
-    "order": 16,
+    "order": 17,
     "active": false,
     "slug": "prueba-de-modelo-3d"
   },
@@ -1251,7 +1374,7 @@
     "blocks": [],
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
-    "order": 17,
+    "order": 18,
     "active": false
   },
   {
@@ -1262,7 +1385,7 @@
     "thumbnail": "",
     "blocks": [],
     "thumbnailModel": "/uploads/1765412829156-Lucas_web2.glb",
-    "order": 18,
+    "order": 19,
     "active": false
   }
 ]

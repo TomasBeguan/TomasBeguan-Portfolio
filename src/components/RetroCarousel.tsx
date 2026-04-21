@@ -62,13 +62,13 @@ export function RetroCarousel({
                 )}
             >
                 {/* Main Image Container */}
-                <div className="w-full aspect-[4/3] relative">
+                <div className="w-full relative flex items-center">
                     {items.map((src, idx) => (
                         <div
                             key={idx}
                             className={cn(
-                                "absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out",
-                                idx === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none",
+                                "w-full transition-opacity duration-1000 ease-in-out",
+                                idx === currentIndex ? "opacity-100 z-10 relative" : "opacity-0 z-0 absolute inset-0 pointer-events-none",
                                 allowModal && onImageClick && "cursor-zoom-in"
                             )}
                             onClick={() => {
@@ -80,7 +80,7 @@ export function RetroCarousel({
                             <ImageWithLoader
                                 src={src}
                                 alt={itemAlts[idx] || `Carousel item ${idx + 1}`}
-                                containerClassName="w-full h-full"
+                                containerClassName="w-full"
                                 unoptimized={src.toLowerCase().endsWith('.gif')}
                                 className={cn(
                                     "w-full h-full object-contain",
