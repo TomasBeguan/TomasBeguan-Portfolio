@@ -301,6 +301,40 @@
         "content": "El mayor reto del proyecto fue la **dirección de arte**, no quería que se sintiera como una animación 3D tradicional, quería que fuera una **pieza única**, como la misma figura coleccionable."
       },
       {
+        "id": "1776838673568",
+        "type": "carousel",
+        "content": "",
+        "items": [
+          "/uploads/1776838685539-01_main.webp",
+          "/uploads/1776838688073-01_wire.webp",
+          "/uploads/1776838690624-02_main.webp",
+          "/uploads/1776838692834-02_wire.webp",
+          "/uploads/1776838697086-03_main.webp",
+          "/uploads/1776838699909-03_wire.webp",
+          "/uploads/1776838702248-04_main.webp",
+          "/uploads/1776838704690-04_wire.webp",
+          "/uploads/1776838707019-05_main.webp",
+          "/uploads/1776838709291-05_wire.webp",
+          "/uploads/1776838711681-06_main.webp",
+          "/uploads/1776838713868-06_wire.webp"
+        ],
+        "itemAlts": [
+          "Escena 1 Render",
+          "Escena 1 Wireframe",
+          "Escena 2 Render",
+          "Escena 2 Wireframe",
+          "Escena 3 Render",
+          "Escena 3 Wireframe",
+          "Escena 4 Render",
+          "Escena 4 Wireframe",
+          "Escena 5 Render",
+          "Escena 5 Wireframe",
+          "Escena 6 Render",
+          "Escena 6 Wireframe"
+        ],
+        "noBorder": true
+      },
+      {
         "id": "1776755848298",
         "type": "text",
         "content": "Elegí un estilo bastante particular, un estilo que combina los colores planos del estilo *“toon”* con sombras y gradientes sutiles.\nIdee un sistema de **shading** en **Blender** para poder controlar las luces y sombras a mi antojo, es un sistema que sigo perfeccionando para mis **proyectos actuales.**"
