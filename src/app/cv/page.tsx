@@ -1,18 +1,16 @@
 "use client";
 
 import { RetroContainer } from "@/components/RetroContainer";
-import { RetroButton } from "@/components/RetroButton";
-import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import { Instagram, Youtube, Palette, Mail } from "lucide-react";
+import { Instagram, Youtube, Palette, Mail, Globe } from "lucide-react";
 
-export default function AboutPage() {
+export default function CVPage() {
     const { language } = useLanguage();
 
     const socialLinks = [
-        { icon: <Instagram size={18} />, label: "Instagram", url: "https://instagram.com/tomasbeguan", color: "hover:text-[#E1306C]" },
-        { icon: <Youtube size={18} />, label: "YouTube", url: "https://youtube.com/@tomasbeguan", color: "hover:text-[#FF0000]" },
-        { icon: <Palette size={18} />, label: "ArtStation", url: "https://www.artstation.com/tomasbeguan", color: "hover:text-[#13AFF0]" },
+        { icon: <Instagram size={18} />, label: "Instagram", url: "https://instagram.com/tomasbeguan" },
+        { icon: <Youtube size={18} />, label: "YouTube", url: "https://youtube.com/@tomasbeguan" },
+        { icon: <Palette size={18} />, label: "ArtStation", url: "https://www.artstation.com/tomasbeguan" },
     ];
 
     const ContactBlock = (
@@ -20,32 +18,17 @@ export default function AboutPage() {
             <h2 className="text-xl font-chicago border-b-2 border-black pb-1 mb-2">
                 {language === 'es' ? "Contacto" : "Contact"}
             </h2>
-            <div className="flex flex-col gap-2">
-                <Link href="/contact" className="w-full">
-                    <RetroButton className="w-full justify-center">
-                        {language === 'es' ? "Enviar Mensaje" : "Send Message"}
-                    </RetroButton>
-                </Link>
-                <Link href="/portfolio" className="w-full">
-                    <RetroButton className="w-full justify-center bg-black text-white hover:bg-white hover:text-black">
-                        {language === 'es' ? "Ver Trabajos" : "View Work"}
-                    </RetroButton>
-                </Link>
-            </div>
-
-            <div className="pt-4 border-t-2 border-black/5 flex justify-center gap-4">
-                {socialLinks.map((link, i) => (
-                    <a
-                        key={i}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`transition-colors duration-300 ${link.color}`}
-                        title={link.label}
-                    >
-                        {link.icon}
+            <div className="flex flex-col gap-3 font-space-grotesk text-sm">
+                <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Website</p>
+                    <a href="https://tomasbeguan.com" target="_blank" rel="noopener noreferrer" className="text-base font-bold underline underline-offset-2 hover:text-blue-600 transition-colors">
+                        tomasbeguan.com
                     </a>
-                ))}
+                </div>
+                <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Social</p>
+                    <p className="text-base font-bold">@TomasBeguan</p>
+                </div>
             </div>
         </div>
     );
@@ -58,16 +41,8 @@ export default function AboutPage() {
             <div className="space-y-4 font-space-grotesk text-sm font-medium">
                 <div>
                     <h4 className="font-bold border-b border-black/20 pb-1 mb-1">Software</h4>
-                    <p>
-                        <a href="https://blender.org/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Blender</a>,{" "}
-                        <a href="https://www.adobe.com/products/aftereffects.html" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">After Effects</a>,{" "}
-                        <a href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Affinity</a>,{" "}
-                        <a href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Davinci Resolve</a>,{" "}
-                        <a href="https://www.adobe.com/products/substance3d-painter.html" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Substance Painter</a>,{" "}
-                        <a href="https://www.adobe.com/products/photoshop.html" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Photoshop</a>,{" "}
-                        <a href="https://www.adobe.com/products/illustrator.html" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Illustrator</a>,{" "}
-                        <a href="https://www.adobe.com/products/premiere.html" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Premiere</a>,{" "}
-                        <a href="https://www.figma.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Figma</a>
+                    <p className="leading-relaxed">
+                        Blender, After Effects, Affinity, Davinci Resolve, Substance Painter, Photoshop, Illustrator, Premiere, Figma
                     </p>
                 </div>
                 <div>
@@ -84,23 +59,20 @@ export default function AboutPage() {
 
     return (
         <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-start p-2 sm:p-4 pt-4 md:pt-3">
-            <RetroContainer title={language === 'es' ? "Curriculum Vitae" : "Curriculum Vitae"} className="md:flex-1 md:min-h-0 md:mt-8 mb-3">
-                <div className="flex flex-col md:flex-row gap-8 items-start w-full ">
+            <RetroContainer
+                title="Curriculum Vitae"
+                hideBack={true}
+                className="md:flex-1 md:min-h-0 md:mt-8 mb-3"
+            >
+                <div className="flex flex-col md:flex-row gap-8 items-start w-full p-4">
                     {/* Left Column - Profile & Skills */}
                     <div className="w-full md:w-1/3 space-y-6">
-                        <div className="border-2 border-black bg-white shadow-retro p-2">
+                        <div className="border-2 border-black bg-white shadow-retro p-2 print:shadow-none">
                             <img src="/uploads/dithered-image.png" alt="Tomas Beguan" className="w-full border-2 border-black" />
                         </div>
 
-                        {/* Habilidades (Desktop) */}
-                        <div className="hidden md:block">
-                            {SkillsBlock}
-                        </div>
-
-                        {/* Contacto (Desktop) */}
-                        <div className="hidden md:block">
-                            {ContactBlock}
-                        </div>
+                        {SkillsBlock}
+                        {ContactBlock}
                     </div>
 
                     {/* Right Column - CV Content */}
@@ -113,7 +85,6 @@ export default function AboutPage() {
                         </div>
 
                         <div className="space-y-4 font-space-grotesk font-medium text-lg leading-tight">
-
                             <p>
                                 {language === 'es' ? (
                                     <>¡Hola! Soy Tomás. <strong>Artista 3D</strong> con pasión por transformar ideas en realidad visual tangible. Me especializo principalmente en <strong>animación, modelado y shading con dominio del pipeline completo.</strong></>
@@ -156,8 +127,6 @@ export default function AboutPage() {
                                         <li>{language === 'es' ? "Encargado del diseño, maquetación, programación y marketing." : "Responsible for design, layout, programming, and marketing."}</li>
                                     </ul>
                                 </div>
-
-
                             </div>
                         </div>
 
@@ -171,22 +140,11 @@ export default function AboutPage() {
                                     <h4 className="text-xl font-bold font-space-grotesk">{language === 'es' ? "Formación Complementaria en diseño 3D" : "Continuing Education in 3D Design"}</h4>
                                     <p className="text-sm font-bold text-gray-500 mb-2"><a href="https://www.odin3d.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">Odin3D</a>, Online School. 2020. 300hs.</p>
                                 </div>
-                            </div>
-
-                            <div className="space-y-4">
                                 <div className="border-l-4 border-black pl-4 ">
                                     <h4 className="text-xl font-bold font-space-grotesk">{language === 'es' ? "Técnico superior en desarrollo web" : "Senior Web Developer."}</h4>
                                     <p className="text-sm font-bold text-gray-500 mb-2"><a href="https://www.lametro.edu.ar/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-black transition-colors">La Metro</a>, Escuela de diseño. 2019, Argentina.</p>
                                 </div>
                             </div>
-
-
-                        </div>
-
-                        {/* Habilidades & Contacto (Mobile) */}
-                        <div className="md:hidden space-y-6 pt-4">
-                            {SkillsBlock}
-                            {ContactBlock}
                         </div>
                     </div>
                 </div>

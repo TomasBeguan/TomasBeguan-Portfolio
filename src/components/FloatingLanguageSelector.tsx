@@ -3,9 +3,13 @@
 import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export function FloatingLanguageSelector() {
     const { language, setLanguage } = useLanguage();
+    const pathname = usePathname();
+
+    if (pathname === '/cv') return null;
 
     return (
         <div className="fixed bottom-6 right-6 z-40 hidden md:block select-none">

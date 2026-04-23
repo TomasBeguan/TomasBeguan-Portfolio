@@ -19,6 +19,7 @@ interface RetroContainerProps {
     backgroundOpacity?: number;
     backgroundSize?: string;
     backgroundBlendMode?: string;
+    hideBack?: boolean;
 }
 
 export function RetroContainer({
@@ -32,7 +33,8 @@ export function RetroContainer({
     backgroundMode,
     backgroundOpacity = 100,
     backgroundSize,
-    backgroundBlendMode
+    backgroundBlendMode,
+    hideBack = false
 }: RetroContainerProps) {
     const router = useRouter();
     const pathname = usePathname();
@@ -216,15 +218,17 @@ export function RetroContainer({
                 {/* Title Bar */}
                 <div className="w-full bg-white dark:bg-retro-dark-blue border-b-2 border-black dark:border-white px-2 py-1 flex items-center justify-center relative z-20 h-12 shrink-0 select-none transition-colors duration-300">
                     {/* Back Button (Fixed on Mobile, Absolute on Desktop) */}
-                    <div className="absolute md:absolute left-2 md:left-2 z-10 md:z-10 h-8 md:top-1/2 md:-translate-y-1/2 max-md:fixed max-md:top-10 max-md:left-4 max-md:z-[45]">
-                        <RetroButton
-                            onClick={handleClose}
-                            className="px-2 sm:px-3 py-0 text-sm h-full border-2 border-black dark:border-white shadow-retro-sm md:shadow-none active:translate-x-0 active:translate-y-0 hover:translate-x-0 hover:translate-y-0 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-chicago flex items-center gap-2 bg-white dark:bg-retro-dark-blue dark:text-white transition-colors duration-300"
-                        >
-                            <ArrowLeft size={14} strokeWidth={3} />
-                            <span className="hidden sm:inline">{t('back')}</span>
-                        </RetroButton>
-                    </div>
+                    {!hideBack && (
+                        <div className="absolute md:absolute left-2 md:left-2 z-10 md:z-10 h-8 md:top-1/2 md:-translate-y-1/2 max-md:fixed max-md:top-10 max-md:left-4 max-md:z-[45]">
+                            <RetroButton
+                                onClick={handleClose}
+                                className="px-2 sm:px-3 py-0 text-sm h-full border-2 border-black dark:border-white shadow-retro-sm md:shadow-none active:translate-x-0 active:translate-y-0 hover:translate-x-0 hover:translate-y-0 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-chicago flex items-center gap-2 bg-white dark:bg-retro-dark-blue dark:text-white transition-colors duration-300"
+                            >
+                                <ArrowLeft size={14} strokeWidth={3} />
+                                <span className="hidden sm:inline">{t('back')}</span>
+                            </RetroButton>
+                        </div>
+                    )}
 
                     {/* Title with striped background */}
                     <div className="w-full h-full flex items-center justify-center relative overflow-hidden">

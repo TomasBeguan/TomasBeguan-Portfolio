@@ -33,6 +33,8 @@ export const RetroMenuBar = () => {
     const menuRef = useRef<HTMLDivElement>(null);
     const { t, language, setLanguage } = useLanguage();
 
+    if (pathname === '/cv') return null;
+
     const navItems = [
         { label: t("home"), href: "/" },
         { label: t("portfolio"), href: "/portfolio" },
