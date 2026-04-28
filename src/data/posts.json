@@ -767,16 +767,43 @@
     "title_en": "Zombie Berrycades"
   },
   {
+    "id": "1776994532570",
+    "title": "Sunday ☀️",
+    "slug": "TheMilfosShowSunday",
+    "date": "2026-04-24",
+    "thumbnail": "/uploads/1776995006599-Thumbnail01.webp",
+    "blocks": [
+      {
+        "id": "1776995131757",
+        "type": "header",
+        "content": "☀️ Sunday ☀️"
+      },
+      {
+        "id": "1776995094010",
+        "type": "video",
+        "content": "https://youtu.be/LY2NFNVieBo",
+        "altText": "TheMilfoShow_sunday☀️.mp4"
+      }
+    ],
+    "thumbnailWidth": 1080,
+    "thumbnailHeight": 1080,
+    "order": 4,
+    "active": true,
+    "category": "Animación 3D",
+    "category_en": "3D Animation",
+    "cardBackgroundColor": "#ffffff"
+  },
+  {
     "id": "1776805331958",
-    "title": "The Milfos Show - Alarma ⏰😫",
-    "slug": "TheMilfosShow-Alarma",
+    "title": "Alarma ⏰😫",
+    "slug": "the-milfos-show-alarma",
     "date": "2025-01-26",
     "thumbnail": "/uploads/1776806891018-Thumbnail02.webp",
     "blocks": [
       {
         "id": "1776805782353",
         "type": "header",
-        "content": "Alarma - The Milfos Show"
+        "content": "⏰😫 Alarma ⏰😫"
       },
       {
         "id": "1776805380901",
@@ -837,14 +864,14 @@
     ],
     "thumbnailWidth": 1080,
     "thumbnailHeight": 1080,
-    "order": 4,
+    "order": 5,
     "active": true,
     "category": "Animación 3D",
     "category_en": "3D Animation"
   },
   {
     "id": "1776802398155",
-    "title": "The Milfos Show - Piloto 🪫❤️🔋",
+    "title": "Piloto 🪫❤️🔋 ",
     "slug": "the-milfos-show-piloto",
     "date": "2025-01-19",
     "thumbnail": "/uploads/1776803686475-Thumb01.webp",
@@ -852,7 +879,7 @@
       {
         "id": "1776803886443",
         "type": "header",
-        "content": "Animación piloto - The Milfos Show"
+        "content": "🪫❤️🔋 Animación piloto 🪫❤️🔋"
       },
       {
         "id": "1776802407524",
@@ -898,7 +925,7 @@
         ]
       }
     ],
-    "order": 5,
+    "order": 6,
     "active": true,
     "thumbnailWidth": 1080,
     "thumbnailHeight": 1080,
@@ -923,7 +950,7 @@
     ],
     "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
     "category": "Modelo 3D",
-    "order": 6,
+    "order": 7,
     "cardBackgroundColor": "#ff3838",
     "cardTextColor": "#ffffff",
     "thumbnail3dBackgroundColor": "#ff3838",
@@ -985,7 +1012,7 @@
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#333333",
     "category": "3D Animation",
-    "order": 7,
+    "order": 8,
     "slug": "help-me-exe"
   },
   {
@@ -1050,7 +1077,7 @@
         "linkText": "Instagram post"
       }
     ],
-    "order": 8,
+    "order": 9,
     "active": true,
     "category": "Animación 3D",
     "slug": "pencil-oceans"
@@ -1148,7 +1175,7 @@
     "cardBackgroundColor": "#1e1f25",
     "cardTextColor": "#ffffff",
     "category": "Animación 3D",
-    "order": 9,
+    "order": 10,
     "active": true,
     "usePostBackgroundForCard": false,
     "slug": "SpookyCollection",
@@ -1230,7 +1257,7 @@
         "noBorder": true
       }
     ],
-    "order": 10,
+    "order": 11,
     "active": true,
     "cardBackgroundColor": "#222222",
     "cardTextColor": "#ffffff",
@@ -1277,7 +1304,7 @@
       }
     ],
     "active": false,
-    "order": 11,
+    "order": 12,
     "slug": "zoombie-berry-cade"
   },
   {
@@ -1303,7 +1330,7 @@
       }
     ],
     "active": false,
-    "order": 12,
+    "order": 13,
     "slug": "retro-computer"
   },
   {
@@ -1330,7 +1357,7 @@
       }
     ],
     "active": false,
-    "order": 13,
+    "order": 14,
     "slug": "nuevo-proyecto-de-prueba"
   },
   {
@@ -1374,7 +1401,7 @@
       }
     ],
     "active": false,
-    "order": 14,
+    "order": 15,
     "slug": "new-project"
   },
   {
@@ -1429,7 +1456,7 @@
     "category": "Dibujo",
     "backgroundBlendMode": "overlay",
     "active": false,
-    "order": 15,
+    "order": 16,
     "slug": "cumple-hui"
   },
   {
@@ -1455,7 +1482,7 @@
     "backgroundBlendMode": "multiply",
     "cardTextColor": "#ffffff",
     "active": false,
-    "order": 16,
+    "order": 17,
     "slug": "test-de-prueba"
   },
   {
@@ -1488,7 +1515,7 @@
     ],
     "category": "Textura",
     "active": false,
-    "order": 17,
+    "order": 18,
     "slug": "prueba-de-compresi-n"
   },
   {
@@ -1514,7 +1541,7 @@
     ],
     "thumbnailWidth": 656,
     "thumbnailHeight": 414,
-    "order": 18,
+    "order": 19,
     "slug": "prueba-imagen-loader",
     "active": false
   },
@@ -1534,7 +1561,7 @@
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
     "category": "Modelado",
-    "order": 19,
+    "order": 20,
     "active": false,
     "slug": "prueba-de-modelo-3d"
   },
@@ -1547,7 +1574,7 @@
     "blocks": [],
     "thumbnailWidth": 1920,
     "thumbnailHeight": 1080,
-    "order": 20,
+    "order": 21,
     "active": false
   },
   {
@@ -1558,7 +1585,7 @@
     "thumbnail": "",
     "blocks": [],
     "thumbnailModel": "/uploads/1765412829156-Lucas_web2.glb",
-    "order": 21,
+    "order": 22,
     "active": false
   }
 ]

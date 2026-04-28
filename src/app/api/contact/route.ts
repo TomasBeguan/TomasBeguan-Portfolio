@@ -5,7 +5,7 @@ import { Resend } from 'resend';
 let resend: Resend | null = null;
 const getResend = () => {
     const apiKey = process.env.RESEND_API_KEY;
-    if (!resend && apiKey) {
+    if (!resend && apiKey && !apiKey.startsWith('re_your')) {
         resend = new Resend(apiKey);
     }
     return resend;
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
             
             // In development, we can mock a success if the user hasn't set up the API key yet
             // to allow them to test the UI flow.
-            if (process.env.NODE_ENV === 'development') {
+            if (process.env.NODE_ENV !== 'production') {
                 console.warn("⚠️ API Key missing. Returning MOCK success for development.");
                 await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate delay
                 return NextResponse.json({ success: true, mock: true });

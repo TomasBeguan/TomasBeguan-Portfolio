@@ -218,9 +218,7 @@ export default function AdminPage() {
                                     if (editLang === 'en') {
                                         setEditingPost({ ...editingPost, title_en: e.target.value });
                                     } else {
-                                        const title = e.target.value;
-                                        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-                                        setEditingPost({ ...editingPost, title, slug });
+                                        setEditingPost({ ...editingPost, title: e.target.value });
                                     }
                                 }}
                                 className="border-2 border-black p-2 font-mono"
