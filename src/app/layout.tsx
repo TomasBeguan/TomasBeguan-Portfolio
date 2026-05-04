@@ -21,6 +21,8 @@ import { RetroMenuBar } from "@/components/RetroMenuBar";
 import { Providers } from "@/components/Providers";
 import { FloatingLanguageSelector } from "@/components/FloatingLanguageSelector";
 
+import { Analytics } from "@vercel/analytics/next";
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -37,6 +39,7 @@ export default function RootLayout({
                     <RetroMenuBar />
                     {children}
                     <FloatingLanguageSelector />
+                    <Analytics />
                 </Providers>
 
 
