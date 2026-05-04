@@ -45,7 +45,7 @@ export default function FanzinesPage() {
                     <span className="font-chicago text-gray-400">NO HAY FANZINES DISPONIBLES</span>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full max-w-6xl">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 w-full max-w-6xl">
                     {fanzines.map(fanzine => (
                         <Link href={`/fanzine/${fanzine.slug}`} key={fanzine.id} className="group flex flex-col items-center gap-4 hover:-translate-y-2 transition-transform duration-300">
                             {/* Visualizer using Next.js Image for optimization */}
@@ -64,8 +64,8 @@ export default function FanzinesPage() {
                                 )}
                             </div>
                             <div className="text-center bg-white border-2 border-black p-2 w-full">
-                                <h2 className="font-chicago text-lg leading-tight break-words">{fanzine.title}</h2>
-                                <p className="text-xs font-bold text-gray-500 mt-1">{fanzine.author}</p>
+                                <h2 className="font-chicago text-sm sm:text-lg leading-tight break-words">{fanzine.title}</h2>
+                                <p className="text-[10px] sm:text-xs font-bold text-gray-500 mt-1">{fanzine.author}</p>
                             </div>
                         </Link>
                     ))}

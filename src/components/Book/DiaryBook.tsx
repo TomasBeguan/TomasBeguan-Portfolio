@@ -181,7 +181,7 @@ export const DiaryBook = ({
                 ? 'translateX(25%)'
                 : 'translateX(0)',
         zIndex: 1,
-        transition: 'transform 0.5s ease-out, width 0.5s ease-out, height 0.5s ease-out'
+        transition: 'transform 0.5s ease-out, width 0.5s ease-out'
     };
 
     return (
@@ -283,12 +283,12 @@ export const DiaryBook = ({
             <style jsx global>{`
                 .book-wrapper {
                     overflow: visible !important;
-                    touch-action: pan-y; /* Allow vertical scroll but let book handle horizontal touch */
+                    touch-action: pan-y pinch-zoom; /* Allow vertical scroll and native zoom */
                     -webkit-overflow-scrolling: touch;
                 }
                 .diary-flipbook {
                     /* Ensure the flipbook itself doesn't block vertical scrolling on the page */
-                    touch-action: pan-y;
+                    touch-action: pan-y pinch-zoom;
                 }
                 .shadow-book-real {
                     filter: drop-shadow(0 25px 50px rgba(0,0,0,0.3));
@@ -316,7 +316,7 @@ export const DiaryBook = ({
                 }
                 .stf__parent {
                     overflow: visible !important;
-                    touch-action: pan-y;
+                    touch-action: pan-y pinch-zoom !important;
                 }
             `}</style>
         </div>
