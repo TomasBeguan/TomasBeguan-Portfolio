@@ -1,7 +1,16 @@
 [
   {
+    "id": "1777921393275",
+    "title": "UN SONIDO EN EL VIENTO",
+    "slug": "UnSonidoEnElViento",
+    "author": "Andrés R. Saravia",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777921460077-andres-en-blanco-y-color.webp",
+    "active": true
+  },
+  {
     "id": "1777865525431",
-    "title": "El día que un dios dudo",
+    "title": "EL DÍA QUE UN DIOS DUDÓ",
     "slug": "ElDiaQueUnDiosDudo",
     "author": "Atila Gabriel Suasnabar",
     "date": "2026-05-04",
@@ -9,12 +18,84 @@
     "active": true
   },
   {
+    "id": "1777921517673",
+    "title": "CARTA DE UN LOCO",
+    "slug": "CartaDeUnLoco",
+    "author": "Aylén Perez",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777921541899-aylen-en-blanco-y-color.webp",
+    "active": true
+  },
+  {
+    "id": "1777922141790",
+    "title": "DE UN VIEJO BORRACHO",
+    "slug": "DeUnViejoBorracho",
+    "author": "José Silva",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777922174791-jose-en-blanco-y-en-color.webp",
+    "active": true
+  },
+  {
+    "id": "1777921574073",
+    "title": "FAN",
+    "slug": "Fan",
+    "author": "Luciana Pagano",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777921610979-lu-en-blanco-y-color.webp",
+    "active": true
+  },
+  {
+    "id": "1777921628929",
+    "title": "EL MATE DORADO",
+    "slug": "ElMateDorado",
+    "author": "Mateo Carnero Godino",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777921665115-mateo-en-blanco-y-color.webp",
+    "active": true
+  },
+  {
+    "id": "1777921703605",
+    "title": "LAPICERA SELECCIONADORA",
+    "slug": "LapiceraSeleccionadora",
+    "author": "Nahuel Cebrero Ybarra",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777921747873-nahuel-en-blanco-y-color.webp",
+    "active": true
+  },
+  {
+    "id": "1777921755608",
+    "title": "PALABRAS DE MARZO Y REFLEXIONES DE SEPTIEMBRE",
+    "slug": "PalabrasDeMarzoYReflexionesDeSeptiembre",
+    "author": "David Nicolás Petlovany",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777921820714-nico-en-blanco-y-color.webp",
+    "active": true
+  },
+  {
+    "id": "1777921835337",
+    "title": "ADO A LAS NOTAS AL PIE DE PÁGINA Y GUIA PARA INTROVERTIDOS",
+    "slug": "AdoALasNotasAlPieDePáginaYGuiaParaIntrovertidos",
+    "author": "M. del Pilar El Hay Estevan",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777922459089-pily-en-blanco-y-color-(1).webp",
+    "active": true
+  },
+  {
     "id": "1777865116262",
-    "title": "Gusanos que no recuerdo",
+    "title": "GUSANOS QUE NO RECUERDO",
     "slug": "GusanosQueNoRecuerdo",
-    "author": "Tomás Beguan",
+    "author": "Tomás Ulises Beguan",
     "date": "2026-05-04",
     "sourceImage": "/uploads/1777865185342-Fazninetest.webp",
+    "active": true
+  },
+  {
+    "id": "1777922072436",
+    "title": "NOSTALGIA & CONCIERTO",
+    "slug": "NostalgiaYConcierto",
+    "author": "Tomás Vargas Vieyra",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777922110238-tomi-blanco-y-color.webp",
     "active": true
   }
 ]

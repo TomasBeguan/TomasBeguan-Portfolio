@@ -133,7 +133,7 @@ export default function FanzineViewerPage({ params }: { params: Promise<{ slug: 
     };
 
     return (
-        <main className="w-full h-[calc(100vh-2rem)] overflow-hidden flex flex-col items-center justify-center relative p-4 bg-gray-100">
+        <main className="w-full h-[calc(100vh-2rem)] overflow-hidden flex flex-col items-center justify-center relative p-4">
             <Link 
                 href="/fanzine" 
                 className="absolute top-4 left-4 sm:top-8 sm:left-8 z-50 font-chicago text-xs bg-white border-2 border-black px-4 py-2 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#4ade80] transition-all"
@@ -159,7 +159,7 @@ export default function FanzineViewerPage({ params }: { params: Promise<{ slug: 
                         width={1400}
                         height={2000}
                         borderRadius="0px"
-                        glossy={false}
+                        glossy={true}
                     />
                 </div>
             )}

@@ -61,8 +61,8 @@ export default function FanzinesPage() {
                                 )}
                             </div>
                             <div className="text-center bg-white border-2 border-black p-2 w-full">
-                                <h2 className="font-chicago text-lg leading-tight truncate">{fanzine.title}</h2>
-                                <p className="text-xs font-bold text-gray-500 mt-1 uppercase">por {fanzine.author}</p>
+                                <h2 className="font-chicago text-lg leading-tight break-words">{fanzine.title}</h2>
+                                <p className="text-xs font-bold text-gray-500 mt-1">{fanzine.author}</p>
                             </div>
                         </Link>
                     ))}
