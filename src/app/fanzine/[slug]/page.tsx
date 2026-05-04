@@ -60,8 +60,14 @@ export default function FanzineViewerPage({ params }: { params: Promise<{ slug: 
             const img = new Image();
             img.crossOrigin = "Anonymous";
             img.onload = () => {
-                const panelWidth = img.width / 4;
-                const panelHeight = img.height / 2;
+                const sourcePanelWidth = img.width / 4;
+                const sourcePanelHeight = img.height / 2;
+
+                // Limit maximum panel width to prevent Out-Of-Memory (OOM) on mobile devices
+                const MAX_PANEL_WIDTH = 600;
+                const scale = Math.min(1, MAX_PANEL_WIDTH / sourcePanelWidth);
+                const panelWidth = Math.floor(sourcePanelWidth * scale);
+                const panelHeight = Math.floor(sourcePanelHeight * scale);
 
                 const extractPanel = (col: number, row: number, rotate: boolean) => {
                     const canvas = document.createElement('canvas');
@@ -77,10 +83,20 @@ export default function FanzineViewerPage({ params }: { params: Promise<{ slug: 
                         ctx.rotate(Math.PI);
                         ctx.translate(-panelWidth / 2, -panelHeight / 2);
                     }
-                    ctx.drawImage(img, col * panelWidth, row * panelHeight, panelWidth, panelHeight, 0, 0, panelWidth, panelHeight);
+                    ctx.drawImage(
+                        img, 
+                        col * sourcePanelWidth, 
+                        row * sourcePanelHeight, 
+                        sourcePanelWidth, 
+                        sourcePanelHeight, 
+                        0, 
+                        0, 
+                        panelWidth, 
+                        panelHeight
+                    );
                     ctx.restore();
                     
-                    return canvas.toDataURL('image/jpeg', 0.95);
+                    return canvas.toDataURL('image/jpeg', 0.97);
                 };
 
                 // Zine Layout:
