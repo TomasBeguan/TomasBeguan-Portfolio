@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1777865525431",
+    "title": "El día que un dios dudo",
+    "slug": "ElDiaQueUnDiosDudo",
+    "author": "Atila Gabriel Suasnabar",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777865569601-ati-en-blanco-y-color.webp",
+    "active": true
+  },
+  {
+    "id": "1777865116262",
+    "title": "Gusanos que no recuerdo",
+    "slug": "GusanosQueNoRecuerdo",
+    "author": "Tomás Beguan",
+    "date": "2026-05-04",
+    "sourceImage": "/uploads/1777865185342-Fazninetest.webp",
+    "active": true
+  }
+]
