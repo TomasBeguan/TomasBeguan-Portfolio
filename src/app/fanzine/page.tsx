@@ -6,6 +6,7 @@ import { RetroContainer } from "@/components/RetroContainer";
 import { Fanzine } from "@/app/admin/fanzines/page";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function FanzinesPage() {
     const [fanzines, setFanzines] = useState<Fanzine[]>([]);
@@ -47,17 +48,19 @@ export default function FanzinesPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full max-w-6xl">
                     {fanzines.map(fanzine => (
                         <Link href={`/fanzine/${fanzine.slug}`} key={fanzine.id} className="group flex flex-col items-center gap-4 hover:-translate-y-2 transition-transform duration-300">
-                            {/* Visualizer using the CSS background method */}
+                            {/* Visualizer using Next.js Image for optimization */}
                             <div className="w-full aspect-[10/14] border-4 border-black shadow-[8px_8px_0_0_#000] group-hover:shadow-[12px_12px_0_0_#4ade80] transition-all bg-white overflow-hidden relative">
                                 {fanzine.sourceImage && (
-                                    <div 
-                                        className="absolute inset-0 w-full h-full"
-                                        style={{
-                                            backgroundImage: `url(${fanzine.sourceImage})`,
-                                            backgroundSize: '400% 200%',
-                                            backgroundPosition: '33.333% 100%' // Cover is col 2, row 2
-                                        }}
-                                    />
+                                    <div className="absolute w-[400%] h-[200%] -left-[100%] -top-[100%]">
+                                        <Image
+                                            src={fanzine.sourceImage}
+                                            alt={fanzine.title}
+                                            fill
+                                            sizes="(max-width: 640px) 200vw, (max-width: 1024px) 150vw, 1200px"
+                                            quality={100}
+                                            className="object-fill"
+                                        />
+                                    </div>
                                 )}
                             </div>
                             <div className="text-center bg-white border-2 border-black p-2 w-full">
