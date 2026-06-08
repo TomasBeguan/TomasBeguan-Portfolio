@@ -767,8 +767,89 @@
     "title_en": "Zombie Berrycades"
   },
   {
+    "id": "1765408026219",
+    "title": "The Anger Price",
+    "slug": "the-anger-price",
+    "date": "2025-12-10",
+    "thumbnail": "",
+    "blocks": [
+      {
+        "id": "1780894726073",
+        "type": "header",
+        "content": "The Anger Price - Visuales",
+        "content_en": "The Anger Price - Concert Visuals"
+      },
+      {
+        "id": "1780896716783",
+        "type": "video",
+        "content": "https://youtu.be/9XdlJxz9TnI",
+        "altText": "TheAngerPrice_Visuales.mov"
+      },
+      {
+        "id": "1780894849546",
+        "type": "text",
+        "content": "Tuve el honor de animar las visuales para [The Anger Price.](https://www.instagram.com/theangerprice/)\nFue un pedido especial por su primer concierto en el famoso festival de Rock [\"Iruña Rock\"](https://www.instagram.com/irunarock/)",
+        "linkColor": "#ff3838",
+        "content_en": "I had the honor of creating the visuals for [The Anger Price.](https://www.instagram.com/theangerprice/)\nIt was a special commission for their first concert at the famous rock festival [“Iruña Rock”](https://www.instagram.com/irunarock/)"
+      },
+      {
+        "id": "1780895117313",
+        "type": "text",
+        "content": "Pueden escuchar más sobre ellos en los siguientes enlaces!",
+        "content_en": "You can listen more about them by clicking on the links below!"
+      },
+      {
+        "id": "1780895161005",
+        "type": "link",
+        "content": "",
+        "buttons": [
+          {
+            "text": "Spotify",
+            "url": "https://open.spotify.com/intl-es/artist/0JkXF4FPqnyoq2mu63veXB",
+            "bgColor": "#1e1e1e",
+            "textColor": "#ff3838",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://open.spotify.com/intl-es/artist/0JkXF4FPqnyoq2mu63veXB&sz=64",
+            "borderColor": "#ff3838",
+            "text_en": "Spotify"
+          },
+          {
+            "text": "Instagram",
+            "url": "https://www.instagram.com/theangerprice/",
+            "bgColor": "#1e1e1e",
+            "textColor": "#ff3838",
+            "borderColor": "#ff3838",
+            "iconUrl": "https://www.google.com/s2/favicons?domain=https://www.instagram.com/theangerprice/&sz=64",
+            "text_en": "Instagram"
+          }
+        ]
+      },
+      {
+        "id": "1780895586519",
+        "type": "text",
+        "content": "Aquí dejo un vlog que grabaron en el festival donde se pueden apreciar las visuales en la pantalla de fondo del concierto.",
+        "content_en": "Here's a vlog they recorded at the festival where you can see the visuals on the concert's backdrop screen."
+      },
+      {
+        "id": "1780895910479",
+        "type": "video",
+        "content": "https://www.youtube.com/watch?v=4eCPVaGi5JM&t",
+        "altText": "TheAngerPrice_VLOG.mp4"
+      }
+    ],
+    "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
+    "category": "Modelo 3D",
+    "order": 7,
+    "cardBackgroundColor": "#ff3838",
+    "cardTextColor": "#ffffff",
+    "thumbnail3dBackgroundColor": "#ff3838",
+    "active": true,
+    "category_en": "3D Model",
+    "backgroundColor": "#080808",
+    "textColor": "#ffffff"
+  },
+  {
     "id": "1776994532570",
-    "title": "Sunday ☀️",
+    "title": "Sunday",
     "slug": "TheMilfosShowSunday",
     "date": "2026-04-24",
     "thumbnail": "/uploads/1776995006599-Thumbnail01.webp",
@@ -787,7 +868,7 @@
     ],
     "thumbnailWidth": 1080,
     "thumbnailHeight": 1080,
-    "order": 4,
+    "order": 5,
     "active": true,
     "category": "Animación 3D",
     "category_en": "3D Animation",
@@ -795,7 +876,7 @@
   },
   {
     "id": "1776805331958",
-    "title": "Alarma ⏰😫",
+    "title": "Alarma",
     "slug": "the-milfos-show-alarma",
     "date": "2025-01-26",
     "thumbnail": "/uploads/1776806891018-Thumbnail02.webp",
@@ -864,14 +945,14 @@
     ],
     "thumbnailWidth": 1080,
     "thumbnailHeight": 1080,
-    "order": 5,
+    "order": 6,
     "active": true,
     "category": "Animación 3D",
     "category_en": "3D Animation"
   },
   {
     "id": "1776802398155",
-    "title": "Piloto 🪫❤️🔋 ",
+    "title": "Piloto",
     "slug": "the-milfos-show-piloto",
     "date": "2025-01-19",
     "thumbnail": "/uploads/1776803686475-Thumb01.webp",
@@ -925,37 +1006,12 @@
         ]
       }
     ],
-    "order": 6,
+    "order": 7,
     "active": true,
     "thumbnailWidth": 1080,
     "thumbnailHeight": 1080,
     "category": "Animación 3D",
     "category_en": "3D Animation"
-  },
-  {
-    "id": "1765408026219",
-    "title": "The Anger Price",
-    "slug": "the-anger-price",
-    "date": "2025-12-10",
-    "thumbnail": "",
-    "blocks": [
-      {
-        "id": "1765416186394",
-        "type": "image",
-        "content": "/uploads/1765416193777-07.webp",
-        "width": 1080,
-        "height": 1920,
-        "altText": "Lucas"
-      }
-    ],
-    "thumbnailModel": "/uploads/1765412848619-Lucas_web2.glb",
-    "category": "Modelo 3D",
-    "order": 7,
-    "cardBackgroundColor": "#ff3838",
-    "cardTextColor": "#ffffff",
-    "thumbnail3dBackgroundColor": "#ff3838",
-    "active": true,
-    "category_en": "3D Model"
   },
   {
     "id": "1763960726758",
