@@ -271,12 +271,12 @@ function DesktopBook({ flatPages, pageRatio, borderRadius, glossy, staticLeft, s
                                 }}
                             >
                                 {/* Front (right-hand page) */}
-                                <div className="absolute inset-0 overflow-hidden bg-white" style={{ backfaceVisibility: "hidden", ...faceRadius("right") }}>
+                                <div className="absolute inset-0 overflow-hidden" style={{ backfaceVisibility: "hidden", ...faceRadius("right") }}>
                                     <PageImage src={sheet.front} alt={`Página ${i * 2 + 1}`} sizes={pageSizes} priority={i === 0} />
                                     {glossy && <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-black/15 via-transparent to-transparent" style={{ width: "12%" }} />}
                                 </div>
                                 {/* Back (left-hand page once turned) */}
-                                <div className="absolute inset-0 overflow-hidden bg-white" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", ...faceRadius("left") }}>
+                                <div className="absolute inset-0 overflow-hidden" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", ...faceRadius("left") }}>
                                     <PageImage src={sheet.back} alt={`Página ${i * 2 + 2}`} sizes={pageSizes} />
                                     {glossy && <div className="absolute inset-y-0 right-0 pointer-events-none bg-gradient-to-l from-black/15 to-transparent" style={{ width: "12%" }} />}
                                 </div>
@@ -332,7 +332,7 @@ function MobileBook({ flatPages, pageRatio, borderRadius }: { flatPages: string[
                     style={{ scrollbarWidth: "none", borderRadius }}
                 >
                     {flatPages.map((src, i) => (
-                        <div key={i} className="relative shrink-0 w-full h-full snap-center bg-white">
+                        <div key={i} className="relative shrink-0 w-full h-full snap-center">
                             {Math.abs(i - index) <= 2 && (
                                 <PageImage src={src} alt={`Página ${i + 1}`} sizes="88vw" priority={i === 0} />
                             )}
