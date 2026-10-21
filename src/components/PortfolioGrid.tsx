@@ -1,13 +1,23 @@
 "use client";
 
 import { Post } from "@/types";
-import { Image as ImageIcon } from "lucide-react";
+import { Image as ImageIcon, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { ImageWithLoader } from "./ImageWithLoader";
-import { Thumbnail3DViewer } from "./Thumbnail3DViewer";
 import { useLanguage } from "@/context/LanguageContext";
 
 import { useRef } from "react";
+import dynamic from "next/dynamic";
+
+// three.js is loaded on demand, after the rest of the grid, only if a card uses a 3D thumbnail
+const Thumbnail3DViewer = dynamic(() => import("./Thumbnail3DViewer").then((m) => m.Thumbnail3DViewer), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full h-full flex items-center justify-center">
+            <Loader2 className="animate-spin text-gray-400" size={24} />
+        </div>
+    ),
+});
 
 
 interface PortfolioGridProps {

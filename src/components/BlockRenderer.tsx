@@ -6,10 +6,21 @@ import { RetroButton } from "./RetroButton";
 import { cn } from "@/lib/utils";
 import { ImageModal } from "./ImageModal";
 import { ImageWithLoader } from "./ImageWithLoader";
-import { Model3DViewer } from "./Model3DViewer";
+import dynamic from "next/dynamic";
+import { Loader2 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { RetroVideoPlayer } from "./RetroVideoPlayer";
 import { RetroCarousel } from "./RetroCarousel";
+
+// three.js (~1 MB) is only downloaded when a post actually contains a 3D model
+const Model3DViewer = dynamic(() => import("./Model3DViewer").then((m) => m.Model3DViewer), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full aspect-square flex items-center justify-center">
+            <Loader2 className="animate-spin text-gray-400" size={32} />
+        </div>
+    ),
+});
 
 
 interface BlockRendererProps {
