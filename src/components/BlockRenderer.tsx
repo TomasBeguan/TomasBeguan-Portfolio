@@ -175,6 +175,7 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                         alt={altText}
                                         width={block.width}
                                         height={block.height}
+                                        quality={90}
                                         sizes="(max-width: 1024px) 100vw, 1024px"
                                         unoptimized={block.content.toLowerCase().endsWith('.gif')}
                                         className={cn("w-full h-auto", block.pixelate && "pixelated")}
@@ -221,6 +222,8 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                                     alt={alt}
                                                     containerClassName="w-full"
                                                     unoptimized={src.toLowerCase().endsWith('.gif')}
+                                                    quality={90}
+                                                    sizes={items.length === 2 ? "(max-width: 640px) 100vw, 512px" : "(max-width: 640px) 100vw, (max-width: 768px) 50vw, 340px"}
                                                     className={cn("w-full h-full object-contain", block.pixelate && "pixelated")}
                                                 />
                                             </div>
