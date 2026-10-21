@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -24,10 +26,22 @@ export const ImageModal = ({ isOpen, imageUrl, altText, onClose, transparent, ha
         return () => setMounted(false);
     }, []);
 
+    // Keyboard: Esc closes, arrows navigate
+    useEffect(() => {
+        if (!isOpen) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onClose();
+            else if (e.key === 'ArrowLeft' && hasPrev && onPrev) onPrev();
+            else if (e.key === 'ArrowRight' && hasNext && onNext) onNext();
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [isOpen, onClose, hasPrev, hasNext, onPrev, onNext]);
+
     if (!isOpen || !mounted) return null;
 
     return createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(0,0,0,0.8)] p-4" onClick={onClose}>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[rgba(0,0,0,0.8)] p-4" onClick={onClose} role="dialog" aria-modal="true" aria-label={altText || "Image"}>
             {/* Navigation Buttons - Left */}
             {hasPrev && onPrev && (
                 <div className="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 pointer-events-auto z-50" onClick={(e) => e.stopPropagation()}>

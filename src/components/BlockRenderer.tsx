@@ -164,7 +164,7 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                         alt={altText}
                                         width={block.width}
                                         height={block.height}
-                                        sizes="100vw"
+                                        sizes="(max-width: 1024px) 100vw, 1024px"
                                         unoptimized={block.content.toLowerCase().endsWith('.gif')}
                                         className={cn("w-full h-auto", block.pixelate && "pixelated")}
                                     />
@@ -246,7 +246,7 @@ export function BlockRenderer({ blocks, textColor = '#333333' }: BlockRendererPr
                                             }}
                                         >
                                             {btn.iconUrl && (
-                                                <img src={btn.iconUrl} alt="icon" className="w-5 h-5 flex-shrink-0" />
+                                                <img src={btn.iconUrl} alt="" loading="lazy" className="w-5 h-5 flex-shrink-0" />
                                             )}
                                             <span className="truncate">{getText(btn.text, btn.text_en)}</span>
                                         </a>

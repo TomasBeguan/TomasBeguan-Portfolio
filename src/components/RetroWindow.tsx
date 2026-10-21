@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
+import { useRetroScroll } from '@/hooks/useRetroScroll';
 
 interface RetroWindowProps {
     title?: string;
@@ -11,113 +12,7 @@ interface RetroWindowProps {
 export const RetroWindow = ({ title = "My Stuff", children, className = "" }: RetroWindowProps) => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    // Almacenamos el objetivo (a dónde queremos llegar)
-    const targetScroll = useRef(0);
-    // Almacenamos si estamos en medio de una animación
-    const isAnimating = useRef(false);
-
-    useEffect(() => {
-        const container = scrollRef.current;
-        if (!container) return;
-
-        const scrollKey = `scroll-${window.location.pathname}`;
-
-        // Función para obtener scroll actual (dependiendo de si es mobile o no)
-        const getScrollPos = () => {
-            const isMobile = window.innerWidth < 768;
-            return isMobile ? window.scrollY : container.scrollTop;
-        };
-
-        // Restaurar posición al montar
-        const savedScroll = sessionStorage.getItem(scrollKey);
-        if (savedScroll) {
-            if ('scrollRestoration' in window.history) {
-                window.history.scrollRestoration = 'manual';
-            }
-            const pos = parseInt(savedScroll);
-            setTimeout(() => {
-                const isMobile = window.innerWidth < 768;
-                if (isMobile) {
-                    window.scrollTo(0, pos);
-                } else {
-                    container.scrollTop = pos;
-                    targetScroll.current = pos;
-                }
-            }, 150); // Aumentado para asegurar que el contenido cargó
-        }
-
-        // Función de animación (Loop)
-        const updateScroll = () => {
-            if (!container) return;
-
-            // 1. Obtenemos posición actual
-            const currentScroll = container.scrollTop;
-
-            // 2. Calculamos la distancia al objetivo
-            const diff = targetScroll.current - currentScroll;
-
-            // 3. Si la distancia es pequeña, paramos (ahorramos batería)
-            if (Math.abs(diff) < 0.5) {
-                isAnimating.current = false;
-                targetScroll.current = currentScroll;
-                // Guardamos posición final
-                sessionStorage.setItem(scrollKey, currentScroll.toString());
-                return;
-            }
-
-            // 4. LERP
-            const newScroll = currentScroll + (diff * 0.1);
-            container.scrollTop = newScroll;
-
-            // Guardamos posición intermedia
-            sessionStorage.setItem(scrollKey, newScroll.toString());
-
-            // 5. Pedimos el siguiente frame
-            requestAnimationFrame(updateScroll);
-        };
-
-        const startAnimation = () => {
-            if (!isAnimating.current) {
-                isAnimating.current = true;
-                requestAnimationFrame(updateScroll);
-            }
-        };
-
-        const handleGlobalWheel = (e: WheelEvent) => {
-            if (!container) return;
-            if (window.innerWidth < 768) return; // No actuar en mobile vía wheel global
-
-            if (container.contains(e.target as Node)) {
-                targetScroll.current = container.scrollTop;
-                return;
-            }
-
-            const maxScroll = container.scrollHeight - container.clientHeight;
-            targetScroll.current += e.deltaY;
-            targetScroll.current = Math.max(0, Math.min(targetScroll.current, maxScroll));
-            startAnimation();
-        };
-
-        const handleScroll = () => {
-            const isMobile = window.innerWidth < 768;
-            const pos = getScrollPos();
-
-            if (!isAnimating.current) {
-                targetScroll.current = pos;
-            }
-            sessionStorage.setItem(scrollKey, pos.toString());
-        };
-
-        window.addEventListener('wheel', handleGlobalWheel, { passive: false });
-        container.addEventListener('scroll', handleScroll, { passive: true });
-        window.addEventListener('scroll', handleScroll, { passive: true });
-
-        return () => {
-            window.removeEventListener('wheel', handleGlobalWheel);
-            container.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    useRetroScroll(scrollRef);
 
     return (
         <div className={`w-full max-w-4xl bg-white dark:bg-retro-dark-blue border-2 border-black dark:border-white shadow-retro dark:shadow-[4px_4px_0px_0px_#ffffff] relative transition-colors duration-300 ${className}`}>

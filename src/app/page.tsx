@@ -1,25 +1,12 @@
 import { RetroWindow } from "@/components/RetroWindow";
 import { PortfolioGrid } from "@/components/PortfolioGrid";
+import { getActivePosts } from "@/lib/data";
 
+// Content lives in src/data/posts.json, so the page is fully static and rebuilt on each deploy.
+export const dynamic = "force-static";
 
-import { Post } from "@/types";
-import fs from 'fs';
-import path from 'path';
-
-
-// Revalidate every hour
-export const revalidate = 3600;
-
-async function getPosts(): Promise<Post[]> {
-    const filePath = path.join(process.cwd(), 'src/data/posts.json');
-    const fileContents = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(fileContents);
-}
-
-export default async function Home() {
-    const posts = await getPosts();
-    // Filter to only show active posts (posts without 'active' field are considered active by default)
-    const activePosts = posts.filter(post => post.active !== false);
+export default function Home() {
+    const activePosts = getActivePosts();
 
     return (
         <main className="w-full min-h-screen md:fixed md:inset-0 md:h-full md:overflow-hidden flex flex-col items-center justify-center p-2 sm:p-4 pt-6 sm:pt-16">
@@ -37,9 +24,6 @@ export default async function Home() {
             <RetroWindow className="w-full max-w-5xl md:flex-1 md:min-h-0 mb-3 flex flex-col">
                 <PortfolioGrid posts={activePosts} />
             </RetroWindow>
-
-
         </main>
     );
 }
-

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import fs from 'fs';
 import path from 'path';
 import { Post } from '@/types';
@@ -6,6 +7,9 @@ import { Post } from '@/types';
 const dataFilePath = path.join(process.cwd(), 'src/data/posts.json');
 
 export async function POST(request: Request) {
+    const denied = await requireAdmin();
+    if (denied) return denied;
+
     try {
         const body = await request.json();
         const orderedIds: string[] = body.orderedIds;

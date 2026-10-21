@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import fs from 'fs';
 import path from 'path';
 import { Post } from '@/types';
@@ -18,6 +19,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+    const denied = await requireAdmin();
+    if (denied) return denied;
+
     try {
         const newPost: Post = await request.json();
         const fileContents = fs.readFileSync(dataFilePath, 'utf8');

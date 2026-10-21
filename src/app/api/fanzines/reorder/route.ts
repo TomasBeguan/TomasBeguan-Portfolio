@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
+import { requireAdmin } from '@/lib/auth';
 import fs from 'fs';
 import path from 'path';
 
 const dataFilePath = path.join(process.cwd(), 'src/data/fanzines.json');
 
 export async function POST(request: Request) {
+    const denied = await requireAdmin();
+    if (denied) return denied;
+
     try {
         const { orderedIds } = await request.json();
         

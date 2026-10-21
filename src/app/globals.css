@@ -2,18 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Chicago';
-  src: url('/uploads/fonts/Chicago.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+/* Chicago font is loaded with next/font/local in layout.tsx (variable --font-chicago) */
 
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --main-color: #333333;
-  --font-chicago: 'Chicago', sans-serif;
 }
 
 [data-theme='dark'] {

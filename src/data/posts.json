@@ -1067,9 +1067,10 @@
     "active": true,
     "cardBackgroundColor": "#ffffff",
     "cardTextColor": "#333333",
-    "category": "3D Animation",
+    "category": "Animación 3D",
     "order": 8,
-    "slug": "help-me-exe"
+    "slug": "help-me-exe",
+    "category_en": "3D Animation"
   },
   {
     "id": "1763968807315",
@@ -1136,7 +1137,8 @@
     "order": 9,
     "active": true,
     "category": "Animación 3D",
-    "slug": "pencil-oceans"
+    "slug": "pencil-oceans",
+    "category_en": "3D Animation"
   },
   {
     "id": "1763969465604",
@@ -1235,7 +1237,8 @@
     "active": true,
     "usePostBackgroundForCard": false,
     "slug": "SpookyCollection",
-    "textColor": "#333333"
+    "textColor": "#333333",
+    "category_en": "3D Animation"
   },
   {
     "id": "1763971928765",

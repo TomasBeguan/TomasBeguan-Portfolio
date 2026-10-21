@@ -1,36 +1,52 @@
-import { RetroContainer } from "@/components/RetroContainer";
-// Force rebuild
-import { BlockRenderer } from "@/components/BlockRenderer";
-import { Post } from "@/types";
-import fs from 'fs';
-import path from 'path';
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { RetroContainer } from "@/components/RetroContainer";
+import { BlockRenderer } from "@/components/BlockRenderer";
+import { PostFooter } from "@/components/PostFooter";
+import { getActivePost, getActivePosts, getPostExcerpt } from "@/lib/data";
 
-export const revalidate = 3600;
+// Only published posts get a page; drafts/tests (active: false) now return 404.
+export const dynamicParams = false;
 
-// This is a Server Component
-async function getPost(slugOrId: string): Promise<Post | undefined> {
-    const filePath = path.join(process.cwd(), 'src/data/posts.json');
-    const fileContents = fs.readFileSync(filePath, 'utf8');
-    const posts: Post[] = JSON.parse(fileContents);
-    return posts.find((p) => p.slug === slugOrId || p.id === slugOrId);
-}
-
-export async function generateStaticParams() {
-    const filePath = path.join(process.cwd(), 'src/data/posts.json');
-    const fileContents = fs.readFileSync(filePath, 'utf8');
-    const posts: Post[] = JSON.parse(fileContents);
-
-    return posts.map((post) => ({
+export function generateStaticParams() {
+    return getActivePosts().map((post) => ({
         id: post.slug || post.id, // The param is named 'id' in the folder structure
     }));
 }
 
-import { PostFooter } from "@/components/PostFooter";
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+    const post = getActivePost(id);
+    if (!post) return {};
+
+    const description = getPostExcerpt(post) || `${post.category ?? "Proyecto"} — Tomás Beguan`;
+    const image = post.thumbnail && !post.thumbnail.startsWith("http") ? post.thumbnail : undefined;
+    const url = `/portfolio/${post.slug || post.id}`;
+
+    return {
+        title: post.title,
+        description,
+        alternates: { canonical: url },
+        openGraph: {
+            type: "article",
+            title: post.title,
+            description,
+            url,
+            publishedTime: post.date,
+            images: image ? [{ url: image }] : undefined,
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: post.title,
+            description,
+            images: image ? [image] : undefined,
+        },
+    };
+}
 
 export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params; // 'id' here will contain the slug from the URL
-    const post = await getPost(id);
+    const post = getActivePost(id);
 
     if (!post) {
         notFound();

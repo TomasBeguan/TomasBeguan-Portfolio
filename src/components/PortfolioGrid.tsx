@@ -27,7 +27,7 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
     return (
         <div ref={containerRef} className="relative">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 p-2 sm:p-6">
-                {posts.map((post) => {
+                {posts.map((post, index) => {
                     const [year, month] = post.date.split('-');
                     const monthName = getMonthName(month);
                     const title = (language === 'en' && post.title_en) ? post.title_en : post.title;
@@ -78,6 +78,8 @@ export const PortfolioGrid = ({ posts }: PortfolioGridProps) => {
                                                 src={post.thumbnail}
                                                 alt={title}
                                                 unoptimized={post.thumbnail.toLowerCase().endsWith('.gif')}
+                                                priority={index < 3}
+                                                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 320px"
                                                 className="w-full h-full object-cover"
                                                 containerClassName="w-full h-full"
                                             />

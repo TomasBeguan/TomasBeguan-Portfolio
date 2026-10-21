@@ -27,7 +27,7 @@ function isRateLimited(ip: string): boolean {
 
 export async function POST(req: Request) {
     try {
-        const ip = req.headers.get('x-forwarded-for') || 'unknown';
+        const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown';
 
         // 1. Rate Limiting
         if (isRateLimited(ip)) {
@@ -48,6 +48,14 @@ export async function POST(req: Request) {
         // 3. Validation
         if (!name || !email || !message) {
             return NextResponse.json({ error: 'Todos los campos son obligatorios / All fields are required' }, { status: 400 });
+        }
+
+        if (
+            typeof name !== 'string' || typeof email !== 'string' || typeof message !== 'string' ||
+            name.length > 200 || email.length > 200 || message.length > 5000 ||
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+        ) {
+            return NextResponse.json({ error: 'Datos inválidos / Invalid data' }, { status: 400 });
         }
 
         const resendInstance = getResend();

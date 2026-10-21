@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Apple, Sun, Moon, Menu } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -32,8 +33,6 @@ export const RetroMenuBar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const { t, language, setLanguage } = useLanguage();
-
-    if (pathname === '/cv') return null;
 
     const navItems = [
         { label: t("home"), href: "/" },
@@ -105,6 +104,9 @@ export const RetroMenuBar = () => {
         }
     };
 
+    // Must come after all hooks (Rules of Hooks)
+    if (pathname === '/cv') return null;
+
     return (
         <div
             ref={menuRef}
@@ -117,6 +119,8 @@ export const RetroMenuBar = () => {
             {/* Mobile Menu Trigger (Burger without Icon) */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
+                aria-label="Menu"
                 className={cn(
                     "md:hidden h-full px-4 flex items-center justify-center font-chicago text-[14px] tracking-wide border-r-2 border-black dark:border-white transition-colors",
                     "hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black",
@@ -131,7 +135,7 @@ export const RetroMenuBar = () => {
             {/* Apple Logo / Brand - HIDDEN ON MOBILE */}
             <div className="hidden md:flex px-4 border-r-2 border-black dark:border-white h-full items-center justify-center hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black dark:text-white cursor-pointer transition-colors">
                 <Link href="/" className="flex items-center justify-center">
-                    <img src="/logo.png" alt="Logo" width={16} height={16} className="object-contain dark:invert" />
+                    <Image src="/logo.png" alt="Tomás Beguan" width={16} height={16} className="object-contain dark:invert" />
                 </Link>
             </div>
 

@@ -81,13 +81,13 @@ export function RetroCarousel({
                                 src={src}
                                 alt={itemAlts[idx] || `Carousel item ${idx + 1}`}
                                 containerClassName="w-full"
-                                unoptimized={true}
+                                unoptimized={src.toLowerCase().endsWith('.gif')}
                                 className={cn(
                                     "w-full h-full object-contain",
                                     pixelate && "pixelated"
                                 )}
-                                sizes="100vw"
-                                quality={100}
+                                sizes="(max-width: 1024px) 100vw, 1024px"
+                                quality={90}
                                 priority={idx === 0}
                             />
                             {showAltText && itemAlts[idx] && (
