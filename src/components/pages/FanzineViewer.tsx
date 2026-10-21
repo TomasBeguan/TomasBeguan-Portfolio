@@ -146,7 +146,7 @@ export function FanzineViewer({ fanzine }: { fanzine: Fanzine }) {
             {!loading && !error && (
                 <div className="fixed bottom-8 left-1/2 -translate-x-1/2 pointer-events-none opacity-40 text-[10px] font-chicago flex flex-col items-center gap-2 z-10">
                     <div className="w-px h-8 bg-black/20" />
-                    <span className="tracking-[0.2em]">ARRASTRA LAS ESQUINAS PARA PASAR PÁGINA</span>
+                    <span className="tracking-[0.2em]">CLICK, FLECHAS O DESLIZÁ PARA PASAR PÁGINA</span>
                 </div>
             )}
         </main>

@@ -21,7 +21,8 @@ export const translations = {
         home: "Inicio",
         back: "Volver",
         diario: "Diario",
-        diario_hint: "CLICK EN LAS PÁGINAS PARA PASAR"
+        diario_hint: "CLICK O FLECHAS PARA PASAR PÁGINA",
+        diario_hint_mobile: "DESLIZÁ PARA PASAR PÁGINA"
     },
     en: {
         about: "About",
@@ -31,7 +32,8 @@ export const translations = {
         home: "Home",
         back: "Back",
         diario: "Diary",
-        diario_hint: "CLICK ON PAGES TO FLIP"
+        diario_hint: "CLICK OR USE ARROW KEYS TO FLIP",
+        diario_hint_mobile: "SWIPE TO TURN THE PAGE"
     }
 };
 

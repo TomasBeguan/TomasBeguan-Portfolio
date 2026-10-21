@@ -1,8 +1,15 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import HTMLFlipBook from 'react-pageflip';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+/**
+ * Lightweight flipbook (replaces the abandoned react-pageflip library).
+ * - Desktop: two-page spreads with a CSS 3D page turn.
+ * - Mobile: one page at a time, native swipe (scroll-snap).
+ * - Only the pages around the current spread are loaded, resized by next/image.
+ */
 
 interface PageData {
     front: string;
@@ -21,31 +28,36 @@ interface DiaryBookProps {
     staticRight?: string;
 }
 
-// Separate component for each page to satisfy react-pageflip requirements
-const Page = React.forwardRef<HTMLDivElement, { children: React.ReactNode, index: number, borderRadius?: string }>(
-    (props, ref) => {
-        const isLeftPage = props.index % 2 !== 0;
+const FLIP_MS = 700;
+const PRELOAD_SHEETS = 2; // sheets kept loaded on each side of the current spread
 
-        const pageStyle: React.CSSProperties = {
-            borderTopRightRadius: isLeftPage ? '0' : props.borderRadius,
-            borderBottomRightRadius: isLeftPage ? '0' : props.borderRadius,
-            borderTopLeftRadius: isLeftPage ? props.borderRadius : '0',
-            borderBottomLeftRadius: isLeftPage ? props.borderRadius : '0',
-        };
+function PageImage({ src, alt, priority, sizes }: { src: string; alt: string; priority?: boolean; sizes: string }) {
+    if (!src) return <div className="absolute inset-0 bg-white" />;
+    return (
+        <Image
+            src={src}
+            alt={alt}
+            fill
+            sizes={sizes}
+            priority={priority}
+            draggable={false}
+            unoptimized={src.startsWith("data:") || src.toLowerCase().endsWith(".gif")}
+            className="object-cover select-none pointer-events-none"
+        />
+    );
+}
 
-        return (
-            <div className="page" ref={ref}>
-                <div
-                    className="page-content w-full h-full relative overflow-hidden"
-                    style={pageStyle}
-                >
-                    {props.children}
-                </div>
-            </div>
-        );
-    }
-);
-Page.displayName = 'Page';
+function useIsMobile() {
+    const [isMobile, setIsMobile] = useState<boolean | null>(null);
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width: 768px)");
+        const update = () => setIsMobile(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
+    return isMobile;
+}
 
 export const DiaryBook = ({
     cover,
@@ -56,77 +68,15 @@ export const DiaryBook = ({
     borderRadius = "0px",
     glossy = true,
     staticLeft,
-    staticRight
+    staticRight,
 }: DiaryBookProps) => {
-    const bookRef = useRef<any>(null);
-    const [isMounted, setIsMounted] = useState(false);
-    const [currentPage, setCurrentPage] = useState(0);
-    const initialPage = useRef(0);
-    const [isPortrait, setIsPortrait] = useState(false);
-    const [forceShowLeft, setForceShowLeft] = useState(false);
-    const [forceHideRight, setForceHideRight] = useState(false);
+    const isMobile = useIsMobile();
 
-    useEffect(() => {
-        setIsMounted(true);
-        const mediaQuery = window.matchMedia('(max-width: 768px)');
-        const handleResize = (e: MediaQueryListEvent | MediaQueryList) => setIsPortrait(e.matches);
-        handleResize(mediaQuery);
-        mediaQuery.addEventListener('change', handleResize);
-
-        // Small delay to ensure the book is initialized before any potential interaction
-        const timer = setTimeout(() => {
-            if (bookRef.current) {
-                // This can help "kickstart" the library's internal centering logic
-                bookRef.current.pageFlip().update();
-            }
-        }, 300);
-
-        return () => {
-            mediaQuery.removeEventListener('change', handleResize);
-            clearTimeout(timer);
-        };
-    }, []);
-
-    const onFlip = (e: any) => {
-        setCurrentPage(e.data);
-        // Clear force states after flip completes
-        setForceShowLeft(false);
-        setForceHideRight(false);
-    };
-
-    const handlePrev = (e?: React.TouchEvent | React.MouseEvent) => {
-        if (e) {
-            if ('preventDefault' in e) e.preventDefault();
-        }
-        if (!bookRef.current) return;
-        const flip = bookRef.current.pageFlip();
-        const dest = flip.getCurrentPageIndex() - 2;
-        if (dest <= 1) setForceShowLeft(false);
-        flip.flipPrev();
-    };
-
-    const handleNext = (e?: React.TouchEvent | React.MouseEvent) => {
-        if (e) {
-            if ('preventDefault' in e) e.preventDefault();
-        }
-        if (!bookRef.current) return;
-        const flip = bookRef.current.pageFlip();
-        const dest = flip.getCurrentPageIndex() + 2;
-        if (dest >= 3) setForceShowLeft(true);
-        if (dest >= flatPages.length - 3) setForceHideRight(true);
-        flip.flipNext();
-    };
-
-    const onStateChange = (e: any) => {
-        // We handle background visibility logic primarily in onFlip now
-        // to avoid calling non-existent API methods like getDestPageIndex.
-    };
-
-    // Flatten pages: [Cover, P1F, P1B, P2F, P2B, ..., BackCover]
+    // [Cover, P1F, P1B, ..., BackCover]
     const flatPages = useMemo(() => {
         const result: string[] = [];
         if (cover) result.push(cover);
-        pages.forEach(p => {
+        pages.forEach((p) => {
             if (p.front) result.push(p.front);
             if (p.back) result.push(p.back);
         });
@@ -134,191 +84,288 @@ export const DiaryBook = ({
         return result;
     }, [cover, backCover, pages]);
 
-    const bookPages = useMemo(() => {
-        return flatPages.map((url, index) => (
-            <Page key={index} index={index} borderRadius={borderRadius}>
-                <img
-                    src={url}
-                    alt={`Page ${index}`}
-                    className="w-full h-full object-cover select-none pointer-events-none"
-                    decoding="async"
-                    loading={index < 2 || index > flatPages.length - 3 ? "eager" : "lazy"}
-                />
-            </Page>
-        ));
-    }, [flatPages, borderRadius]);
+    const pageRatio = Number(width) / Number(height) || 2000 / 3230;
 
-    if (!isMounted) return <div className="animate-pulse bg-stone-100 rounded-lg w-full max-w-md aspect-[14/10]" />;
+    if (flatPages.length === 0 || isMobile === null) {
+        return <div className="animate-pulse bg-stone-100 w-full max-w-md" style={{ aspectRatio: `${pageRatio}` }} />;
+    }
 
-    const w = Number(width);
-    const h = Number(height);
-    const spreadRatio = (w * 2) / h;
+    return isMobile ? (
+        <MobileBook flatPages={flatPages} pageRatio={pageRatio} borderRadius={borderRadius} />
+    ) : (
+        <DesktopBook
+            flatPages={flatPages}
+            pageRatio={pageRatio}
+            borderRadius={borderRadius}
+            glossy={glossy}
+            staticLeft={staticLeft}
+            staticRight={staticRight}
+        />
+    );
+};
 
-    const baseHeight = '82vh';
-    const hasStaticBackgrounds = Boolean(staticLeft || staticRight);
+/* ------------------------------------------------------------------ */
+/* Desktop: spreads with 3D page turn                                  */
+/* ------------------------------------------------------------------ */
 
-    // Left Background Logic:
-    // Visible if we are ALREADY on spread 2+ (index 3)
-    // OR if we are on spread 1 (index 1) and currently flipping forward
-    const showLeftBg = (currentPage >= 3) || (currentPage === 1 && forceShowLeft);
+interface DesktopBookProps {
+    flatPages: string[];
+    pageRatio: number;
+    borderRadius: string;
+    glossy: boolean;
+    staticLeft?: string;
+    staticRight?: string;
+}
 
-    // Right Background Logic:
-    // Visible if we are NOT on the last spreads (last page and back cover)
-    // AND we are not currently flipping to close the book
-    const showRightBg = (currentPage < flatPages.length - 3) && !forceHideRight;
+function DesktopBook({ flatPages, pageRatio, borderRadius, glossy, staticLeft, staticRight }: DesktopBookProps) {
+    // A "sheet" is a physical leaf: front = right-hand page, back = left-hand page once turned.
+    const sheets = useMemo(() => {
+        const list: { front: string; back: string }[] = [];
+        for (let i = 0; i < flatPages.length; i += 2) {
+            list.push({ front: flatPages[i], back: flatPages[i + 1] ?? "" });
+        }
+        return list;
+    }, [flatPages]);
 
-    const containerStyle: React.CSSProperties = {
-        width: isPortrait
-            ? '94vw'
-            : `calc(${baseHeight} * ${spreadRatio})`,
-        maxWidth: isPortrait ? 'none' : `calc(${baseHeight} * ${spreadRatio})`,
-        aspectRatio: `${spreadRatio}`,
-        height: 'auto',
-        maxHeight: baseHeight,
-        transform: currentPage === 0
-            ? 'translateX(-25%)'
-            : currentPage === flatPages.length - 1
-                ? 'translateX(25%)'
-                : 'translateX(0)',
-        zIndex: 1,
-        transition: 'transform 0.5s ease-out, width 0.5s ease-out'
+    const total = sheets.length;
+    const [flipped, setFlipped] = useState(0); // number of sheets turned to the left
+    const [animating, setAnimating] = useState<Record<number, "fwd" | "back">>({});
+    const timers = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
+
+    const markAnimating = (index: number, dir: "fwd" | "back") => {
+        setAnimating((a) => ({ ...a, [index]: dir }));
+        clearTimeout(timers.current[index]);
+        timers.current[index] = setTimeout(() => {
+            setAnimating((a) => {
+                const copy = { ...a };
+                delete copy[index];
+                return copy;
+            });
+        }, FLIP_MS + 50);
     };
 
+    useEffect(() => {
+        const t = timers.current;
+        return () => Object.values(t).forEach(clearTimeout);
+    }, []);
+
+    const flippedRef = useRef(0);
+
+    const next = useCallback(() => {
+        const f = flippedRef.current;
+        if (f >= total) return;
+        flippedRef.current = f + 1;
+        markAnimating(f, "fwd");
+        setFlipped(f + 1);
+    }, [total]);
+
+    const prev = useCallback(() => {
+        const f = flippedRef.current;
+        if (f <= 0) return;
+        flippedRef.current = f - 1;
+        markAnimating(f - 1, "back");
+        setFlipped(f - 1);
+    }, []);
+
+    // Keyboard arrows
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === "ArrowRight") next();
+            else if (e.key === "ArrowLeft") prev();
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [next, prev]);
+
+    // Click on a half / drag to turn
+    const pointer = useRef<{ x: number; y: number } | null>(null);
+    const bookRef = useRef<HTMLDivElement>(null);
+    const onPointerDown = (e: React.PointerEvent) => {
+        pointer.current = { x: e.clientX, y: e.clientY };
+    };
+    const onPointerUp = (e: React.PointerEvent) => {
+        const start = pointer.current;
+        pointer.current = null;
+        if (!start || !bookRef.current) return;
+        const dx = e.clientX - start.x;
+        if (Math.abs(dx) > 40) {
+            if (dx < 0) next();
+            else prev();
+            return;
+        }
+        const rect = bookRef.current.getBoundingClientRect();
+        if (e.clientX - rect.left > rect.width / 2) next();
+        else prev();
+    };
+
+    const isClosedFront = flipped === 0;
+    const isClosedBack = flipped === total;
+    const shift = isClosedFront ? "-25%" : isClosedBack ? "25%" : "0%";
+    const spreadRatio = pageRatio * 2;
+
+    // Static backgrounds = the page stacks seen under the turning sheets
+    const showLeftBg = flipped >= 2 || (flipped === 1 && animating[1] === "back");
+    const showRightBg = flipped <= total - 2 || (flipped === total - 1 && animating[total - 2] === "fwd");
+
+    const pageSizes = "(max-width: 1400px) 45vw, 700px";
+    const faceRadius = (side: "left" | "right"): React.CSSProperties =>
+        side === "right"
+            ? { borderTopRightRadius: borderRadius, borderBottomRightRadius: borderRadius }
+            : { borderTopLeftRadius: borderRadius, borderBottomLeftRadius: borderRadius };
+
     return (
-        <div className={`book-wrapper w-full h-full flex flex-col items-center justify-center overflow-hidden relative ${isPortrait ? '' : 'p-4'}`}>
-            {flatPages.length > 0 && (
+        <div className="w-full h-full flex flex-col items-center justify-center select-none">
+            <div
+                className="relative"
+                style={{
+                    width: `min(92vw, calc(74vh * ${spreadRatio}))`,
+                    aspectRatio: `${spreadRatio}`,
+                    transform: `translateX(${shift})`,
+                    transition: `transform ${FLIP_MS}ms ease-in-out`,
+                }}
+            >
                 <div
-                    className="transition-all duration-500 ease-out will-change-transform relative shadow-book-real"
-                    style={containerStyle}
+                    ref={bookRef}
+                    className="absolute inset-0 cursor-pointer"
+                    style={{ perspective: "2500px", filter: "drop-shadow(0 25px 40px rgba(0,0,0,0.3))", touchAction: "pan-y" }}
+                    onPointerDown={onPointerDown}
+                    onPointerUp={onPointerUp}
+                    role="region"
+                    aria-label="Diario"
                 >
-                    {hasStaticBackgrounds && (
-                        <div className="absolute inset-0 w-full h-full flex z-0 pointer-events-none">
-                            <div
-                                className={`w-1/2 h-full relative overflow-hidden transition-opacity duration-0 ${!showLeftBg ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
-                                style={{ transform: 'translateZ(0)', willChange: 'opacity' }}
-                            >
-                                {staticLeft && (
-                                    <img
-                                        src={staticLeft}
-                                        alt="Left Background"
-                                        className="w-full h-full object-cover"
-                                        decoding="async"
-                                    />
-                                )}
-                            </div>
-                            <div
-                                className={`w-1/2 h-full relative overflow-hidden transition-opacity duration-0 ${!showRightBg ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
-                                style={{ transform: 'translateZ(0)', willChange: 'opacity' }}
-                            >
-                                {staticRight && (
-                                    <img
-                                        src={staticRight}
-                                        alt="Right Background"
-                                        className="w-full h-full object-cover"
-                                        decoding="async"
-                                    />
-                                )}
-                            </div>
+                    {/* Static page stacks */}
+                    {staticLeft && (
+                        <div className="absolute left-0 top-0 w-1/2 h-full overflow-hidden" style={{ ...faceRadius("left"), visibility: showLeftBg ? "visible" : "hidden" }}>
+                            <PageImage src={staticLeft} alt="" sizes={pageSizes} />
+                        </div>
+                    )}
+                    {staticRight && (
+                        <div className="absolute right-0 top-0 w-1/2 h-full overflow-hidden" style={{ ...faceRadius("right"), visibility: showRightBg ? "visible" : "hidden" }}>
+                            <PageImage src={staticRight} alt="" sizes={pageSizes} />
                         </div>
                     )}
 
-                    <HTMLFlipBook
-                        width={w}
-                        height={h}
-                        size="stretch"
-                        minWidth={100}
-                        maxWidth={1000}
-                        minHeight={100}
-                        maxHeight={1400}
-                        maxShadowOpacity={glossy ? 0.4 : 0}
-                        showCover={true}
-                        mobileScrollSupport={true}
-                        className="diary-flipbook"
-                        style={{
-                            background: 'transparent',
-                            width: '100%',
-                            height: '100%'
-                        }}
-                        startPage={initialPage.current}
-                        drawShadow={glossy}
-                        flippingTime={600}
-                        usePortrait={false}
-                        startZIndex={0}
-                        autoSize={false}
-                        clickEventForward={true}
-                        useMouseEvents={true}
-                        swipeDistance={15}
-                        showPageCorners={false}
-                        onFlip={onFlip}
-                        onChangeState={onStateChange}
-                        disableFlipByClick={false}
-                        ref={bookRef}
-                    >
-                        {bookPages}
-                    </HTMLFlipBook>
+                    {sheets.map((sheet, i) => {
+                        const isFlipped = i < flipped;
+                        const anim = animating[i];
+                        const near = i >= flipped - PRELOAD_SHEETS - 1 && i <= flipped + PRELOAD_SHEETS;
+                        // Hide sheets buried deep in either stack (they're covered anyway)
+                        if (!near && !anim) return null;
 
-                    {/* Native drag should work now without hit areas blocking the surface */}
+                        const zIndex = anim
+                            ? 1000 + (anim === "fwd" ? i : total - i)
+                            : isFlipped
+                                ? i + 1
+                                : total - i + 1;
+
+                        return (
+                            <div
+                                key={i}
+                                className="absolute top-0 right-0 w-1/2 h-full"
+                                style={{
+                                    transformOrigin: "left center",
+                                    transformStyle: "preserve-3d",
+                                    transform: `rotateY(${isFlipped ? -180 : 0}deg)`,
+                                    transition: `transform ${FLIP_MS}ms cubic-bezier(0.45, 0.05, 0.35, 1)`,
+                                    zIndex,
+                                }}
+                            >
+                                {/* Front (right-hand page) */}
+                                <div className="absolute inset-0 overflow-hidden bg-white" style={{ backfaceVisibility: "hidden", ...faceRadius("right") }}>
+                                    <PageImage src={sheet.front} alt={`Página ${i * 2 + 1}`} sizes={pageSizes} priority={i === 0} />
+                                    {glossy && <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-black/15 via-transparent to-transparent" style={{ width: "12%" }} />}
+                                </div>
+                                {/* Back (left-hand page once turned) */}
+                                <div className="absolute inset-0 overflow-hidden bg-white" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", ...faceRadius("left") }}>
+                                    <PageImage src={sheet.back} alt={`Página ${i * 2 + 2}`} sizes={pageSizes} />
+                                    {glossy && <div className="absolute inset-y-0 right-0 pointer-events-none bg-gradient-to-l from-black/15 to-transparent" style={{ width: "12%" }} />}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
-            )}
-
-            {/* Navigation Buttons */}
-            <div className="flex gap-4 mt-6 z-20">
-                <button
-                    onClick={handlePrev}
-                    className="group flex items-center justify-center w-12 h-12 border-2 border-black dark:border-white bg-white dark:bg-retro-dark-blue hover:shadow-retro dark:hover:shadow-[4px_4px_0px_0px_#ffffff] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
-                    aria-label="Previous Page"
-                >
-                    <ChevronLeft className="text-black dark:text-white" size={24} />
-                </button>
-                <button
-                    onClick={handleNext}
-                    className="group flex items-center justify-center w-12 h-12 border-2 border-black dark:border-white bg-white dark:bg-retro-dark-blue hover:shadow-retro dark:hover:shadow-[4px_4px_0px_0px_#ffffff] transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
-                    aria-label="Next Page"
-                >
-                    <ChevronRight className="text-black dark:text-white" size={24} />
-                </button>
             </div>
 
-
-            <style jsx global>{`
-                .book-wrapper {
-                    overflow: visible !important;
-                    touch-action: pan-y pinch-zoom; /* Allow vertical scroll and native zoom */
-                    -webkit-overflow-scrolling: touch;
-                }
-                .diary-flipbook {
-                    /* Ensure the flipbook itself doesn't block vertical scrolling on the page */
-                    touch-action: pan-y pinch-zoom;
-                }
-                .shadow-book-real {
-                    filter: drop-shadow(0 25px 50px rgba(0,0,0,0.3));
-                    will-change: width, height, transform;
-                }
-                .page {
-                    background-color: transparent;
-                    backface-visibility: hidden;
-                    will-change: transform;
-                    user-select: none;
-                    -webkit-user-drag: none;
-                }
-                .stf__outer-shadow {
-                    display: ${glossy ? 'block' : 'none'} !important;
-                }
-                .stf__inner-shadow {
-                    display: ${glossy ? 'block' : 'none'} !important;
-                }
-                .page-content {
-                    background-color: transparent;
-                    box-shadow: ${glossy
-                    ? 'inset 0 0 20px rgba(0,0,0,0.03)'
-                    : 'none'};
-                    user-select: none;
-                }
-                .stf__parent {
-                    overflow: visible !important;
-                    touch-action: pan-y pinch-zoom !important;
-                }
-            `}</style>
+            <BookNav
+                onPrev={prev}
+                onNext={next}
+                canPrev={flipped > 0}
+                canNext={flipped < total}
+                label={isClosedFront || isClosedBack ? "" : `${flipped * 2 - 1}–${flipped * 2} / ${flatPages.length - 2}`}
+            />
         </div>
     );
-};
+}
+
+/* ------------------------------------------------------------------ */
+/* Mobile: one page per screen, native swipe                           */
+/* ------------------------------------------------------------------ */
+
+function MobileBook({ flatPages, pageRatio, borderRadius }: { flatPages: string[]; pageRatio: number; borderRadius: string }) {
+    const scroller = useRef<HTMLDivElement>(null);
+    const [index, setIndex] = useState(0);
+
+    const onScroll = () => {
+        const el = scroller.current;
+        if (!el) return;
+        const i = Math.round(el.scrollLeft / el.clientWidth);
+        if (i !== index) setIndex(i);
+    };
+
+    const goTo = (i: number) => {
+        const el = scroller.current;
+        if (!el) return;
+        const clamped = Math.max(0, Math.min(flatPages.length - 1, i));
+        el.scrollTo({ left: clamped * el.clientWidth, behavior: "smooth" });
+    };
+
+    return (
+        <div className="w-full h-full flex flex-col items-center justify-center">
+            <div
+                className="relative"
+                style={{ width: `min(88vw, calc(68vh * ${pageRatio}))`, aspectRatio: `${pageRatio}`, filter: "drop-shadow(0 15px 25px rgba(0,0,0,0.25))" }}
+            >
+                <div
+                    ref={scroller}
+                    onScroll={onScroll}
+                    className="absolute inset-0 flex overflow-x-auto snap-x snap-mandatory"
+                    style={{ scrollbarWidth: "none", borderRadius }}
+                >
+                    {flatPages.map((src, i) => (
+                        <div key={i} className="relative shrink-0 w-full h-full snap-center bg-white">
+                            {Math.abs(i - index) <= 2 && (
+                                <PageImage src={src} alt={`Página ${i + 1}`} sizes="88vw" priority={i === 0} />
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <BookNav
+                onPrev={() => goTo(index - 1)}
+                onNext={() => goTo(index + 1)}
+                canPrev={index > 0}
+                canNext={index < flatPages.length - 1}
+                label={`${index + 1} / ${flatPages.length}`}
+            />
+        </div>
+    );
+}
+
+/* ------------------------------------------------------------------ */
+
+function BookNav({ onPrev, onNext, canPrev, canNext, label }: { onPrev: () => void; onNext: () => void; canPrev: boolean; canNext: boolean; label: string }) {
+    const btn =
+        "flex items-center justify-center w-12 h-12 border-2 border-black bg-white hover:shadow-retro transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-30 disabled:hover:shadow-none";
+    return (
+        <div className="flex items-center gap-4 mt-6 z-20">
+            <button onClick={onPrev} disabled={!canPrev} className={btn} aria-label="Página anterior">
+                <ChevronLeft size={24} />
+            </button>
+            <span className="font-chicago text-[10px] w-20 text-center opacity-60 tabular-nums">{label}</span>
+            <button onClick={onNext} disabled={!canNext} className={btn} aria-label="Página siguiente">
+                <ChevronRight size={24} />
+            </button>
+        </div>
+    );
+}
